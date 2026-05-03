@@ -1,0 +1,5424 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kanji Academy</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23EF4444'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-size='34' font-family='sans-serif' fill='white'%3EK%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Quicksand:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { cream: '#FCFBF7', mint: '#F0FDF4', action: '#EF4444', ink: '#0F172A' }, fontFamily: { soft: ['Quicksand', 'ui-sans-serif', 'system-ui'], jp: ['Noto Sans JP', 'sans-serif'] }, boxShadow: { soft: '0 18px 60px rgba(15, 23, 42, 0.08)' } } } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js" defer></script>
+  <style>
+    :root { color-scheme: light; } * { box-sizing: border-box; }
+    body { min-height: 100vh; font-family: 'Quicksand', system-ui, sans-serif; background: #FCFBF7; color: #0F172A; }
+    .jp { font-family: 'Noto Sans JP', sans-serif; }
+    .lesson-scroll::-webkit-scrollbar { width: 10px; } .lesson-scroll::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 999px; border: 3px solid transparent; background-clip: padding-box; }
+    #practiceCanvas { touch-action: none; cursor: crosshair; }
+    .soft-grid { background-image: radial-gradient(circle at top left, rgba(240,253,244,.95), transparent 38%), radial-gradient(circle at bottom right, rgba(254,226,226,.72), transparent 34%); }
+  </style>
+</head>
+<body>
+  <div class="min-h-screen soft-grid">
+    <div class="mx-auto flex w-full max-w-[1500px] flex-col gap-5 px-4 py-4 lg:flex-row lg:gap-8 lg:px-8 lg:py-8">
+      <aside class="hidden w-80 shrink-0 rounded-3xl border border-slate-200/70 bg-white/82 p-5 shadow-soft backdrop-blur lg:block">
+        <div class="mb-6 flex items-center gap-3"><div class="flex h-12 w-12 items-center justify-center rounded-3xl bg-action text-2xl font-extrabold text-white shadow-sm jp">&#23398;</div><div><h1 class="text-2xl font-extrabold tracking-normal text-ink">Kanji Academy</h1><p class="text-sm font-semibold text-slate-500"><span id="totalCount">500</span> kanji &middot; 45 lessons</p></div></div>
+        <div id="lessonList" class="lesson-scroll grid max-h-[calc(100vh-190px)] gap-2 overflow-y-auto pr-1"></div>
+      </aside>
+      <main class="flex min-w-0 flex-1 flex-col gap-5">
+        <header class="rounded-3xl border border-slate-200/70 bg-white/80 p-4 shadow-sm backdrop-blur lg:hidden"><div class="mb-4 flex items-center justify-between gap-3"><div class="flex items-center gap-3"><div class="flex h-11 w-11 items-center justify-center rounded-3xl bg-action text-xl font-extrabold text-white jp">&#23398;</div><div><h1 class="text-xl font-extrabold text-ink">Kanji Academy</h1><p class="text-xs font-bold text-slate-500">500 kanji &middot; 45 lessons</p></div></div></div><select id="lessonSelect" class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-extrabold text-ink outline-none focus:border-action focus:ring-4 focus:ring-red-100"></select></header>
+        <section class="rounded-3xl border border-slate-200/70 bg-white p-5 shadow-soft sm:p-7 xl:p-8">
+          <div class="mb-7 flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between"><div><div class="mb-3 flex flex-wrap items-center gap-2 text-sm font-extrabold text-slate-500"><span id="lessonLabel" class="rounded-full bg-mint px-4 py-2 text-emerald-700">Lesson 1</span><span id="positionLabel" class="rounded-full bg-slate-100 px-4 py-2">1 / 10</span></div><div class="flex flex-wrap items-end gap-x-5 gap-y-2"><div id="currentChar" class="jp text-[7.5rem] font-black leading-none text-ink sm:text-[9rem]">&#26085;</div><div class="pb-3"><p id="meaning" class="max-w-2xl text-3xl font-extrabold leading-tight text-ink sm:text-4xl">loading</p><div class="mt-4 grid gap-2 text-base font-bold text-slate-600 sm:grid-cols-2"><p><span class="text-slate-400">Onyomi</span> <span id="onyomi" class="jp text-ink">-</span></p><p><span class="text-slate-400">Kunyomi</span> <span id="kunyomi" class="jp text-ink">-</span></p></div></div></div></div><div class="flex flex-wrap gap-3"><button id="prevBtn" class="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-ink shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0">Prev</button><button id="nextBtn" class="rounded-2xl bg-action px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0">Next</button></div></div>
+          <div class="grid gap-5 xl:grid-cols-[minmax(280px,440px)_1fr]"><article class="rounded-3xl bg-mint p-4 shadow-sm sm:p-5"><div class="mb-4 flex items-center justify-between gap-3"><h2 class="text-lg font-extrabold text-ink">Stroke Order</h2><button id="animateBtn" class="rounded-2xl bg-action px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-red-500">Animate</button></div><div class="relative flex aspect-square items-center justify-center rounded-3xl bg-white shadow-sm"><div id="hanziTarget" class="h-[min(78vw,360px)] w-[min(78vw,360px)] max-w-full"></div><div id="writerFallback" class="jp pointer-events-none absolute inset-0 hidden items-center justify-center text-[11rem] font-black leading-none text-slate-900/10"></div></div><p id="writerStatus" class="mt-4 min-h-5 text-sm font-bold text-slate-500"></p></article><article class="rounded-3xl bg-[#FFF7ED] p-4 shadow-sm sm:p-5"><div class="mb-4 flex items-center justify-between gap-3"><h2 class="text-lg font-extrabold text-ink">Practice</h2><button id="clearBtn" class="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-ink shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300">Clear</button></div><canvas id="practiceCanvas" class="block aspect-square w-full rounded-3xl bg-white shadow-sm"></canvas></article></div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script>
+    const KANJI_DATABASE = [
+  {
+    "char": "日",
+    "meaning": "солнце; день",
+    "onyomi": [
+      "ニチ"
+    ],
+    "kunyomi": [
+      "ひ"
+    ],
+    "lesson_number": 1
+  },
+  {
+    "char": "月",
+    "meaning": "луна; месяц",
+    "onyomi": [
+      "ゲツ",
+      "ガツ"
+    ],
+    "kunyomi": [
+      "つき"
+    ],
+    "lesson_number": 1
+  },
+  {
+    "char": "木",
+    "meaning": "дерево",
+    "onyomi": [
+      "モク",
+      "ボク"
+    ],
+    "kunyomi": [
+      "き"
+    ],
+    "lesson_number": 1
+  },
+  {
+    "char": "山",
+    "meaning": "гора",
+    "onyomi": [
+      "サン"
+    ],
+    "kunyomi": [
+      "やま"
+    ],
+    "lesson_number": 1
+  },
+  {
+    "char": "川",
+    "meaning": "река",
+    "onyomi": [],
+    "kunyomi": [
+      "かわ"
+    ],
+    "lesson_number": 1
+  },
+  {
+    "char": "田",
+    "meaning": "рисовое поле",
+    "onyomi": [],
+    "kunyomi": [
+      "た",
+      "だ"
+    ],
+    "lesson_number": 1
+  },
+  {
+    "char": "人",
+    "meaning": "человек",
+    "onyomi": [
+      "ニン",
+      "ジン"
+    ],
+    "kunyomi": [
+      "ひと"
+    ],
+    "lesson_number": 1
+  },
+  {
+    "char": "口",
+    "meaning": "рот",
+    "onyomi": [
+      "コウ"
+    ],
+    "kunyomi": [
+      "くち"
+    ],
+    "lesson_number": 1
+  },
+  {
+    "char": "車",
+    "meaning": "машина",
+    "onyomi": [
+      "シャ"
+    ],
+    "kunyomi": [
+      "くるま"
+    ],
+    "lesson_number": 1
+  },
+  {
+    "char": "門",
+    "meaning": "ворота",
+    "onyomi": [
+      "モン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 1
+  },
+  {
+    "char": "火",
+    "meaning": "огонь",
+    "onyomi": [
+      "カ"
+    ],
+    "kunyomi": [
+      "ひ"
+    ],
+    "lesson_number": 2
+  },
+  {
+    "char": "水",
+    "meaning": "вода",
+    "onyomi": [
+      "スイ"
+    ],
+    "kunyomi": [
+      "みず"
+    ],
+    "lesson_number": 2
+  },
+  {
+    "char": "金",
+    "meaning": "золото; металл; деньги",
+    "onyomi": [
+      "キン"
+    ],
+    "kunyomi": [
+      "かね"
+    ],
+    "lesson_number": 2
+  },
+  {
+    "char": "土",
+    "meaning": "земля",
+    "onyomi": [
+      "ド"
+    ],
+    "kunyomi": [
+      "つち"
+    ],
+    "lesson_number": 2
+  },
+  {
+    "char": "子",
+    "meaning": "ребёнок",
+    "onyomi": [
+      "シ"
+    ],
+    "kunyomi": [
+      "こ"
+    ],
+    "lesson_number": 2
+  },
+  {
+    "char": "女",
+    "meaning": "женщина",
+    "onyomi": [
+      "ジョ"
+    ],
+    "kunyomi": [
+      "おんな"
+    ],
+    "lesson_number": 2
+  },
+  {
+    "char": "学",
+    "meaning": "учиться",
+    "onyomi": [
+      "ガク"
+    ],
+    "kunyomi": [
+      "まな・ぶ"
+    ],
+    "lesson_number": 2
+  },
+  {
+    "char": "生",
+    "meaning": "жизнь",
+    "onyomi": [
+      "セイ"
+    ],
+    "kunyomi": [
+      "い・きる",
+      "う・まれる"
+    ],
+    "lesson_number": 2
+  },
+  {
+    "char": "先",
+    "meaning": "предыдущий",
+    "onyomi": [
+      "セン"
+    ],
+    "kunyomi": [
+      "さき"
+    ],
+    "lesson_number": 2
+  },
+  {
+    "char": "私",
+    "meaning": "я",
+    "onyomi": [
+      "シ"
+    ],
+    "kunyomi": [
+      "わたし"
+    ],
+    "lesson_number": 2
+  },
+  {
+    "char": "一",
+    "meaning": "один",
+    "onyomi": [
+      "イチ"
+    ],
+    "kunyomi": [
+      "ひと・つ"
+    ],
+    "lesson_number": 3
+  },
+  {
+    "char": "二",
+    "meaning": "два",
+    "onyomi": [
+      "ニ"
+    ],
+    "kunyomi": [
+      "ふた・つ"
+    ],
+    "lesson_number": 3
+  },
+  {
+    "char": "三",
+    "meaning": "три",
+    "onyomi": [
+      "サン"
+    ],
+    "kunyomi": [
+      "みっ・つ"
+    ],
+    "lesson_number": 3
+  },
+  {
+    "char": "四",
+    "meaning": "четыре",
+    "onyomi": [
+      "シ"
+    ],
+    "kunyomi": [
+      "よっ・つ",
+      "よん"
+    ],
+    "lesson_number": 3
+  },
+  {
+    "char": "五",
+    "meaning": "пять",
+    "onyomi": [
+      "ゴ"
+    ],
+    "kunyomi": [
+      "いつ・つ"
+    ],
+    "lesson_number": 3
+  },
+  {
+    "char": "六",
+    "meaning": "шесть",
+    "onyomi": [
+      "ロク"
+    ],
+    "kunyomi": [
+      "むっ・つ"
+    ],
+    "lesson_number": 3
+  },
+  {
+    "char": "七",
+    "meaning": "семь",
+    "onyomi": [
+      "シチ"
+    ],
+    "kunyomi": [
+      "なな・つ"
+    ],
+    "lesson_number": 3
+  },
+  {
+    "char": "八",
+    "meaning": "восемь",
+    "onyomi": [
+      "ハチ"
+    ],
+    "kunyomi": [
+      "やっ・つ"
+    ],
+    "lesson_number": 3
+  },
+  {
+    "char": "九",
+    "meaning": "девять",
+    "onyomi": [
+      "キュウ"
+    ],
+    "kunyomi": [
+      "ここの・つ"
+    ],
+    "lesson_number": 3
+  },
+  {
+    "char": "十",
+    "meaning": "десять",
+    "onyomi": [
+      "ジュウ"
+    ],
+    "kunyomi": [
+      "とお"
+    ],
+    "lesson_number": 3
+  },
+  {
+    "char": "百",
+    "meaning": "сто",
+    "onyomi": [
+      "ヒャク"
+    ],
+    "kunyomi": [],
+    "lesson_number": 3
+  },
+  {
+    "char": "千",
+    "meaning": "тысяча",
+    "onyomi": [
+      "セン"
+    ],
+    "kunyomi": [
+      "ち"
+    ],
+    "lesson_number": 3
+  },
+  {
+    "char": "万",
+    "meaning": "10000",
+    "onyomi": [
+      "マン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 3
+  },
+  {
+    "char": "円",
+    "meaning": "йены",
+    "onyomi": [
+      "エン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 3
+  },
+  {
+    "char": "年",
+    "meaning": "год",
+    "onyomi": [
+      "ネン"
+    ],
+    "kunyomi": [
+      "とし"
+    ],
+    "lesson_number": 3
+  },
+  {
+    "char": "上",
+    "meaning": "верх",
+    "onyomi": [
+      "ジョウ"
+    ],
+    "kunyomi": [
+      "うえ",
+      "あ・がる"
+    ],
+    "lesson_number": 4
+  },
+  {
+    "char": "下",
+    "meaning": "низ",
+    "onyomi": [
+      "カ"
+    ],
+    "kunyomi": [
+      "した",
+      "さ・がる"
+    ],
+    "lesson_number": 4
+  },
+  {
+    "char": "中",
+    "meaning": "середина",
+    "onyomi": [
+      "チュウ"
+    ],
+    "kunyomi": [
+      "なか"
+    ],
+    "lesson_number": 4
+  },
+  {
+    "char": "大",
+    "meaning": "большой",
+    "onyomi": [
+      "ダイ",
+      "タイ"
+    ],
+    "kunyomi": [
+      "おお・きい"
+    ],
+    "lesson_number": 4
+  },
+  {
+    "char": "小",
+    "meaning": "маленький",
+    "onyomi": [
+      "ショウ"
+    ],
+    "kunyomi": [
+      "ちい・さい"
+    ],
+    "lesson_number": 4
+  },
+  {
+    "char": "本",
+    "meaning": "книга; источник",
+    "onyomi": [
+      "ホン"
+    ],
+    "kunyomi": [
+      "もと"
+    ],
+    "lesson_number": 4
+  },
+  {
+    "char": "半",
+    "meaning": "половина",
+    "onyomi": [
+      "ハン"
+    ],
+    "kunyomi": [
+      "なか・ば"
+    ],
+    "lesson_number": 4
+  },
+  {
+    "char": "分",
+    "meaning": "понимать; делить; минуты",
+    "onyomi": [
+      "ブン",
+      "フン"
+    ],
+    "kunyomi": [
+      "わ・かる",
+      "わ・ける"
+    ],
+    "lesson_number": 4
+  },
+  {
+    "char": "力",
+    "meaning": "сила",
+    "onyomi": [
+      "リョク"
+    ],
+    "kunyomi": [
+      "ちから"
+    ],
+    "lesson_number": 4
+  },
+  {
+    "char": "何",
+    "meaning": "что",
+    "onyomi": [
+      "カ"
+    ],
+    "kunyomi": [
+      "なん",
+      "なに"
+    ],
+    "lesson_number": 4
+  },
+  {
+    "char": "明",
+    "meaning": "светлый",
+    "onyomi": [
+      "メイ"
+    ],
+    "kunyomi": [
+      "あか・るい"
+    ],
+    "lesson_number": 5
+  },
+  {
+    "char": "休",
+    "meaning": "отдыхать",
+    "onyomi": [
+      "キュウ"
+    ],
+    "kunyomi": [
+      "やす・む"
+    ],
+    "lesson_number": 5
+  },
+  {
+    "char": "体",
+    "meaning": "тело",
+    "onyomi": [
+      "タイ"
+    ],
+    "kunyomi": [
+      "からだ"
+    ],
+    "lesson_number": 5
+  },
+  {
+    "char": "好",
+    "meaning": "любить",
+    "onyomi": [
+      "コウ"
+    ],
+    "kunyomi": [
+      "す・き"
+    ],
+    "lesson_number": 5
+  },
+  {
+    "char": "男",
+    "meaning": "мужчина",
+    "onyomi": [
+      "ダン"
+    ],
+    "kunyomi": [
+      "おとこ"
+    ],
+    "lesson_number": 5
+  },
+  {
+    "char": "林",
+    "meaning": "лес",
+    "onyomi": [
+      "リン"
+    ],
+    "kunyomi": [
+      "はやし"
+    ],
+    "lesson_number": 5
+  },
+  {
+    "char": "森",
+    "meaning": "роща",
+    "onyomi": [
+      "シン"
+    ],
+    "kunyomi": [
+      "もり"
+    ],
+    "lesson_number": 5
+  },
+  {
+    "char": "間",
+    "meaning": "промежуток; между",
+    "onyomi": [
+      "カン"
+    ],
+    "kunyomi": [
+      "あいだ",
+      "ま"
+    ],
+    "lesson_number": 5
+  },
+  {
+    "char": "畑",
+    "meaning": "суходольное; поле",
+    "onyomi": [],
+    "kunyomi": [
+      "はたけ"
+    ],
+    "lesson_number": 5
+  },
+  {
+    "char": "岩",
+    "meaning": "скала",
+    "onyomi": [
+      "ガン"
+    ],
+    "kunyomi": [
+      "いわ"
+    ],
+    "lesson_number": 5
+  },
+  {
+    "char": "目",
+    "meaning": "глаз",
+    "onyomi": [
+      "モク"
+    ],
+    "kunyomi": [
+      "め"
+    ],
+    "lesson_number": 6
+  },
+  {
+    "char": "耳",
+    "meaning": "ухо",
+    "onyomi": [
+      "ジ"
+    ],
+    "kunyomi": [
+      "みみ"
+    ],
+    "lesson_number": 6
+  },
+  {
+    "char": "手",
+    "meaning": "рука",
+    "onyomi": [
+      "シュ"
+    ],
+    "kunyomi": [
+      "て"
+    ],
+    "lesson_number": 6
+  },
+  {
+    "char": "足",
+    "meaning": "ноги",
+    "onyomi": [
+      "ソク"
+    ],
+    "kunyomi": [
+      "あし",
+      "た・りる"
+    ],
+    "lesson_number": 6
+  },
+  {
+    "char": "雨",
+    "meaning": "дождь",
+    "onyomi": [
+      "ウ"
+    ],
+    "kunyomi": [
+      "あめ"
+    ],
+    "lesson_number": 6
+  },
+  {
+    "char": "竹",
+    "meaning": "бамбук",
+    "onyomi": [
+      "チク"
+    ],
+    "kunyomi": [
+      "たけ"
+    ],
+    "lesson_number": 6
+  },
+  {
+    "char": "米",
+    "meaning": "рис",
+    "onyomi": [
+      "マイ",
+      "ベイ"
+    ],
+    "kunyomi": [
+      "こめ"
+    ],
+    "lesson_number": 6
+  },
+  {
+    "char": "貝",
+    "meaning": "ракушка",
+    "onyomi": [],
+    "kunyomi": [
+      "かい"
+    ],
+    "lesson_number": 6
+  },
+  {
+    "char": "石",
+    "meaning": "камень",
+    "onyomi": [
+      "セキ"
+    ],
+    "kunyomi": [
+      "いし"
+    ],
+    "lesson_number": 6
+  },
+  {
+    "char": "糸",
+    "meaning": "нитка",
+    "onyomi": [
+      "シ"
+    ],
+    "kunyomi": [
+      "いと"
+    ],
+    "lesson_number": 6
+  },
+  {
+    "char": "花",
+    "meaning": "цветок",
+    "onyomi": [
+      "カ"
+    ],
+    "kunyomi": [
+      "はな"
+    ],
+    "lesson_number": 7
+  },
+  {
+    "char": "茶",
+    "meaning": "чай",
+    "onyomi": [
+      "チャ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 7
+  },
+  {
+    "char": "肉",
+    "meaning": "мясо",
+    "onyomi": [
+      "ニク"
+    ],
+    "kunyomi": [],
+    "lesson_number": 7
+  },
+  {
+    "char": "文",
+    "meaning": "литература; предложение",
+    "onyomi": [
+      "ブン",
+      "モン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 7
+  },
+  {
+    "char": "字",
+    "meaning": "знак",
+    "onyomi": [
+      "ジ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 7
+  },
+  {
+    "char": "物",
+    "meaning": "вещь",
+    "onyomi": [
+      "ブツ",
+      "モツ"
+    ],
+    "kunyomi": [
+      "もの"
+    ],
+    "lesson_number": 7
+  },
+  {
+    "char": "牛",
+    "meaning": "корова",
+    "onyomi": [
+      "ギュウ"
+    ],
+    "kunyomi": [
+      "うし"
+    ],
+    "lesson_number": 7
+  },
+  {
+    "char": "馬",
+    "meaning": "лошадь",
+    "onyomi": [
+      "バ"
+    ],
+    "kunyomi": [
+      "うま"
+    ],
+    "lesson_number": 7
+  },
+  {
+    "char": "鳥",
+    "meaning": "птица",
+    "onyomi": [
+      "チョウ"
+    ],
+    "kunyomi": [
+      "とり"
+    ],
+    "lesson_number": 7
+  },
+  {
+    "char": "魚",
+    "meaning": "рыба",
+    "onyomi": [
+      "ギョ"
+    ],
+    "kunyomi": [
+      "さかな"
+    ],
+    "lesson_number": 7
+  },
+  {
+    "char": "新",
+    "meaning": "новый",
+    "onyomi": [
+      "シン"
+    ],
+    "kunyomi": [
+      "あたら・しい"
+    ],
+    "lesson_number": 8
+  },
+  {
+    "char": "古",
+    "meaning": "старый",
+    "onyomi": [
+      "コ"
+    ],
+    "kunyomi": [
+      "ふる・い"
+    ],
+    "lesson_number": 8
+  },
+  {
+    "char": "長",
+    "meaning": "длинный",
+    "onyomi": [
+      "チョウ"
+    ],
+    "kunyomi": [
+      "なが・い"
+    ],
+    "lesson_number": 8
+  },
+  {
+    "char": "短",
+    "meaning": "короткий",
+    "onyomi": [
+      "タン"
+    ],
+    "kunyomi": [
+      "みじか・い"
+    ],
+    "lesson_number": 8
+  },
+  {
+    "char": "高",
+    "meaning": "высокий; дорогой",
+    "onyomi": [
+      "コウ"
+    ],
+    "kunyomi": [
+      "たか・い"
+    ],
+    "lesson_number": 8
+  },
+  {
+    "char": "安",
+    "meaning": "дешёвый",
+    "onyomi": [
+      "アン"
+    ],
+    "kunyomi": [
+      "やす・い"
+    ],
+    "lesson_number": 8
+  },
+  {
+    "char": "低",
+    "meaning": "низкий",
+    "onyomi": [
+      "テイ"
+    ],
+    "kunyomi": [
+      "ひく・い"
+    ],
+    "lesson_number": 8
+  },
+  {
+    "char": "暗",
+    "meaning": "тёмный",
+    "onyomi": [
+      "アン"
+    ],
+    "kunyomi": [
+      "くら・い"
+    ],
+    "lesson_number": 8
+  },
+  {
+    "char": "多",
+    "meaning": "много-; численный",
+    "onyomi": [
+      "タ"
+    ],
+    "kunyomi": [
+      "おお・い"
+    ],
+    "lesson_number": 8
+  },
+  {
+    "char": "少",
+    "meaning": "мало-; численный",
+    "onyomi": [
+      "ショウ"
+    ],
+    "kunyomi": [
+      "すく・ない",
+      "すこ・し"
+    ],
+    "lesson_number": 8
+  },
+  {
+    "char": "行",
+    "meaning": "идти; ехать",
+    "onyomi": [
+      "コウ"
+    ],
+    "kunyomi": [
+      "い・く",
+      "おこな・う"
+    ],
+    "lesson_number": 9
+  },
+  {
+    "char": "来",
+    "meaning": "приходить; приезжать",
+    "onyomi": [
+      "ライ"
+    ],
+    "kunyomi": [
+      "く・る"
+    ],
+    "lesson_number": 9
+  },
+  {
+    "char": "帰",
+    "meaning": "возвращаться",
+    "onyomi": [
+      "キ"
+    ],
+    "kunyomi": [
+      "かえ・る"
+    ],
+    "lesson_number": 9
+  },
+  {
+    "char": "食",
+    "meaning": "кушать",
+    "onyomi": [
+      "ショク"
+    ],
+    "kunyomi": [
+      "た・べる"
+    ],
+    "lesson_number": 9
+  },
+  {
+    "char": "飲",
+    "meaning": "пить",
+    "onyomi": [
+      "イン"
+    ],
+    "kunyomi": [
+      "の・む"
+    ],
+    "lesson_number": 9
+  },
+  {
+    "char": "見",
+    "meaning": "смотреть",
+    "onyomi": [
+      "ケン"
+    ],
+    "kunyomi": [
+      "み・る",
+      "み・える",
+      "み・せる"
+    ],
+    "lesson_number": 9
+  },
+  {
+    "char": "聞",
+    "meaning": "слушать; спрашивать",
+    "onyomi": [
+      "ブン"
+    ],
+    "kunyomi": [
+      "き・く",
+      "き・こえる"
+    ],
+    "lesson_number": 9
+  },
+  {
+    "char": "読",
+    "meaning": "читать",
+    "onyomi": [
+      "ドク"
+    ],
+    "kunyomi": [
+      "よ・む"
+    ],
+    "lesson_number": 9
+  },
+  {
+    "char": "書",
+    "meaning": "писать",
+    "onyomi": [
+      "ショウ"
+    ],
+    "kunyomi": [
+      "か・く"
+    ],
+    "lesson_number": 9
+  },
+  {
+    "char": "話",
+    "meaning": "говорить; рассказывать",
+    "onyomi": [
+      "ワ"
+    ],
+    "kunyomi": [
+      "はな・す",
+      "はなし"
+    ],
+    "lesson_number": 9
+  },
+  {
+    "char": "買",
+    "meaning": "покупать",
+    "onyomi": [
+      "バイ"
+    ],
+    "kunyomi": [
+      "か・う"
+    ],
+    "lesson_number": 9
+  },
+  {
+    "char": "教",
+    "meaning": "обучать",
+    "onyomi": [
+      "キョウ"
+    ],
+    "kunyomi": [
+      "おし・える"
+    ],
+    "lesson_number": 9
+  },
+  {
+    "char": "朝",
+    "meaning": "утро",
+    "onyomi": [
+      "チョウ"
+    ],
+    "kunyomi": [
+      "あさ"
+    ],
+    "lesson_number": 10
+  },
+  {
+    "char": "昼",
+    "meaning": "день",
+    "onyomi": [
+      "チュウ"
+    ],
+    "kunyomi": [
+      "ひる"
+    ],
+    "lesson_number": 10
+  },
+  {
+    "char": "夜",
+    "meaning": "ночь; вечер",
+    "onyomi": [
+      "ヤ"
+    ],
+    "kunyomi": [
+      "よる"
+    ],
+    "lesson_number": 10
+  },
+  {
+    "char": "晩",
+    "meaning": "вечер",
+    "onyomi": [
+      "バン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 10
+  },
+  {
+    "char": "夕",
+    "meaning": "вечер",
+    "onyomi": [],
+    "kunyomi": [
+      "ゆう"
+    ],
+    "lesson_number": 10
+  },
+  {
+    "char": "方",
+    "meaning": "сторона; способ; личность",
+    "onyomi": [
+      "ホウ"
+    ],
+    "kunyomi": [
+      "かた"
+    ],
+    "lesson_number": 10
+  },
+  {
+    "char": "午",
+    "meaning": "полдень",
+    "onyomi": [
+      "ゴ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 10
+  },
+  {
+    "char": "前",
+    "meaning": "перед",
+    "onyomi": [
+      "ゼン"
+    ],
+    "kunyomi": [
+      "まえ"
+    ],
+    "lesson_number": 10
+  },
+  {
+    "char": "後",
+    "meaning": "после",
+    "onyomi": [
+      "コウ",
+      "ゴ"
+    ],
+    "kunyomi": [
+      "あと",
+      "うし・ろ"
+    ],
+    "lesson_number": 10
+  },
+  {
+    "char": "毎",
+    "meaning": "каждый",
+    "onyomi": [
+      "マイ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 10
+  },
+  {
+    "char": "週",
+    "meaning": "неделя",
+    "onyomi": [
+      "シュウ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 10
+  },
+  {
+    "char": "曜",
+    "meaning": "день недели",
+    "onyomi": [
+      "ヨウ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 10
+  },
+  {
+    "char": "作",
+    "meaning": "делать; производить",
+    "onyomi": [
+      "サク"
+    ],
+    "kunyomi": [
+      "つく・る"
+    ],
+    "lesson_number": 11
+  },
+  {
+    "char": "泳",
+    "meaning": "плавать",
+    "onyomi": [
+      "エイ"
+    ],
+    "kunyomi": [
+      "およ・ぐ"
+    ],
+    "lesson_number": 11
+  },
+  {
+    "char": "油",
+    "meaning": "масло",
+    "onyomi": [
+      "ユ"
+    ],
+    "kunyomi": [
+      "あぶら"
+    ],
+    "lesson_number": 11
+  },
+  {
+    "char": "海",
+    "meaning": "море",
+    "onyomi": [
+      "カイ"
+    ],
+    "kunyomi": [
+      "うみ"
+    ],
+    "lesson_number": 11
+  },
+  {
+    "char": "酒",
+    "meaning": "алкоголь",
+    "onyomi": [
+      "シュ"
+    ],
+    "kunyomi": [
+      "さけ"
+    ],
+    "lesson_number": 11
+  },
+  {
+    "char": "待",
+    "meaning": "ждать",
+    "onyomi": [
+      "タイ"
+    ],
+    "kunyomi": [
+      "ま・つ"
+    ],
+    "lesson_number": 11
+  },
+  {
+    "char": "校",
+    "meaning": "школа",
+    "onyomi": [
+      "コウ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 11
+  },
+  {
+    "char": "時",
+    "meaning": "время",
+    "onyomi": [
+      "ジ"
+    ],
+    "kunyomi": [
+      "とき"
+    ],
+    "lesson_number": 11
+  },
+  {
+    "char": "言",
+    "meaning": "говорить",
+    "onyomi": [
+      "ゲン",
+      "ゴン"
+    ],
+    "kunyomi": [
+      "い・う"
+    ],
+    "lesson_number": 11
+  },
+  {
+    "char": "計",
+    "meaning": "измерять",
+    "onyomi": [
+      "ケイ"
+    ],
+    "kunyomi": [
+      "はか・る"
+    ],
+    "lesson_number": 11
+  },
+  {
+    "char": "語",
+    "meaning": "язык; слово",
+    "onyomi": [
+      "ゴ"
+    ],
+    "kunyomi": [
+      "かた・る"
+    ],
+    "lesson_number": 11
+  },
+  {
+    "char": "飯",
+    "meaning": "варёный рис; еда",
+    "onyomi": [
+      "ハン"
+    ],
+    "kunyomi": [
+      "めし"
+    ],
+    "lesson_number": 11
+  },
+  {
+    "char": "宅",
+    "meaning": "ваш дом",
+    "onyomi": [
+      "タク"
+    ],
+    "kunyomi": [],
+    "lesson_number": 12
+  },
+  {
+    "char": "客",
+    "meaning": "гость; клиент",
+    "onyomi": [
+      "キャク"
+    ],
+    "kunyomi": [],
+    "lesson_number": 12
+  },
+  {
+    "char": "室",
+    "meaning": "комната",
+    "onyomi": [
+      "シツ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 12
+  },
+  {
+    "char": "家",
+    "meaning": "дом",
+    "onyomi": [
+      "カ"
+    ],
+    "kunyomi": [
+      "いえ"
+    ],
+    "lesson_number": 12
+  },
+  {
+    "char": "英",
+    "meaning": "выдающийся; Англия",
+    "onyomi": [
+      "エイ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 12
+  },
+  {
+    "char": "薬",
+    "meaning": "лекарство",
+    "onyomi": [
+      "ヤク"
+    ],
+    "kunyomi": [
+      "くすり"
+    ],
+    "lesson_number": 12
+  },
+  {
+    "char": "会",
+    "meaning": "встречаться",
+    "onyomi": [
+      "カイ"
+    ],
+    "kunyomi": [
+      "あ・う"
+    ],
+    "lesson_number": 12
+  },
+  {
+    "char": "今",
+    "meaning": "сейчас",
+    "onyomi": [
+      "コン"
+    ],
+    "kunyomi": [
+      "いま"
+    ],
+    "lesson_number": 12
+  },
+  {
+    "char": "雪",
+    "meaning": "снег",
+    "onyomi": [
+      "セツ"
+    ],
+    "kunyomi": [
+      "ゆき"
+    ],
+    "lesson_number": 12
+  },
+  {
+    "char": "雲",
+    "meaning": "облако",
+    "onyomi": [
+      "ウン"
+    ],
+    "kunyomi": [
+      "くも"
+    ],
+    "lesson_number": 12
+  },
+  {
+    "char": "電",
+    "meaning": "электричество",
+    "onyomi": [
+      "デン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 12
+  },
+  {
+    "char": "売",
+    "meaning": "продавать",
+    "onyomi": [
+      "バイ"
+    ],
+    "kunyomi": [
+      "う・る"
+    ],
+    "lesson_number": 12
+  },
+  {
+    "char": "広",
+    "meaning": "широкий",
+    "onyomi": [
+      "コウ"
+    ],
+    "kunyomi": [
+      "ひろ・い"
+    ],
+    "lesson_number": 13
+  },
+  {
+    "char": "店",
+    "meaning": "магазин",
+    "onyomi": [
+      "テン"
+    ],
+    "kunyomi": [
+      "みせ"
+    ],
+    "lesson_number": 13
+  },
+  {
+    "char": "度",
+    "meaning": "градус; степень",
+    "onyomi": [
+      "ド"
+    ],
+    "kunyomi": [],
+    "lesson_number": 13
+  },
+  {
+    "char": "病",
+    "meaning": "болезнь",
+    "onyomi": [
+      "ビョウ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 13
+  },
+  {
+    "char": "疲",
+    "meaning": "уставать",
+    "onyomi": [
+      "ヒ"
+    ],
+    "kunyomi": [
+      "つか・れる"
+    ],
+    "lesson_number": 13
+  },
+  {
+    "char": "痛",
+    "meaning": "боль",
+    "onyomi": [
+      "ツウ"
+    ],
+    "kunyomi": [
+      "いた・い"
+    ],
+    "lesson_number": 13
+  },
+  {
+    "char": "屋",
+    "meaning": "крыша; лавка",
+    "onyomi": [
+      "オク"
+    ],
+    "kunyomi": [
+      "や"
+    ],
+    "lesson_number": 13
+  },
+  {
+    "char": "国",
+    "meaning": "страна",
+    "onyomi": [
+      "コク"
+    ],
+    "kunyomi": [
+      "くに"
+    ],
+    "lesson_number": 13
+  },
+  {
+    "char": "回",
+    "meaning": "кружиться",
+    "onyomi": [
+      "カイ"
+    ],
+    "kunyomi": [
+      "まわ・る",
+      "まわ・す"
+    ],
+    "lesson_number": 13
+  },
+  {
+    "char": "困",
+    "meaning": "затруднения",
+    "onyomi": [
+      "コン"
+    ],
+    "kunyomi": [
+      "こま・る"
+    ],
+    "lesson_number": 13
+  },
+  {
+    "char": "開",
+    "meaning": "открывать",
+    "onyomi": [
+      "カイ"
+    ],
+    "kunyomi": [
+      "あ・く",
+      "あ・ける",
+      "ひら・く"
+    ],
+    "lesson_number": 13
+  },
+  {
+    "char": "閉",
+    "meaning": "закрывать",
+    "onyomi": [
+      "ヘイ"
+    ],
+    "kunyomi": [
+      "し・まる",
+      "し・める",
+      "と・じる"
+    ],
+    "lesson_number": 13
+  },
+  {
+    "char": "近",
+    "meaning": "близкий",
+    "onyomi": [
+      "キン"
+    ],
+    "kunyomi": [
+      "ちか・い"
+    ],
+    "lesson_number": 14
+  },
+  {
+    "char": "遠",
+    "meaning": "далёкий",
+    "onyomi": [
+      "エン"
+    ],
+    "kunyomi": [
+      "とお・い"
+    ],
+    "lesson_number": 14
+  },
+  {
+    "char": "速",
+    "meaning": "быстрый",
+    "onyomi": [
+      "ソク"
+    ],
+    "kunyomi": [
+      "はや・い"
+    ],
+    "lesson_number": 14
+  },
+  {
+    "char": "遅",
+    "meaning": "медленный; поздний",
+    "onyomi": [
+      "チ"
+    ],
+    "kunyomi": [
+      "おそ・い",
+      "おく・れる"
+    ],
+    "lesson_number": 14
+  },
+  {
+    "char": "道",
+    "meaning": "дорога; путь",
+    "onyomi": [
+      "ドウ"
+    ],
+    "kunyomi": [
+      "みち"
+    ],
+    "lesson_number": 14
+  },
+  {
+    "char": "青",
+    "meaning": "синий",
+    "onyomi": [
+      "セイ"
+    ],
+    "kunyomi": [
+      "あお・い"
+    ],
+    "lesson_number": 14
+  },
+  {
+    "char": "晴",
+    "meaning": "ясная погода",
+    "onyomi": [
+      "セイ"
+    ],
+    "kunyomi": [
+      "はれ・る"
+    ],
+    "lesson_number": 14
+  },
+  {
+    "char": "静",
+    "meaning": "тихий; спокойный",
+    "onyomi": [
+      "セイ"
+    ],
+    "kunyomi": [
+      "しず・か"
+    ],
+    "lesson_number": 14
+  },
+  {
+    "char": "寺",
+    "meaning": "Будд. храм",
+    "onyomi": [
+      "ジ"
+    ],
+    "kunyomi": [
+      "てら"
+    ],
+    "lesson_number": 14
+  },
+  {
+    "char": "持",
+    "meaning": "держать",
+    "onyomi": [
+      "ジ"
+    ],
+    "kunyomi": [
+      "も・つ"
+    ],
+    "lesson_number": 14
+  },
+  {
+    "char": "荷",
+    "meaning": "багаж",
+    "onyomi": [],
+    "kunyomi": [
+      "に"
+    ],
+    "lesson_number": 14
+  },
+  {
+    "char": "歌",
+    "meaning": "песня",
+    "onyomi": [
+      "カ"
+    ],
+    "kunyomi": [
+      "うた",
+      "うた・う"
+    ],
+    "lesson_number": 14
+  },
+  {
+    "char": "友",
+    "meaning": "друг",
+    "onyomi": [
+      "ユウ"
+    ],
+    "kunyomi": [
+      "とも"
+    ],
+    "lesson_number": 15
+  },
+  {
+    "char": "父",
+    "meaning": "папа",
+    "onyomi": [
+      "フ"
+    ],
+    "kunyomi": [
+      "ちち"
+    ],
+    "lesson_number": 15
+  },
+  {
+    "char": "母",
+    "meaning": "мама",
+    "onyomi": [
+      "ボ"
+    ],
+    "kunyomi": [
+      "はは"
+    ],
+    "lesson_number": 15
+  },
+  {
+    "char": "兄",
+    "meaning": "старший брат",
+    "onyomi": [
+      "ケイ"
+    ],
+    "kunyomi": [
+      "あに"
+    ],
+    "lesson_number": 15
+  },
+  {
+    "char": "姉",
+    "meaning": "старшая; сестра",
+    "onyomi": [
+      "シ"
+    ],
+    "kunyomi": [
+      "あね"
+    ],
+    "lesson_number": 15
+  },
+  {
+    "char": "弟",
+    "meaning": "младший брат",
+    "onyomi": [
+      "テイ",
+      "ダイ"
+    ],
+    "kunyomi": [
+      "おとうと"
+    ],
+    "lesson_number": 15
+  },
+  {
+    "char": "妹",
+    "meaning": "младшая; сестра",
+    "onyomi": [
+      "マイ"
+    ],
+    "kunyomi": [
+      "いもうと"
+    ],
+    "lesson_number": 15
+  },
+  {
+    "char": "夫",
+    "meaning": "муж",
+    "onyomi": [
+      "フ",
+      "フウ"
+    ],
+    "kunyomi": [
+      "おっと"
+    ],
+    "lesson_number": 15
+  },
+  {
+    "char": "妻",
+    "meaning": "жена",
+    "onyomi": [
+      "サイ"
+    ],
+    "kunyomi": [
+      "つま"
+    ],
+    "lesson_number": 15
+  },
+  {
+    "char": "彼",
+    "meaning": "он; бойфренд",
+    "onyomi": [],
+    "kunyomi": [
+      "かれ"
+    ],
+    "lesson_number": 15
+  },
+  {
+    "char": "主",
+    "meaning": "главный; хозяин",
+    "onyomi": [
+      "シュ"
+    ],
+    "kunyomi": [
+      "おも「な」",
+      "ぬし"
+    ],
+    "lesson_number": 15
+  },
+  {
+    "char": "奥",
+    "meaning": "внутри",
+    "onyomi": [],
+    "kunyomi": [
+      "おく"
+    ],
+    "lesson_number": 15
+  },
+  {
+    "char": "元",
+    "meaning": "основа",
+    "onyomi": [
+      "ゲン"
+    ],
+    "kunyomi": [
+      "もと"
+    ],
+    "lesson_number": 16
+  },
+  {
+    "char": "気",
+    "meaning": "дух; атмосфера",
+    "onyomi": [
+      "キ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 16
+  },
+  {
+    "char": "有",
+    "meaning": "быть; иметь",
+    "onyomi": [
+      "ユウ"
+    ],
+    "kunyomi": [
+      "あ・る"
+    ],
+    "lesson_number": 16
+  },
+  {
+    "char": "名",
+    "meaning": "имя; знаменитый",
+    "onyomi": [
+      "メイ"
+    ],
+    "kunyomi": [
+      "な"
+    ],
+    "lesson_number": 16
+  },
+  {
+    "char": "親",
+    "meaning": "родители; близкий",
+    "onyomi": [
+      "シン"
+    ],
+    "kunyomi": [
+      "おや",
+      "した・しい"
+    ],
+    "lesson_number": 16
+  },
+  {
+    "char": "切",
+    "meaning": "резать",
+    "onyomi": [
+      "セツ"
+    ],
+    "kunyomi": [
+      "き・る"
+    ],
+    "lesson_number": 16
+  },
+  {
+    "char": "便",
+    "meaning": "почта; удобный",
+    "onyomi": [
+      "ビン",
+      "ベン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 16
+  },
+  {
+    "char": "利",
+    "meaning": "выгода",
+    "onyomi": [
+      "リ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 16
+  },
+  {
+    "char": "不",
+    "meaning": "не",
+    "onyomi": [
+      "フ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 16
+  },
+  {
+    "char": "若",
+    "meaning": "молодость",
+    "onyomi": [],
+    "kunyomi": [
+      "わか・い"
+    ],
+    "lesson_number": 16
+  },
+  {
+    "char": "早",
+    "meaning": "ранний",
+    "onyomi": [],
+    "kunyomi": [
+      "はや・い"
+    ],
+    "lesson_number": 16
+  },
+  {
+    "char": "忙",
+    "meaning": "занятой",
+    "onyomi": [],
+    "kunyomi": [
+      "いそが・しい"
+    ],
+    "lesson_number": 16
+  },
+  {
+    "char": "出",
+    "meaning": "выходить",
+    "onyomi": [
+      "シュツ"
+    ],
+    "kunyomi": [
+      "で・る",
+      "だ・す"
+    ],
+    "lesson_number": 17
+  },
+  {
+    "char": "入",
+    "meaning": "входить",
+    "onyomi": [
+      "ニュウ"
+    ],
+    "kunyomi": [
+      "はい・る",
+      "いれ・る"
+    ],
+    "lesson_number": 17
+  },
+  {
+    "char": "乗",
+    "meaning": "садиться",
+    "onyomi": [
+      "ジョウ"
+    ],
+    "kunyomi": [
+      "の・る",
+      "の・せる"
+    ],
+    "lesson_number": 17
+  },
+  {
+    "char": "降",
+    "meaning": "спускаться; слезать",
+    "onyomi": [
+      "コウ"
+    ],
+    "kunyomi": [
+      "お・りる",
+      "お・ろす",
+      "ふ・る"
+    ],
+    "lesson_number": 17
+  },
+  {
+    "char": "着",
+    "meaning": "прибывать; надевать",
+    "onyomi": [
+      "チャク"
+    ],
+    "kunyomi": [
+      "つ・く",
+      "き・る"
+    ],
+    "lesson_number": 17
+  },
+  {
+    "char": "渡",
+    "meaning": "пересекать",
+    "onyomi": [
+      "ト"
+    ],
+    "kunyomi": [
+      "わた・る",
+      "わた・す"
+    ],
+    "lesson_number": 17
+  },
+  {
+    "char": "通",
+    "meaning": "посещать",
+    "onyomi": [
+      "ツウ"
+    ],
+    "kunyomi": [
+      "とお・る",
+      "かよ・う"
+    ],
+    "lesson_number": 17
+  },
+  {
+    "char": "走",
+    "meaning": "бежать",
+    "onyomi": [
+      "ソウ"
+    ],
+    "kunyomi": [
+      "はし・る"
+    ],
+    "lesson_number": 17
+  },
+  {
+    "char": "歩",
+    "meaning": "идти пешком",
+    "onyomi": [
+      "ホ"
+    ],
+    "kunyomi": [
+      "ある・く"
+    ],
+    "lesson_number": 17
+  },
+  {
+    "char": "止",
+    "meaning": "останавливаться",
+    "onyomi": [
+      "シ"
+    ],
+    "kunyomi": [
+      "と・まる",
+      "と・める"
+    ],
+    "lesson_number": 17
+  },
+  {
+    "char": "動",
+    "meaning": "двигаться",
+    "onyomi": [
+      "ドウ"
+    ],
+    "kunyomi": [
+      "うご・く",
+      "うご・かす"
+    ],
+    "lesson_number": 17
+  },
+  {
+    "char": "働",
+    "meaning": "работать",
+    "onyomi": [
+      "ドウ"
+    ],
+    "kunyomi": [
+      "はたら・く"
+    ],
+    "lesson_number": 17
+  },
+  {
+    "char": "右",
+    "meaning": "право",
+    "onyomi": [
+      "ユウ"
+    ],
+    "kunyomi": [
+      "みぎ"
+    ],
+    "lesson_number": 18
+  },
+  {
+    "char": "左",
+    "meaning": "лево",
+    "onyomi": [
+      "サ"
+    ],
+    "kunyomi": [
+      "ひだり"
+    ],
+    "lesson_number": 18
+  },
+  {
+    "char": "東",
+    "meaning": "восток",
+    "onyomi": [
+      "トウ"
+    ],
+    "kunyomi": [
+      "ひがし"
+    ],
+    "lesson_number": 18
+  },
+  {
+    "char": "西",
+    "meaning": "запад",
+    "onyomi": [
+      "セイ"
+    ],
+    "kunyomi": [
+      "にし"
+    ],
+    "lesson_number": 18
+  },
+  {
+    "char": "北",
+    "meaning": "север",
+    "onyomi": [
+      "ホク"
+    ],
+    "kunyomi": [
+      "きた"
+    ],
+    "lesson_number": 18
+  },
+  {
+    "char": "南",
+    "meaning": "юг",
+    "onyomi": [
+      "ナン"
+    ],
+    "kunyomi": [
+      "みなみ"
+    ],
+    "lesson_number": 18
+  },
+  {
+    "char": "外",
+    "meaning": "внешний",
+    "onyomi": [
+      "ガイ"
+    ],
+    "kunyomi": [
+      "はず・れる",
+      "はず・す",
+      "そと"
+    ],
+    "lesson_number": 18
+  },
+  {
+    "char": "内",
+    "meaning": "внутренний",
+    "onyomi": [
+      "ナイ"
+    ],
+    "kunyomi": [
+      "うち"
+    ],
+    "lesson_number": 18
+  },
+  {
+    "char": "部",
+    "meaning": "клуб; часть",
+    "onyomi": [
+      "ブ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 18
+  },
+  {
+    "char": "駅",
+    "meaning": "станция",
+    "onyomi": [
+      "エキ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 18
+  },
+  {
+    "char": "社",
+    "meaning": "компания; святилище",
+    "onyomi": [
+      "シャ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 18
+  },
+  {
+    "char": "院",
+    "meaning": "учреждение",
+    "onyomi": [
+      "イン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 18
+  },
+  {
+    "char": "地",
+    "meaning": "земля",
+    "onyomi": [
+      "チ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 19
+  },
+  {
+    "char": "鉄",
+    "meaning": "железо",
+    "onyomi": [
+      "テツ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 19
+  },
+  {
+    "char": "工",
+    "meaning": "инженерия",
+    "onyomi": [
+      "コウ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 19
+  },
+  {
+    "char": "場",
+    "meaning": "место",
+    "onyomi": [
+      "ジョウ"
+    ],
+    "kunyomi": [
+      "ば"
+    ],
+    "lesson_number": 19
+  },
+  {
+    "char": "図",
+    "meaning": "рисунок",
+    "onyomi": [
+      "ズ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 19
+  },
+  {
+    "char": "館",
+    "meaning": "здание",
+    "onyomi": [
+      "カン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 19
+  },
+  {
+    "char": "公",
+    "meaning": "общественный",
+    "onyomi": [
+      "コウ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 19
+  },
+  {
+    "char": "園",
+    "meaning": "сад",
+    "onyomi": [
+      "エン"
+    ],
+    "kunyomi": [
+      "その"
+    ],
+    "lesson_number": 19
+  },
+  {
+    "char": "住",
+    "meaning": "жить",
+    "onyomi": [
+      "ジュウ"
+    ],
+    "kunyomi": [
+      "す・む"
+    ],
+    "lesson_number": 19
+  },
+  {
+    "char": "所",
+    "meaning": "место",
+    "onyomi": [
+      "ショ"
+    ],
+    "kunyomi": [
+      "ところ"
+    ],
+    "lesson_number": 19
+  },
+  {
+    "char": "番",
+    "meaning": "номер",
+    "onyomi": [
+      "バン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 19
+  },
+  {
+    "char": "号",
+    "meaning": "символ",
+    "onyomi": [
+      "ゴウ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 19
+  },
+  {
+    "char": "市",
+    "meaning": "большой город; рынок",
+    "onyomi": [
+      "シ"
+    ],
+    "kunyomi": [
+      "いち"
+    ],
+    "lesson_number": 20
+  },
+  {
+    "char": "町",
+    "meaning": "маленьк. город",
+    "onyomi": [
+      "チョウ"
+    ],
+    "kunyomi": [
+      "まち"
+    ],
+    "lesson_number": 20
+  },
+  {
+    "char": "村",
+    "meaning": "деревня",
+    "onyomi": [
+      "ソン"
+    ],
+    "kunyomi": [
+      "むら"
+    ],
+    "lesson_number": 20
+  },
+  {
+    "char": "区",
+    "meaning": "район",
+    "onyomi": [
+      "ク"
+    ],
+    "kunyomi": [],
+    "lesson_number": 20
+  },
+  {
+    "char": "都",
+    "meaning": "преф. Токио",
+    "onyomi": [
+      "ト"
+    ],
+    "kunyomi": [],
+    "lesson_number": 20
+  },
+  {
+    "char": "府",
+    "meaning": "преф.Киото и; Осака",
+    "onyomi": [
+      "フ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 20
+  },
+  {
+    "char": "県",
+    "meaning": "префектура",
+    "onyomi": [
+      "ケン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 20
+  },
+  {
+    "char": "島",
+    "meaning": "остров",
+    "onyomi": [
+      "トウ"
+    ],
+    "kunyomi": [
+      "しま"
+    ],
+    "lesson_number": 20
+  },
+  {
+    "char": "京",
+    "meaning": "столица",
+    "onyomi": [
+      "キョウ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 20
+  },
+  {
+    "char": "様",
+    "meaning": "уваж. суфф.",
+    "onyomi": [
+      "ヨウ"
+    ],
+    "kunyomi": [
+      "さま"
+    ],
+    "lesson_number": 20
+  },
+  {
+    "char": "練",
+    "meaning": "тренировать",
+    "onyomi": [
+      "レン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 21
+  },
+  {
+    "char": "習",
+    "meaning": "изучать",
+    "onyomi": [
+      "シュウ"
+    ],
+    "kunyomi": [
+      "なら・う"
+    ],
+    "lesson_number": 21
+  },
+  {
+    "char": "勉",
+    "meaning": "стараться",
+    "onyomi": [
+      "ベン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 21
+  },
+  {
+    "char": "強",
+    "meaning": "сильный",
+    "onyomi": [
+      "キョウ"
+    ],
+    "kunyomi": [
+      "つよ・い"
+    ],
+    "lesson_number": 21
+  },
+  {
+    "char": "研",
+    "meaning": "точить",
+    "onyomi": [
+      "ケン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 21
+  },
+  {
+    "char": "究",
+    "meaning": "овладевать до; предела",
+    "onyomi": [
+      "キュウ"
+    ],
+    "kunyomi": [
+      "きわ・める"
+    ],
+    "lesson_number": 21
+  },
+  {
+    "char": "留",
+    "meaning": "оставаться",
+    "onyomi": [
+      "リュウ"
+    ],
+    "kunyomi": [
+      "と・まる",
+      "と・める"
+    ],
+    "lesson_number": 21
+  },
+  {
+    "char": "質",
+    "meaning": "качество",
+    "onyomi": [
+      "シツ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 21
+  },
+  {
+    "char": "問",
+    "meaning": "вопрос",
+    "onyomi": [
+      "モン"
+    ],
+    "kunyomi": [
+      "と・う",
+      "とい"
+    ],
+    "lesson_number": 21
+  },
+  {
+    "char": "題",
+    "meaning": "заглавие; тема",
+    "onyomi": [
+      "ダイ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 21
+  },
+  {
+    "char": "答",
+    "meaning": "ответ",
+    "onyomi": [
+      "トウ"
+    ],
+    "kunyomi": [
+      "こた・える"
+    ],
+    "lesson_number": 21
+  },
+  {
+    "char": "宿",
+    "meaning": "жилище",
+    "onyomi": [
+      "シュク"
+    ],
+    "kunyomi": [
+      "やど"
+    ],
+    "lesson_number": 21
+  },
+  {
+    "char": "政",
+    "meaning": "политика",
+    "onyomi": [
+      "セイ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 22
+  },
+  {
+    "char": "治",
+    "meaning": "управлять; лечить",
+    "onyomi": [
+      "ジ"
+    ],
+    "kunyomi": [
+      "なお・る",
+      "なお・す",
+      "おさ・まる",
+      "おさ・める"
+    ],
+    "lesson_number": 22
+  },
+  {
+    "char": "経",
+    "meaning": "проходить",
+    "onyomi": [
+      "ケイ"
+    ],
+    "kunyomi": [
+      "へ・る"
+    ],
+    "lesson_number": 22
+  },
+  {
+    "char": "済",
+    "meaning": "заканчиваться",
+    "onyomi": [
+      "サイ",
+      "ザイ"
+    ],
+    "kunyomi": [
+      "す・む",
+      "す・ます"
+    ],
+    "lesson_number": 22
+  },
+  {
+    "char": "歴",
+    "meaning": "карьера",
+    "onyomi": [
+      "レキ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 22
+  },
+  {
+    "char": "史",
+    "meaning": "история",
+    "onyomi": [
+      "シ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 22
+  },
+  {
+    "char": "育",
+    "meaning": "воспитывать",
+    "onyomi": [
+      "イク"
+    ],
+    "kunyomi": [
+      "そだ・つ",
+      "そだ・てる"
+    ],
+    "lesson_number": 22
+  },
+  {
+    "char": "化",
+    "meaning": "превращаться",
+    "onyomi": [
+      "カ"
+    ],
+    "kunyomi": [
+      "ば・ける"
+    ],
+    "lesson_number": 22
+  },
+  {
+    "char": "理",
+    "meaning": "логика; принцип",
+    "onyomi": [
+      "リ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 22
+  },
+  {
+    "char": "科",
+    "meaning": "отделение; ветвь",
+    "onyomi": [
+      "カ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 22
+  },
+  {
+    "char": "数",
+    "meaning": "число; количество",
+    "onyomi": [
+      "スウ"
+    ],
+    "kunyomi": [
+      "かず",
+      "かぞ・える"
+    ],
+    "lesson_number": 22
+  },
+  {
+    "char": "医",
+    "meaning": "медицина",
+    "onyomi": [
+      "イ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 22
+  },
+  {
+    "char": "映",
+    "meaning": "отражаться",
+    "onyomi": [
+      "エイ"
+    ],
+    "kunyomi": [
+      "うつ・る",
+      "うつ・す"
+    ],
+    "lesson_number": 23
+  },
+  {
+    "char": "画",
+    "meaning": "картина",
+    "onyomi": [
+      "ガ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 23
+  },
+  {
+    "char": "写",
+    "meaning": "копировать",
+    "onyomi": [
+      "シャ"
+    ],
+    "kunyomi": [
+      "うつ・る",
+      "うつ・す"
+    ],
+    "lesson_number": 23
+  },
+  {
+    "char": "真",
+    "meaning": "правда; реальность",
+    "onyomi": [
+      "シン"
+    ],
+    "kunyomi": [
+      "ま"
+    ],
+    "lesson_number": 23
+  },
+  {
+    "char": "音",
+    "meaning": "звук",
+    "onyomi": [
+      "オン"
+    ],
+    "kunyomi": [
+      "おと"
+    ],
+    "lesson_number": 23
+  },
+  {
+    "char": "楽",
+    "meaning": "весёлый",
+    "onyomi": [
+      "ガク",
+      "ラク"
+    ],
+    "kunyomi": [
+      "たの・しい",
+      "たの・しむ"
+    ],
+    "lesson_number": 23
+  },
+  {
+    "char": "料",
+    "meaning": "сырьё; плата",
+    "onyomi": [
+      "リョウ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 23
+  },
+  {
+    "char": "組",
+    "meaning": "группа",
+    "onyomi": [
+      "ソ"
+    ],
+    "kunyomi": [
+      "くみ",
+      "く・む"
+    ],
+    "lesson_number": 23
+  },
+  {
+    "char": "思",
+    "meaning": "думать",
+    "onyomi": [
+      "シ"
+    ],
+    "kunyomi": [
+      "おも・う"
+    ],
+    "lesson_number": 23
+  },
+  {
+    "char": "色",
+    "meaning": "цвет",
+    "onyomi": [
+      "ショク"
+    ],
+    "kunyomi": [
+      "いろ"
+    ],
+    "lesson_number": 23
+  },
+  {
+    "char": "白",
+    "meaning": "белый",
+    "onyomi": [
+      "ハク"
+    ],
+    "kunyomi": [
+      "しろ・い",
+      "しろ"
+    ],
+    "lesson_number": 23
+  },
+  {
+    "char": "黒",
+    "meaning": "чёрный",
+    "onyomi": [
+      "コク"
+    ],
+    "kunyomi": [
+      "くろ・い",
+      "くろ"
+    ],
+    "lesson_number": 23
+  },
+  {
+    "char": "赤",
+    "meaning": "красный",
+    "onyomi": [
+      "セキ"
+    ],
+    "kunyomi": [
+      "あか・い",
+      "あか"
+    ],
+    "lesson_number": 23
+  },
+  {
+    "char": "起",
+    "meaning": "вставать; просыпаться",
+    "onyomi": [
+      "キ"
+    ],
+    "kunyomi": [
+      "お・きる",
+      "お・こす",
+      "お・こる"
+    ],
+    "lesson_number": 24
+  },
+  {
+    "char": "寝",
+    "meaning": "спать",
+    "onyomi": [
+      "シン"
+    ],
+    "kunyomi": [
+      "ね・る"
+    ],
+    "lesson_number": 24
+  },
+  {
+    "char": "遊",
+    "meaning": "развлекаться",
+    "onyomi": [
+      "ユウ"
+    ],
+    "kunyomi": [
+      "あそ・ぶ"
+    ],
+    "lesson_number": 24
+  },
+  {
+    "char": "立",
+    "meaning": "стоять",
+    "onyomi": [
+      "リツ"
+    ],
+    "kunyomi": [
+      "た・つ",
+      "た・てる"
+    ],
+    "lesson_number": 24
+  },
+  {
+    "char": "座",
+    "meaning": "сидеть",
+    "onyomi": [
+      "ザ"
+    ],
+    "kunyomi": [
+      "すわ・る"
+    ],
+    "lesson_number": 24
+  },
+  {
+    "char": "使",
+    "meaning": "использовать",
+    "onyomi": [
+      "シ"
+    ],
+    "kunyomi": [
+      "つか・う"
+    ],
+    "lesson_number": 24
+  },
+  {
+    "char": "始",
+    "meaning": "начинаться",
+    "onyomi": [
+      "シ"
+    ],
+    "kunyomi": [
+      "はじ・まる",
+      "はじ・める"
+    ],
+    "lesson_number": 24
+  },
+  {
+    "char": "終",
+    "meaning": "заканчиваться",
+    "onyomi": [
+      "シュウ"
+    ],
+    "kunyomi": [
+      "お・わる",
+      "お・える"
+    ],
+    "lesson_number": 24
+  },
+  {
+    "char": "貸",
+    "meaning": "давать в долг",
+    "onyomi": [
+      "タイ"
+    ],
+    "kunyomi": [
+      "か・す"
+    ],
+    "lesson_number": 24
+  },
+  {
+    "char": "借",
+    "meaning": "брать в долг",
+    "onyomi": [
+      "シャク"
+    ],
+    "kunyomi": [
+      "か・りる"
+    ],
+    "lesson_number": 24
+  },
+  {
+    "char": "返",
+    "meaning": "возвращать",
+    "onyomi": [
+      "ヘン"
+    ],
+    "kunyomi": [
+      "かえ・す"
+    ],
+    "lesson_number": 24
+  },
+  {
+    "char": "送",
+    "meaning": "отправлять",
+    "onyomi": [
+      "ソウ"
+    ],
+    "kunyomi": [
+      "おく・る"
+    ],
+    "lesson_number": 24
+  },
+  {
+    "char": "結",
+    "meaning": "связывать",
+    "onyomi": [
+      "ケツ"
+    ],
+    "kunyomi": [
+      "むす・ぶ"
+    ],
+    "lesson_number": 25
+  },
+  {
+    "char": "婚",
+    "meaning": "брак",
+    "onyomi": [
+      "コン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 25
+  },
+  {
+    "char": "離",
+    "meaning": "разделяться",
+    "onyomi": [
+      "リ"
+    ],
+    "kunyomi": [
+      "はな・れる",
+      "はな・す"
+    ],
+    "lesson_number": 25
+  },
+  {
+    "char": "席",
+    "meaning": "место",
+    "onyomi": [
+      "セキ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 25
+  },
+  {
+    "char": "欠",
+    "meaning": "недоставать",
+    "onyomi": [
+      "ケツ"
+    ],
+    "kunyomi": [
+      "か・ける"
+    ],
+    "lesson_number": 25
+  },
+  {
+    "char": "予",
+    "meaning": "заранее",
+    "onyomi": [
+      "ヨ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 25
+  },
+  {
+    "char": "定",
+    "meaning": "установлен-; ный",
+    "onyomi": [
+      "テイ"
+    ],
+    "kunyomi": [
+      "さだ・まる",
+      "さだ・める",
+      "さだ・め"
+    ],
+    "lesson_number": 25
+  },
+  {
+    "char": "洋",
+    "meaning": "западный",
+    "onyomi": [
+      "ヨウ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 25
+  },
+  {
+    "char": "式",
+    "meaning": "церемония",
+    "onyomi": [
+      "シキ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 25
+  },
+  {
+    "char": "和",
+    "meaning": "японский; гармония",
+    "onyomi": [
+      "ワ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 25
+  },
+  {
+    "char": "活",
+    "meaning": "живой",
+    "onyomi": [
+      "カツ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 25
+  },
+  {
+    "char": "春",
+    "meaning": "весна",
+    "onyomi": [
+      "シュン"
+    ],
+    "kunyomi": [
+      "はる"
+    ],
+    "lesson_number": 26
+  },
+  {
+    "char": "夏",
+    "meaning": "лето",
+    "onyomi": [
+      "カ"
+    ],
+    "kunyomi": [
+      "なつ"
+    ],
+    "lesson_number": 26
+  },
+  {
+    "char": "秋",
+    "meaning": "осень",
+    "onyomi": [
+      "シュウ"
+    ],
+    "kunyomi": [
+      "あき"
+    ],
+    "lesson_number": 26
+  },
+  {
+    "char": "冬",
+    "meaning": "зима",
+    "onyomi": [
+      "トウ"
+    ],
+    "kunyomi": [
+      "ふゆ"
+    ],
+    "lesson_number": 26
+  },
+  {
+    "char": "暑",
+    "meaning": "горячий; (климат)",
+    "onyomi": [
+      "ショ"
+    ],
+    "kunyomi": [
+      "あつ・い"
+    ],
+    "lesson_number": 26
+  },
+  {
+    "char": "熱",
+    "meaning": "горячий; (напиток)",
+    "onyomi": [
+      "ネツ"
+    ],
+    "kunyomi": [
+      "あつ・い"
+    ],
+    "lesson_number": 26
+  },
+  {
+    "char": "寒",
+    "meaning": "холодный; (климат)",
+    "onyomi": [
+      "カン"
+    ],
+    "kunyomi": [
+      "さむ・い"
+    ],
+    "lesson_number": 26
+  },
+  {
+    "char": "冷",
+    "meaning": "холодный; (напиток)",
+    "onyomi": [
+      "レイ"
+    ],
+    "kunyomi": [
+      "ひ・やす",
+      "つめ・たい"
+    ],
+    "lesson_number": 26
+  },
+  {
+    "char": "暖",
+    "meaning": "теплый; (климат)",
+    "onyomi": [
+      "ダン"
+    ],
+    "kunyomi": [
+      "あたた・かい"
+    ],
+    "lesson_number": 26
+  },
+  {
+    "char": "温",
+    "meaning": "теплый; (напиток)",
+    "onyomi": [
+      "オン"
+    ],
+    "kunyomi": [
+      "あたた・かい"
+    ],
+    "lesson_number": 26
+  },
+  {
+    "char": "涼",
+    "meaning": "прохладный",
+    "onyomi": [
+      "リョウ"
+    ],
+    "kunyomi": [
+      "すず・しい"
+    ],
+    "lesson_number": 26
+  },
+  {
+    "char": "天",
+    "meaning": "небо; погода",
+    "onyomi": [
+      "テン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 26
+  },
+  {
+    "char": "仕",
+    "meaning": "служить; делать",
+    "onyomi": [
+      "シ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 27
+  },
+  {
+    "char": "事",
+    "meaning": "дело",
+    "onyomi": [
+      "ジ"
+    ],
+    "kunyomi": [
+      "こと"
+    ],
+    "lesson_number": 27
+  },
+  {
+    "char": "者",
+    "meaning": "некто",
+    "onyomi": [
+      "シャ"
+    ],
+    "kunyomi": [
+      "もの"
+    ],
+    "lesson_number": 27
+  },
+  {
+    "char": "運",
+    "meaning": "перевозить; удача",
+    "onyomi": [
+      "ウン"
+    ],
+    "kunyomi": [
+      "はこ・ぶ"
+    ],
+    "lesson_number": 27
+  },
+  {
+    "char": "転",
+    "meaning": "катиться",
+    "onyomi": [
+      "テン"
+    ],
+    "kunyomi": [
+      "ころ・ぶ"
+    ],
+    "lesson_number": 27
+  },
+  {
+    "char": "選",
+    "meaning": "выбирать",
+    "onyomi": [
+      "セン"
+    ],
+    "kunyomi": [
+      "えら・ぶ"
+    ],
+    "lesson_number": 27
+  },
+  {
+    "char": "記",
+    "meaning": "запись",
+    "onyomi": [
+      "キ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 27
+  },
+  {
+    "char": "議",
+    "meaning": "обсуждение",
+    "onyomi": [
+      "ギ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 27
+  },
+  {
+    "char": "員",
+    "meaning": "сотрудник",
+    "onyomi": [
+      "イン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 27
+  },
+  {
+    "char": "商",
+    "meaning": "торговля",
+    "onyomi": [
+      "ショウ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 27
+  },
+  {
+    "char": "業",
+    "meaning": "дело; производство",
+    "onyomi": [
+      "ギョウ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 27
+  },
+  {
+    "char": "農",
+    "meaning": "земледелие",
+    "onyomi": [
+      "ノウ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 27
+  },
+  {
+    "char": "良",
+    "meaning": "хороший",
+    "onyomi": [
+      "リョウ"
+    ],
+    "kunyomi": [
+      "よ・い"
+    ],
+    "lesson_number": 28
+  },
+  {
+    "char": "悪",
+    "meaning": "плохой",
+    "onyomi": [
+      "アク"
+    ],
+    "kunyomi": [
+      "わる・い"
+    ],
+    "lesson_number": 28
+  },
+  {
+    "char": "点",
+    "meaning": "балл; точка",
+    "onyomi": [
+      "テン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 28
+  },
+  {
+    "char": "正",
+    "meaning": "правильный",
+    "onyomi": [
+      "セイ",
+      "ショウ"
+    ],
+    "kunyomi": [
+      "ただ・しい"
+    ],
+    "lesson_number": 28
+  },
+  {
+    "char": "違",
+    "meaning": "отличаться",
+    "onyomi": [
+      "イ"
+    ],
+    "kunyomi": [
+      "ちが・う"
+    ],
+    "lesson_number": 28
+  },
+  {
+    "char": "同",
+    "meaning": "одинаковый",
+    "onyomi": [
+      "ドウ"
+    ],
+    "kunyomi": [
+      "おな」・じ"
+    ],
+    "lesson_number": 28
+  },
+  {
+    "char": "適",
+    "meaning": "подходящий",
+    "onyomi": [
+      "テキ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 28
+  },
+  {
+    "char": "当",
+    "meaning": "попадать",
+    "onyomi": [
+      "トウ"
+    ],
+    "kunyomi": [
+      "あ・たる",
+      "あ・てる"
+    ],
+    "lesson_number": 28
+  },
+  {
+    "char": "難",
+    "meaning": "сложный",
+    "onyomi": [
+      "ナン"
+    ],
+    "kunyomi": [
+      "むずか・しい"
+    ],
+    "lesson_number": 28
+  },
+  {
+    "char": "次",
+    "meaning": "следующий",
+    "onyomi": [
+      "ジ"
+    ],
+    "kunyomi": [
+      "つぎ",
+      "つ・ぐ"
+    ],
+    "lesson_number": 28
+  },
+  {
+    "char": "形",
+    "meaning": "форма",
+    "onyomi": [
+      "ケイ",
+      "ギョウ"
+    ],
+    "kunyomi": [
+      "かたち"
+    ],
+    "lesson_number": 28
+  },
+  {
+    "char": "味",
+    "meaning": "вкус",
+    "onyomi": [
+      "ミ"
+    ],
+    "kunyomi": [
+      "あじ"
+    ],
+    "lesson_number": 28
+  },
+  {
+    "char": "試",
+    "meaning": "испытывать",
+    "onyomi": [
+      "シ"
+    ],
+    "kunyomi": [
+      "こころ・みる",
+      "ため・す"
+    ],
+    "lesson_number": 29
+  },
+  {
+    "char": "験",
+    "meaning": "экзамен",
+    "onyomi": [
+      "ケン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 29
+  },
+  {
+    "char": "面",
+    "meaning": "поверхность; лицо",
+    "onyomi": [
+      "メン"
+    ],
+    "kunyomi": [
+      "おもて"
+    ],
+    "lesson_number": 29
+  },
+  {
+    "char": "接",
+    "meaning": "соединять",
+    "onyomi": [
+      "セツ"
+    ],
+    "kunyomi": [
+      "つ・ぐ"
+    ],
+    "lesson_number": 29
+  },
+  {
+    "char": "説",
+    "meaning": "объяснять",
+    "onyomi": [
+      "セツ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 29
+  },
+  {
+    "char": "果",
+    "meaning": "результат; фрукт",
+    "onyomi": [
+      "カ"
+    ],
+    "kunyomi": [
+      "は・たす"
+    ],
+    "lesson_number": 29
+  },
+  {
+    "char": "合",
+    "meaning": "соответ-; ствовать",
+    "onyomi": [
+      "ゴウ",
+      "ガ"
+    ],
+    "kunyomi": [
+      "あ・う"
+    ],
+    "lesson_number": 29
+  },
+  {
+    "char": "格",
+    "meaning": "ранг; разряд",
+    "onyomi": [
+      "カク"
+    ],
+    "kunyomi": [],
+    "lesson_number": 29
+  },
+  {
+    "char": "受",
+    "meaning": "принимать",
+    "onyomi": [
+      "ジュ"
+    ],
+    "kunyomi": [
+      "う・かる",
+      "う・ける"
+    ],
+    "lesson_number": 29
+  },
+  {
+    "char": "落",
+    "meaning": "падать",
+    "onyomi": [
+      "ラク"
+    ],
+    "kunyomi": [
+      "お・ちる",
+      "お・とす"
+    ],
+    "lesson_number": 29
+  },
+  {
+    "char": "残",
+    "meaning": "оставаться",
+    "onyomi": [
+      "ザン"
+    ],
+    "kunyomi": [
+      "のこ・る",
+      "のこ・す"
+    ],
+    "lesson_number": 29
+  },
+  {
+    "char": "念",
+    "meaning": "чувство; мысль",
+    "onyomi": [
+      "ネン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 29
+  },
+  {
+    "char": "指",
+    "meaning": "палец; указывать",
+    "onyomi": [
+      "シ"
+    ],
+    "kunyomi": [
+      "ゆび",
+      "さ・す"
+    ],
+    "lesson_number": 30
+  },
+  {
+    "char": "折",
+    "meaning": "ломать; сгибать",
+    "onyomi": [
+      "セツ"
+    ],
+    "kunyomi": [
+      "お・る"
+    ],
+    "lesson_number": 30
+  },
+  {
+    "char": "払",
+    "meaning": "платить",
+    "onyomi": [],
+    "kunyomi": [
+      "はら・う"
+    ],
+    "lesson_number": 30
+  },
+  {
+    "char": "投",
+    "meaning": "бросать",
+    "onyomi": [
+      "トウ"
+    ],
+    "kunyomi": [
+      "な・げる"
+    ],
+    "lesson_number": 30
+  },
+  {
+    "char": "打",
+    "meaning": "бить",
+    "onyomi": [
+      "ダ"
+    ],
+    "kunyomi": [
+      "う・つ"
+    ],
+    "lesson_number": 30
+  },
+  {
+    "char": "深",
+    "meaning": "глубокий",
+    "onyomi": [
+      "シン"
+    ],
+    "kunyomi": [
+      "ふか・い"
+    ],
+    "lesson_number": 30
+  },
+  {
+    "char": "洗",
+    "meaning": "мыть",
+    "onyomi": [
+      "セン"
+    ],
+    "kunyomi": [
+      "あら・う"
+    ],
+    "lesson_number": 30
+  },
+  {
+    "char": "流",
+    "meaning": "поток",
+    "onyomi": [
+      "リュウ"
+    ],
+    "kunyomi": [
+      "なが・れ",
+      "なが・れる"
+    ],
+    "lesson_number": 30
+  },
+  {
+    "char": "消",
+    "meaning": "пропадать",
+    "onyomi": [
+      "ショウ"
+    ],
+    "kunyomi": [
+      "き・える",
+      "け・す"
+    ],
+    "lesson_number": 30
+  },
+  {
+    "char": "決",
+    "meaning": "решать",
+    "onyomi": [
+      "ケツ"
+    ],
+    "kunyomi": [
+      "き・まる",
+      "き・める"
+    ],
+    "lesson_number": 30
+  },
+  {
+    "char": "旅",
+    "meaning": "путешествие",
+    "onyomi": [
+      "リョ"
+    ],
+    "kunyomi": [
+      "たび"
+    ],
+    "lesson_number": 31
+  },
+  {
+    "char": "約",
+    "meaning": "примерно; обещание",
+    "onyomi": [
+      "ヤク"
+    ],
+    "kunyomi": [],
+    "lesson_number": 31
+  },
+  {
+    "char": "案",
+    "meaning": "идея",
+    "onyomi": [
+      "アン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 31
+  },
+  {
+    "char": "準",
+    "meaning": "уровень; стандарт",
+    "onyomi": [
+      "ジュン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 31
+  },
+  {
+    "char": "備",
+    "meaning": "подготовка",
+    "onyomi": [
+      "ビ"
+    ],
+    "kunyomi": [
+      "そな・える"
+    ],
+    "lesson_number": 31
+  },
+  {
+    "char": "相",
+    "meaning": "лицом к лицу",
+    "onyomi": [
+      "ソウ"
+    ],
+    "kunyomi": [
+      "あい"
+    ],
+    "lesson_number": 31
+  },
+  {
+    "char": "談",
+    "meaning": "разговор",
+    "onyomi": [
+      "ダン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 31
+  },
+  {
+    "char": "連",
+    "meaning": "связь",
+    "onyomi": [
+      "レン"
+    ],
+    "kunyomi": [
+      "つ・れる"
+    ],
+    "lesson_number": 31
+  },
+  {
+    "char": "絡",
+    "meaning": "путаться",
+    "onyomi": [
+      "ラク"
+    ],
+    "kunyomi": [],
+    "lesson_number": 31
+  },
+  {
+    "char": "泊",
+    "meaning": "оставаться на; ночь",
+    "onyomi": [
+      "ハク"
+    ],
+    "kunyomi": [
+      "とーまる"
+    ],
+    "lesson_number": 31
+  },
+  {
+    "char": "特",
+    "meaning": "особенный",
+    "onyomi": [
+      "トク"
+    ],
+    "kunyomi": [],
+    "lesson_number": 31
+  },
+  {
+    "char": "急",
+    "meaning": "внезапный; быстрый",
+    "onyomi": [
+      "キュウ"
+    ],
+    "kunyomi": [
+      "いそーぐ"
+    ],
+    "lesson_number": 31
+  },
+  {
+    "char": "線",
+    "meaning": "линия",
+    "onyomi": [
+      "セン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 32
+  },
+  {
+    "char": "発",
+    "meaning": "запуск",
+    "onyomi": [
+      "ハツ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 32
+  },
+  {
+    "char": "到",
+    "meaning": "достигать",
+    "onyomi": [
+      "トウ"
+    ],
+    "kunyomi": [
+      "いた・る"
+    ],
+    "lesson_number": 32
+  },
+  {
+    "char": "交",
+    "meaning": "пересекаться",
+    "onyomi": [
+      "コウ"
+    ],
+    "kunyomi": [
+      "ま・じる",
+      "まじ・わる"
+    ],
+    "lesson_number": 32
+  },
+  {
+    "char": "機",
+    "meaning": "механизм; шанс",
+    "onyomi": [
+      "キ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 32
+  },
+  {
+    "char": "関",
+    "meaning": "барьер; отношение",
+    "onyomi": [
+      "カン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 32
+  },
+  {
+    "char": "局",
+    "meaning": "бюро",
+    "onyomi": [
+      "キョク"
+    ],
+    "kunyomi": [],
+    "lesson_number": 32
+  },
+  {
+    "char": "信",
+    "meaning": "верить",
+    "onyomi": [
+      "シン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 32
+  },
+  {
+    "char": "路",
+    "meaning": "дорога",
+    "onyomi": [
+      "ロ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 32
+  },
+  {
+    "char": "故",
+    "meaning": "старый",
+    "onyomi": [
+      "コ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 32
+  },
+  {
+    "char": "注",
+    "meaning": "сосредо-; тачивать",
+    "onyomi": [
+      "チュウ"
+    ],
+    "kunyomi": [
+      "そそ・ぐ"
+    ],
+    "lesson_number": 32
+  },
+  {
+    "char": "意",
+    "meaning": "мысль",
+    "onyomi": [
+      "イ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 32
+  },
+  {
+    "char": "押",
+    "meaning": "давить; нажимать",
+    "onyomi": [],
+    "kunyomi": [
+      "お・す"
+    ],
+    "lesson_number": 33
+  },
+  {
+    "char": "引",
+    "meaning": "тянуть",
+    "onyomi": [
+      "イン"
+    ],
+    "kunyomi": [
+      "ひ・く"
+    ],
+    "lesson_number": 33
+  },
+  {
+    "char": "割",
+    "meaning": "разделять; раскалывать",
+    "onyomi": [
+      "カツ"
+    ],
+    "kunyomi": [
+      "わ・れる",
+      "わ・る"
+    ],
+    "lesson_number": 33
+  },
+  {
+    "char": "営",
+    "meaning": "бизнес",
+    "onyomi": [
+      "エイ"
+    ],
+    "kunyomi": [
+      "いとな・む"
+    ],
+    "lesson_number": 33
+  },
+  {
+    "char": "自",
+    "meaning": "сам",
+    "onyomi": [
+      "ジ"
+    ],
+    "kunyomi": [
+      "みずか・ら"
+    ],
+    "lesson_number": 33
+  },
+  {
+    "char": "由",
+    "meaning": "причина",
+    "onyomi": [
+      "ユウ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 33
+  },
+  {
+    "char": "取",
+    "meaning": "брать",
+    "onyomi": [
+      "シュ"
+    ],
+    "kunyomi": [
+      "と・る"
+    ],
+    "lesson_number": 33
+  },
+  {
+    "char": "求",
+    "meaning": "требовать; желать",
+    "onyomi": [
+      "キュウ"
+    ],
+    "kunyomi": [
+      "もと・める"
+    ],
+    "lesson_number": 33
+  },
+  {
+    "char": "願",
+    "meaning": "желать; просить",
+    "onyomi": [
+      "ガン"
+    ],
+    "kunyomi": [
+      "ねが・う"
+    ],
+    "lesson_number": 33
+  },
+  {
+    "char": "知",
+    "meaning": "знать",
+    "onyomi": [
+      "チ"
+    ],
+    "kunyomi": [
+      "し・る",
+      "し・らせる"
+    ],
+    "lesson_number": 33
+  },
+  {
+    "char": "台",
+    "meaning": "подставка; платформа",
+    "onyomi": [
+      "ダイ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 34
+  },
+  {
+    "char": "窓",
+    "meaning": "окно",
+    "onyomi": [
+      "ソウ"
+    ],
+    "kunyomi": [
+      "まど"
+    ],
+    "lesson_number": 34
+  },
+  {
+    "char": "具",
+    "meaning": "принадлеж-; ность",
+    "onyomi": [
+      "グ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 34
+  },
+  {
+    "char": "器",
+    "meaning": "сосуд",
+    "onyomi": [
+      "キ"
+    ],
+    "kunyomi": [
+      "うつわ"
+    ],
+    "lesson_number": 34
+  },
+  {
+    "char": "用",
+    "meaning": "использовать",
+    "onyomi": [
+      "ヨウ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 34
+  },
+  {
+    "char": "服",
+    "meaning": "одежда",
+    "onyomi": [
+      "フク"
+    ],
+    "kunyomi": [],
+    "lesson_number": 34
+  },
+  {
+    "char": "紙",
+    "meaning": "бумага",
+    "onyomi": [
+      "シ"
+    ],
+    "kunyomi": [
+      "かみ"
+    ],
+    "lesson_number": 34
+  },
+  {
+    "char": "辞",
+    "meaning": "слово; уйти в; отставку",
+    "onyomi": [
+      "ジ"
+    ],
+    "kunyomi": [
+      "や・める"
+    ],
+    "lesson_number": 34
+  },
+  {
+    "char": "雑",
+    "meaning": "различный",
+    "onyomi": [
+      "ザツ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 34
+  },
+  {
+    "char": "誌",
+    "meaning": "журнал",
+    "onyomi": [
+      "シ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 34
+  },
+  {
+    "char": "銀",
+    "meaning": "серебро",
+    "onyomi": [
+      "ギン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 35
+  },
+  {
+    "char": "資",
+    "meaning": "капитал",
+    "onyomi": [
+      "シ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 35
+  },
+  {
+    "char": "品",
+    "meaning": "товар",
+    "onyomi": [
+      "ヒン"
+    ],
+    "kunyomi": [
+      "しな"
+    ],
+    "lesson_number": 35
+  },
+  {
+    "char": "個",
+    "meaning": "отдельный; индиви-; дуальный",
+    "onyomi": [
+      "コ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 35
+  },
+  {
+    "char": "価",
+    "meaning": "цена",
+    "onyomi": [
+      "カ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 35
+  },
+  {
+    "char": "産",
+    "meaning": "рождать; производить",
+    "onyomi": [
+      "サン"
+    ],
+    "kunyomi": [
+      "う・まれる",
+      "う・む"
+    ],
+    "lesson_number": 35
+  },
+  {
+    "char": "期",
+    "meaning": "срок; период",
+    "onyomi": [
+      "キ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 35
+  },
+  {
+    "char": "々",
+    "meaning": "символ; повтора",
+    "onyomi": [],
+    "kunyomi": [],
+    "lesson_number": 35
+  },
+  {
+    "char": "報",
+    "meaning": "информация",
+    "onyomi": [
+      "ホウ"
+    ],
+    "kunyomi": [
+      "むく・いる"
+    ],
+    "lesson_number": 35
+  },
+  {
+    "char": "告",
+    "meaning": "объявление",
+    "onyomi": [
+      "コク"
+    ],
+    "kunyomi": [
+      "つ・げる"
+    ],
+    "lesson_number": 35
+  },
+  {
+    "char": "心",
+    "meaning": "сердце; душа",
+    "onyomi": [
+      "シン"
+    ],
+    "kunyomi": [
+      "こころ"
+    ],
+    "lesson_number": 36
+  },
+  {
+    "char": "感",
+    "meaning": "чувствовать",
+    "onyomi": [
+      "カン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 36
+  },
+  {
+    "char": "情",
+    "meaning": "чувство; эмоция",
+    "onyomi": [
+      "ジョウ"
+    ],
+    "kunyomi": [
+      "なさ・け"
+    ],
+    "lesson_number": 36
+  },
+  {
+    "char": "悲",
+    "meaning": "грустный; печальный",
+    "onyomi": [
+      "ヒ"
+    ],
+    "kunyomi": [
+      "かな・しい",
+      "かな・しむ"
+    ],
+    "lesson_number": 36
+  },
+  {
+    "char": "泣",
+    "meaning": "плакать",
+    "onyomi": [
+      "キュウ"
+    ],
+    "kunyomi": [
+      "な・く"
+    ],
+    "lesson_number": 36
+  },
+  {
+    "char": "笑",
+    "meaning": "смеяться",
+    "onyomi": [
+      "ショウ"
+    ],
+    "kunyomi": [
+      "わら・う"
+    ],
+    "lesson_number": 36
+  },
+  {
+    "char": "頭",
+    "meaning": "голова",
+    "onyomi": [
+      "トウ",
+      "ズ"
+    ],
+    "kunyomi": [
+      "あたま"
+    ],
+    "lesson_number": 36
+  },
+  {
+    "char": "覚",
+    "meaning": "помнить; просыпаться",
+    "onyomi": [
+      "カク"
+    ],
+    "kunyomi": [
+      "おぼ・える",
+      "さ・める",
+      "さ・ます"
+    ],
+    "lesson_number": 36
+  },
+  {
+    "char": "忘",
+    "meaning": "забывать",
+    "onyomi": [
+      "ボウ"
+    ],
+    "kunyomi": [
+      "わす・れる"
+    ],
+    "lesson_number": 36
+  },
+  {
+    "char": "考",
+    "meaning": "думать",
+    "onyomi": [
+      "コウ"
+    ],
+    "kunyomi": [
+      "かんが・える"
+    ],
+    "lesson_number": 36
+  },
+  {
+    "char": "伝",
+    "meaning": "передавать; сообщать",
+    "onyomi": [
+      "デン"
+    ],
+    "kunyomi": [
+      "つた・わる",
+      "つた・える"
+    ],
+    "lesson_number": 37
+  },
+  {
+    "char": "代",
+    "meaning": "заменять; период; плата",
+    "onyomi": [
+      "タイ",
+      "ダイ"
+    ],
+    "kunyomi": [
+      "か・わる",
+      "か・える"
+    ],
+    "lesson_number": 37
+  },
+  {
+    "char": "呼",
+    "meaning": "звать",
+    "onyomi": [
+      "コ"
+    ],
+    "kunyomi": [
+      "よ・ぶ"
+    ],
+    "lesson_number": 37
+  },
+  {
+    "char": "焼",
+    "meaning": "жечь",
+    "onyomi": [
+      "ショウ"
+    ],
+    "kunyomi": [
+      "や・ける",
+      "や・く"
+    ],
+    "lesson_number": 37
+  },
+  {
+    "char": "曲",
+    "meaning": "гнуть; поворачивать; мелодия",
+    "onyomi": [
+      "キョク"
+    ],
+    "kunyomi": [
+      "ま・がる",
+      "ま・げる"
+    ],
+    "lesson_number": 37
+  },
+  {
+    "char": "脱",
+    "meaning": "снимать-; одежду",
+    "onyomi": [
+      "ダツ"
+    ],
+    "kunyomi": [
+      "ぬ・げる",
+      "ぬ・ぐ"
+    ],
+    "lesson_number": 37
+  },
+  {
+    "char": "別",
+    "meaning": "разделять; другой",
+    "onyomi": [
+      "ベツ"
+    ],
+    "kunyomi": [
+      "わか・れる"
+    ],
+    "lesson_number": 37
+  },
+  {
+    "char": "集",
+    "meaning": "собирать; собираться",
+    "onyomi": [
+      "シュウ"
+    ],
+    "kunyomi": [
+      "あつ・まる",
+      "あつ・める"
+    ],
+    "lesson_number": 37
+  },
+  {
+    "char": "並",
+    "meaning": "выстраивать-в-; ряд",
+    "onyomi": [
+      "ヘイ"
+    ],
+    "kunyomi": [
+      "なら・ぶ",
+      "なら・べる",
+      "なみ"
+    ],
+    "lesson_number": 37
+  },
+  {
+    "char": "喜",
+    "meaning": "радоваться",
+    "onyomi": [
+      "キ"
+    ],
+    "kunyomi": [
+      "よろこ・ぶ"
+    ],
+    "lesson_number": 37
+  },
+  {
+    "char": "驚",
+    "meaning": "удивляться",
+    "onyomi": [
+      "キョウ"
+    ],
+    "kunyomi": [
+      "おどろ・く"
+    ],
+    "lesson_number": 37
+  },
+  {
+    "char": "細",
+    "meaning": "тонкий; мелкий",
+    "onyomi": [
+      "サイ"
+    ],
+    "kunyomi": [
+      "ほそ・い",
+      "こま・かい"
+    ],
+    "lesson_number": 38
+  },
+  {
+    "char": "太",
+    "meaning": "толстый",
+    "onyomi": [
+      "タイ"
+    ],
+    "kunyomi": [
+      "ふと・い",
+      "ふと・る"
+    ],
+    "lesson_number": 38
+  },
+  {
+    "char": "重",
+    "meaning": "тяжелый",
+    "onyomi": [
+      "ジュウ"
+    ],
+    "kunyomi": [
+      "おも・い"
+    ],
+    "lesson_number": 38
+  },
+  {
+    "char": "軽",
+    "meaning": "легкий",
+    "onyomi": [
+      "ケイ"
+    ],
+    "kunyomi": [
+      "かる・い"
+    ],
+    "lesson_number": 38
+  },
+  {
+    "char": "狭",
+    "meaning": "узкий",
+    "onyomi": [
+      "キョウ"
+    ],
+    "kunyomi": [
+      "せま・い"
+    ],
+    "lesson_number": 38
+  },
+  {
+    "char": "弱",
+    "meaning": "слабый",
+    "onyomi": [
+      "ジャク"
+    ],
+    "kunyomi": [
+      "よわ・い",
+      "よわ・る"
+    ],
+    "lesson_number": 38
+  },
+  {
+    "char": "眠",
+    "meaning": "сонный",
+    "onyomi": [
+      "ミン"
+    ],
+    "kunyomi": [
+      "ねむ・い",
+      "ねむ・る"
+    ],
+    "lesson_number": 38
+  },
+  {
+    "char": "苦",
+    "meaning": "трудный; горький",
+    "onyomi": [
+      "ク"
+    ],
+    "kunyomi": [
+      "くる・しい",
+      "にが・い",
+      "くる・しむ"
+    ],
+    "lesson_number": 38
+  },
+  {
+    "char": "簡",
+    "meaning": "простой",
+    "onyomi": [
+      "カン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 38
+  },
+  {
+    "char": "単",
+    "meaning": "одиночный",
+    "onyomi": [
+      "タン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 38
+  },
+  {
+    "char": "空",
+    "meaning": "небо; пустой",
+    "onyomi": [
+      "クウ"
+    ],
+    "kunyomi": [
+      "あ・く",
+      "あ・ける",
+      "そら",
+      "から"
+    ],
+    "lesson_number": 39
+  },
+  {
+    "char": "港",
+    "meaning": "порт",
+    "onyomi": [
+      "コウ"
+    ],
+    "kunyomi": [
+      "みなと"
+    ],
+    "lesson_number": 39
+  },
+  {
+    "char": "飛",
+    "meaning": "летать",
+    "onyomi": [
+      "ヒ"
+    ],
+    "kunyomi": [
+      "と・ぶ",
+      "と・ばす"
+    ],
+    "lesson_number": 39
+  },
+  {
+    "char": "階",
+    "meaning": "этаж; стадия",
+    "onyomi": [
+      "カイ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 39
+  },
+  {
+    "char": "建",
+    "meaning": "строить",
+    "onyomi": [
+      "ケン"
+    ],
+    "kunyomi": [
+      "た・つ",
+      "た・てる"
+    ],
+    "lesson_number": 39
+  },
+  {
+    "char": "設",
+    "meaning": "учреждение",
+    "onyomi": [
+      "セツ"
+    ],
+    "kunyomi": [
+      "もう・ける"
+    ],
+    "lesson_number": 39
+  },
+  {
+    "char": "完",
+    "meaning": "завершенный",
+    "onyomi": [
+      "カン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 39
+  },
+  {
+    "char": "成",
+    "meaning": "становиться",
+    "onyomi": [
+      "セイ"
+    ],
+    "kunyomi": [
+      "な・る"
+    ],
+    "lesson_number": 39
+  },
+  {
+    "char": "費",
+    "meaning": "расходы",
+    "onyomi": [
+      "ヒ"
+    ],
+    "kunyomi": [
+      "つい・やす"
+    ],
+    "lesson_number": 39
+  },
+  {
+    "char": "放",
+    "meaning": "отпускать",
+    "onyomi": [
+      "ホウ"
+    ],
+    "kunyomi": [
+      "はな・す"
+    ],
+    "lesson_number": 39
+  },
+  {
+    "char": "位",
+    "meaning": "ранг; примерно",
+    "onyomi": [
+      "イ"
+    ],
+    "kunyomi": [
+      "くらい"
+    ],
+    "lesson_number": 40
+  },
+  {
+    "char": "置",
+    "meaning": "класть",
+    "onyomi": [
+      "チ"
+    ],
+    "kunyomi": [
+      "お・く"
+    ],
+    "lesson_number": 40
+  },
+  {
+    "char": "横",
+    "meaning": "бок; горизонталь-; ный",
+    "onyomi": [
+      "オウ"
+    ],
+    "kunyomi": [
+      "よこ"
+    ],
+    "lesson_number": 40
+  },
+  {
+    "char": "向",
+    "meaning": "направляться",
+    "onyomi": [
+      "コウ"
+    ],
+    "kunyomi": [
+      "む・こう",
+      "む・かう",
+      "む・く",
+      "む・ける"
+    ],
+    "lesson_number": 40
+  },
+  {
+    "char": "原",
+    "meaning": "поле; равнина; источник",
+    "onyomi": [
+      "ゲン"
+    ],
+    "kunyomi": [
+      "はら"
+    ],
+    "lesson_number": 40
+  },
+  {
+    "char": "平",
+    "meaning": "плоский",
+    "onyomi": [
+      "ヘイ",
+      "ビョウ"
+    ],
+    "kunyomi": [
+      "たい・ら"
+    ],
+    "lesson_number": 40
+  },
+  {
+    "char": "野",
+    "meaning": "поле",
+    "onyomi": [
+      "ヤ"
+    ],
+    "kunyomi": [
+      "の"
+    ],
+    "lesson_number": 40
+  },
+  {
+    "char": "風",
+    "meaning": "ветер",
+    "onyomi": [
+      "フウ"
+    ],
+    "kunyomi": [
+      "かぜ"
+    ],
+    "lesson_number": 40
+  },
+  {
+    "char": "両",
+    "meaning": "оба",
+    "onyomi": [
+      "リョウ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 40
+  },
+  {
+    "char": "橋",
+    "meaning": "мост",
+    "onyomi": [
+      "キョウ"
+    ],
+    "kunyomi": [
+      "はし"
+    ],
+    "lesson_number": 40
+  },
+  {
+    "char": "老",
+    "meaning": "старик",
+    "onyomi": [
+      "ロウ"
+    ],
+    "kunyomi": [
+      "お・いる"
+    ],
+    "lesson_number": 41
+  },
+  {
+    "char": "族",
+    "meaning": "семья",
+    "onyomi": [
+      "ゾク"
+    ],
+    "kunyomi": [],
+    "lesson_number": 41
+  },
+  {
+    "char": "配",
+    "meaning": "распределять",
+    "onyomi": [
+      "ハイ"
+    ],
+    "kunyomi": [
+      "くば・る"
+    ],
+    "lesson_number": 41
+  },
+  {
+    "char": "術",
+    "meaning": "умение",
+    "onyomi": [
+      "ジュツ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 41
+  },
+  {
+    "char": "退",
+    "meaning": "отступать",
+    "onyomi": [
+      "タイ"
+    ],
+    "kunyomi": [
+      "しりぞ・く"
+    ],
+    "lesson_number": 41
+  },
+  {
+    "char": "効",
+    "meaning": "эффект",
+    "onyomi": [
+      "コウ"
+    ],
+    "kunyomi": [
+      "き・く"
+    ],
+    "lesson_number": 41
+  },
+  {
+    "char": "民",
+    "meaning": "народ",
+    "onyomi": [
+      "ミン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 41
+  },
+  {
+    "char": "訪",
+    "meaning": "посещать",
+    "onyomi": [
+      "ホウ"
+    ],
+    "kunyomi": [
+      "たず・ねる",
+      "おとず・れる"
+    ],
+    "lesson_number": 41
+  },
+  {
+    "char": "顔",
+    "meaning": "лицо",
+    "onyomi": [
+      "ガン"
+    ],
+    "kunyomi": [
+      "かお"
+    ],
+    "lesson_number": 41
+  },
+  {
+    "char": "歯",
+    "meaning": "зубы",
+    "onyomi": [
+      "シ"
+    ],
+    "kunyomi": [
+      "は"
+    ],
+    "lesson_number": 41
+  },
+  {
+    "char": "卒",
+    "meaning": "выпускник",
+    "onyomi": [
+      "ソツ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 42
+  },
+  {
+    "char": "論",
+    "meaning": "теория",
+    "onyomi": [
+      "ロン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 42
+  },
+  {
+    "char": "実",
+    "meaning": "настоящий; плод",
+    "onyomi": [
+      "ジツ"
+    ],
+    "kunyomi": [
+      "み",
+      "みの・る"
+    ],
+    "lesson_number": 42
+  },
+  {
+    "char": "調",
+    "meaning": "расследовать",
+    "onyomi": [
+      "チョウ"
+    ],
+    "kunyomi": [
+      "しら・べる"
+    ],
+    "lesson_number": 42
+  },
+  {
+    "char": "必",
+    "meaning": "обязательно",
+    "onyomi": [
+      "ヒツ"
+    ],
+    "kunyomi": [
+      "かなら・ず"
+    ],
+    "lesson_number": 42
+  },
+  {
+    "char": "要",
+    "meaning": "требоваться",
+    "onyomi": [
+      "ヨウ"
+    ],
+    "kunyomi": [
+      "い・る"
+    ],
+    "lesson_number": 42
+  },
+  {
+    "char": "類",
+    "meaning": "сорт",
+    "onyomi": [
+      "ルイ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 42
+  },
+  {
+    "char": "得",
+    "meaning": "получать; прибыль",
+    "onyomi": [
+      "トク"
+    ],
+    "kunyomi": [
+      "え・る"
+    ],
+    "lesson_number": 42
+  },
+  {
+    "char": "失",
+    "meaning": "терять",
+    "onyomi": [
+      "シツ"
+    ],
+    "kunyomi": [
+      "うしな・う"
+    ],
+    "lesson_number": 42
+  },
+  {
+    "char": "礼",
+    "meaning": "этикет",
+    "onyomi": [
+      "レイ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 42
+  },
+  {
+    "char": "増",
+    "meaning": "возрастать",
+    "onyomi": [
+      "ゾウ"
+    ],
+    "kunyomi": [
+      "ふ・える",
+      "ふ・やす",
+      "ま・す"
+    ],
+    "lesson_number": 43
+  },
+  {
+    "char": "加",
+    "meaning": "добавлять",
+    "onyomi": [
+      "カ"
+    ],
+    "kunyomi": [
+      "くわ・わる",
+      "くわ・える"
+    ],
+    "lesson_number": 43
+  },
+  {
+    "char": "減",
+    "meaning": "уменьшаться",
+    "onyomi": [
+      "ゲン"
+    ],
+    "kunyomi": [
+      "へ・る",
+      "へ・らす"
+    ],
+    "lesson_number": 43
+  },
+  {
+    "char": "変",
+    "meaning": "изменяться",
+    "onyomi": [
+      "ヘン"
+    ],
+    "kunyomi": [
+      "か・わる",
+      "か・える"
+    ],
+    "lesson_number": 43
+  },
+  {
+    "char": "移",
+    "meaning": "перемещаться",
+    "onyomi": [
+      "イ"
+    ],
+    "kunyomi": [
+      "うつ・る",
+      "うつ・す"
+    ],
+    "lesson_number": 43
+  },
+  {
+    "char": "続",
+    "meaning": "продолжаться",
+    "onyomi": [
+      "ゾク"
+    ],
+    "kunyomi": [
+      "つづ・く",
+      "つづ・ける"
+    ],
+    "lesson_number": 43
+  },
+  {
+    "char": "過",
+    "meaning": "превышать; проходить; мимо",
+    "onyomi": [
+      "カ"
+    ],
+    "kunyomi": [
+      "す・ぎる",
+      "す・ごす"
+    ],
+    "lesson_number": 43
+  },
+  {
+    "char": "進",
+    "meaning": "продвигаться",
+    "onyomi": [
+      "シン"
+    ],
+    "kunyomi": [
+      "すす・む",
+      "すす・める"
+    ],
+    "lesson_number": 43
+  },
+  {
+    "char": "以",
+    "meaning": "префикс; направления",
+    "onyomi": [
+      "イ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 43
+  },
+  {
+    "char": "美",
+    "meaning": "красивый",
+    "onyomi": [
+      "ビ"
+    ],
+    "kunyomi": [
+      "うつく・しい"
+    ],
+    "lesson_number": 43
+  },
+  {
+    "char": "比",
+    "meaning": "сравнивать",
+    "onyomi": [
+      "ヒ"
+    ],
+    "kunyomi": [
+      "くら・べる"
+    ],
+    "lesson_number": 44
+  },
+  {
+    "char": "較",
+    "meaning": "сравнивать",
+    "onyomi": [
+      "カク"
+    ],
+    "kunyomi": [],
+    "lesson_number": 44
+  },
+  {
+    "char": "反",
+    "meaning": "против",
+    "onyomi": [
+      "ハン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 44
+  },
+  {
+    "char": "対",
+    "meaning": "против",
+    "onyomi": [
+      "タイ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 44
+  },
+  {
+    "char": "賛",
+    "meaning": "одобрять",
+    "onyomi": [
+      "サン"
+    ],
+    "kunyomi": [],
+    "lesson_number": 44
+  },
+  {
+    "char": "共",
+    "meaning": "совместный",
+    "onyomi": [
+      "キョウ"
+    ],
+    "kunyomi": [
+      "とも"
+    ],
+    "lesson_number": 44
+  },
+  {
+    "char": "直",
+    "meaning": "прямой",
+    "onyomi": [
+      "チョク"
+    ],
+    "kunyomi": [
+      "なお・る",
+      "なお・す",
+      "ただ・ちに"
+    ],
+    "lesson_number": 44
+  },
+  {
+    "char": "表",
+    "meaning": "выражать",
+    "onyomi": [
+      "ヒョウ"
+    ],
+    "kunyomi": [
+      "あらわ・す",
+      "おもて"
+    ],
+    "lesson_number": 44
+  },
+  {
+    "char": "現",
+    "meaning": "действитель-; ный",
+    "onyomi": [
+      "ゲン"
+    ],
+    "kunyomi": [
+      "あらわ・れる"
+    ],
+    "lesson_number": 44
+  },
+  {
+    "char": "初",
+    "meaning": "первый",
+    "onyomi": [
+      "ショ"
+    ],
+    "kunyomi": [
+      "はじ・め",
+      "はつ"
+    ],
+    "lesson_number": 44
+  },
+  {
+    "char": "全",
+    "meaning": "полностью",
+    "onyomi": [
+      "ゼン"
+    ],
+    "kunyomi": [
+      "まった・く"
+    ],
+    "lesson_number": 45
+  },
+  {
+    "char": "最",
+    "meaning": "самый",
+    "onyomi": [
+      "サイ"
+    ],
+    "kunyomi": [
+      "もっと・も"
+    ],
+    "lesson_number": 45
+  },
+  {
+    "char": "無",
+    "meaning": "не, без",
+    "onyomi": [
+      "ム",
+      "ブ"
+    ],
+    "kunyomi": [
+      "な・い"
+    ],
+    "lesson_number": 45
+  },
+  {
+    "char": "非",
+    "meaning": "не",
+    "onyomi": [
+      "ヒ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 45
+  },
+  {
+    "char": "第",
+    "meaning": "префикс; числительных",
+    "onyomi": [
+      "ダイ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 45
+  },
+  {
+    "char": "的",
+    "meaning": "цель",
+    "onyomi": [
+      "テキ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 45
+  },
+  {
+    "char": "性",
+    "meaning": "характер; пол",
+    "onyomi": [
+      "セイ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 45
+  },
+  {
+    "char": "法",
+    "meaning": "закон; метод",
+    "onyomi": [
+      "ホウ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 45
+  },
+  {
+    "char": "制",
+    "meaning": "система",
+    "onyomi": [
+      "セイ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 45
+  },
+  {
+    "char": "課",
+    "meaning": "отдел; секция",
+    "onyomi": [
+      "カ"
+    ],
+    "kunyomi": [],
+    "lesson_number": 45
+  }
+];
+    const STORAGE_KEY = 'kanji-academy:v1';
+    const byLesson = KANJI_DATABASE.reduce((map, item) => { if (!map.has(item.lesson_number)) map.set(item.lesson_number, []); map.get(item.lesson_number).push(item); return map; }, new Map());
+    const lessons = [...byLesson.keys()].sort((a, b) => a - b);
+    const els = { lessonList: document.getElementById('lessonList'), lessonSelect: document.getElementById('lessonSelect'), lessonLabel: document.getElementById('lessonLabel'), positionLabel: document.getElementById('positionLabel'), currentChar: document.getElementById('currentChar'), meaning: document.getElementById('meaning'), onyomi: document.getElementById('onyomi'), kunyomi: document.getElementById('kunyomi'), prevBtn: document.getElementById('prevBtn'), nextBtn: document.getElementById('nextBtn'), animateBtn: document.getElementById('animateBtn'), clearBtn: document.getElementById('clearBtn'), hanziTarget: document.getElementById('hanziTarget'), writerFallback: document.getElementById('writerFallback'), writerStatus: document.getElementById('writerStatus'), canvas: document.getElementById('practiceCanvas') };
+    let state = loadState(); let writer = null; let writerReady = false; let drawing = false; const ctx = els.canvas.getContext('2d');
+    function loadState() { try { const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); const lesson = lessons.includes(parsed.lesson_number) ? parsed.lesson_number : lessons[0]; return { lesson_number: lesson, index_by_lesson: parsed.index_by_lesson || {} }; } catch { return { lesson_number: lessons[0], index_by_lesson: {} }; } }
+    function persist() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    function currentLessonItems() { return byLesson.get(state.lesson_number) || []; }
+    function currentIndex() { const items = currentLessonItems(); const raw = Number(state.index_by_lesson[state.lesson_number] || 0); return Math.max(0, Math.min(items.length - 1, Number.isFinite(raw) ? raw : 0)); }
+    function currentItem() { return currentLessonItems()[currentIndex()]; }
+    function formatReadings(readings) { return readings.length ? readings.join(' / ') : '-'; }
+    function renderLessonNavigation() { els.lessonList.innerHTML = ''; els.lessonSelect.innerHTML = ''; lessons.forEach((lesson) => { const count = byLesson.get(lesson).length; const button = document.createElement('button'); button.type = 'button'; button.className = 'lesson-btn flex items-center justify-between rounded-2xl px-4 py-3 text-left text-sm font-extrabold transition'; button.dataset.lesson = lesson; button.innerHTML = `<span>Lesson ${lesson}</span><span class="rounded-full px-3 py-1 text-xs">${count}</span>`; button.addEventListener('click', () => setLesson(lesson)); els.lessonList.appendChild(button); const option = document.createElement('option'); option.value = String(lesson); option.textContent = `Lesson ${lesson} - ${count} kanji`; els.lessonSelect.appendChild(option); }); els.lessonSelect.addEventListener('change', (event) => setLesson(Number(event.target.value))); }
+    function updateActiveLessonChrome() { document.querySelectorAll('.lesson-btn').forEach((button) => { const active = Number(button.dataset.lesson) === state.lesson_number; button.className = active ? 'lesson-btn flex items-center justify-between rounded-2xl bg-action px-4 py-3 text-left text-sm font-extrabold text-white shadow-sm transition' : 'lesson-btn flex items-center justify-between rounded-2xl bg-slate-50 px-4 py-3 text-left text-sm font-extrabold text-slate-600 transition hover:bg-mint hover:text-emerald-700'; const count = button.querySelector('span:last-child'); if (count) count.className = active ? 'rounded-full bg-white/20 px-3 py-1 text-xs' : 'rounded-full bg-white px-3 py-1 text-xs text-slate-400'; }); els.lessonSelect.value = String(state.lesson_number); }
+    function setLesson(lesson) { if (!byLesson.has(lesson)) return; state.lesson_number = lesson; state.index_by_lesson[lesson] = currentIndex(); persist(); render(); }
+    function move(delta) { const items = currentLessonItems(); const next = Math.max(0, Math.min(items.length - 1, currentIndex() + delta)); state.index_by_lesson[state.lesson_number] = next; persist(); render(); }
+    function setWriterStatus(message, error = false) { els.writerStatus.textContent = message || ''; els.writerStatus.className = error ? 'mt-4 min-h-5 text-sm font-bold text-action' : 'mt-4 min-h-5 text-sm font-bold text-slate-500'; }
+    function renderWriter(char) { writer = null; writerReady = false; els.hanziTarget.innerHTML = ''; els.writerFallback.textContent = char; els.writerFallback.classList.add('hidden'); els.writerFallback.classList.remove('flex'); setWriterStatus(''); if (!window.HanziWriter) { els.writerFallback.classList.remove('hidden'); els.writerFallback.classList.add('flex'); setWriterStatus('Stroke engine unavailable. Character remains visible.', true); return; } const size = Math.max(260, Math.min(380, Math.floor(els.hanziTarget.getBoundingClientRect().width || 340))); try { writer = HanziWriter.create('hanziTarget', char, { width: size, height: size, padding: 18, showOutline: true, showCharacter: false, strokeAnimationSpeed: 1.05, delayBetweenStrokes: 95, drawingWidth: 32, strokeColor: '#0F172A', outlineColor: '#CBD5E1', radicalColor: '#EF4444', onLoadCharDataSuccess: () => { writerReady = true; setWriterStatus(''); }, onLoadCharDataError: () => { writerReady = false; els.writerFallback.classList.remove('hidden'); els.writerFallback.classList.add('flex'); setWriterStatus('Stroke data unavailable for this character.', true); } }); } catch { els.writerFallback.classList.remove('hidden'); els.writerFallback.classList.add('flex'); setWriterStatus('Stroke engine failed to initialize.', true); } }
+    function animateCurrent() { if (!writer || !writerReady) { setWriterStatus('Animation is not available for this character.', true); return; } writer.hideCharacter(); writer.animateCharacter(); }
+    function drawGrid() { const width = els.canvas.width; const height = els.canvas.height; ctx.clearRect(0, 0, width, height); ctx.save(); ctx.strokeStyle = '#E2E8F0'; ctx.lineWidth = Math.max(1, width / 520); ctx.setLineDash([10, 12]); ctx.beginPath(); ctx.moveTo(width / 2, 0); ctx.lineTo(width / 2, height); ctx.moveTo(0, height / 2); ctx.lineTo(width, height / 2); ctx.stroke(); ctx.setLineDash([]); ctx.strokeStyle = '#F1F5F9'; ctx.strokeRect(ctx.lineWidth / 2, ctx.lineWidth / 2, width - ctx.lineWidth, height - ctx.lineWidth); ctx.restore(); }
+    function resizeCanvas() { const rect = els.canvas.getBoundingClientRect(); const dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1)); els.canvas.width = Math.round(rect.width * dpr); els.canvas.height = Math.round(rect.width * dpr); ctx.lineCap = 'round'; ctx.lineJoin = 'round'; drawGrid(); }
+    function pointerPosition(event) { const rect = els.canvas.getBoundingClientRect(); const scaleX = els.canvas.width / rect.width; const scaleY = els.canvas.height / rect.height; return { x: (event.clientX - rect.left) * scaleX, y: (event.clientY - rect.top) * scaleY }; }
+    function startDrawing(event) { drawing = true; try { els.canvas.setPointerCapture(event.pointerId); } catch {} const point = pointerPosition(event); ctx.beginPath(); ctx.moveTo(point.x, point.y); }
+    function draw(event) { if (!drawing) return; const point = pointerPosition(event); ctx.strokeStyle = '#0F172A'; ctx.lineWidth = Math.max(7, els.canvas.width / 44); ctx.lineTo(point.x, point.y); ctx.stroke(); }
+    function stopDrawing(event) { if (!drawing) return; drawing = false; try { els.canvas.releasePointerCapture(event.pointerId); } catch {} }
+    function clearPractice() { drawGrid(); }
+    function render() { const item = currentItem(); const index = currentIndex(); const items = currentLessonItems(); els.lessonLabel.textContent = `Lesson ${state.lesson_number}`; els.positionLabel.textContent = `${index + 1} / ${items.length}`; els.currentChar.textContent = item.char; els.meaning.textContent = item.meaning; els.onyomi.textContent = formatReadings(item.onyomi); els.kunyomi.textContent = formatReadings(item.kunyomi); els.prevBtn.disabled = index === 0; els.nextBtn.disabled = index === items.length - 1; updateActiveLessonChrome(); clearPractice(); renderWriter(item.char); }
+    els.prevBtn.addEventListener('click', () => move(-1)); els.nextBtn.addEventListener('click', () => move(1)); els.animateBtn.addEventListener('click', animateCurrent); els.clearBtn.addEventListener('click', clearPractice); els.canvas.addEventListener('pointerdown', startDrawing); els.canvas.addEventListener('pointermove', draw); els.canvas.addEventListener('pointerup', stopDrawing); els.canvas.addEventListener('pointercancel', stopDrawing); window.addEventListener('resize', () => { resizeCanvas(); renderWriter(currentItem().char); }); window.addEventListener('load', () => renderWriter(currentItem().char)); renderLessonNavigation(); resizeCanvas(); render(); window.KANJI_DATABASE = KANJI_DATABASE;
+  </script>
+</body>
+</html>
