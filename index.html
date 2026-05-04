@@ -31,7 +31,7 @@
       <main class="flex min-w-0 flex-1 flex-col gap-5">
         <header class="rounded-3xl border border-slate-200/70 bg-white/80 p-4 shadow-sm backdrop-blur lg:hidden"><div class="mb-4 flex items-center justify-between gap-3"><div class="flex items-center gap-3"><div class="flex h-11 w-11 items-center justify-center rounded-3xl bg-action text-xl font-extrabold text-white jp">&#23398;</div><div><h1 class="text-xl font-extrabold text-ink">Kanji Academy</h1><p class="text-xs font-bold text-slate-500">500 kanji &middot; 45 lessons</p></div></div></div><select id="lessonSelect" class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-extrabold text-ink outline-none focus:border-action focus:ring-4 focus:ring-red-100"></select></header>
         <section class="rounded-3xl border border-slate-200/70 bg-white p-5 shadow-soft sm:p-7 xl:p-8">
-          <div class="mb-7 flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between"><div><div class="mb-3 flex flex-wrap items-center gap-2 text-sm font-extrabold text-slate-500"><span id="lessonLabel" class="rounded-full bg-mint px-4 py-2 text-emerald-700">Lesson 1</span><span id="positionLabel" class="rounded-full bg-slate-100 px-4 py-2">1 / 10</span></div><div class="flex flex-wrap items-end gap-x-5 gap-y-2"><div id="currentChar" class="jp text-[7.5rem] font-black leading-none text-ink sm:text-[9rem]">&#26085;</div><div class="pb-3"><p id="meaning" class="max-w-2xl text-3xl font-extrabold leading-tight text-ink sm:text-4xl">loading</p><div class="mt-4 grid gap-2 text-base font-bold text-slate-600 sm:grid-cols-2"><p><span class="text-slate-400">Onyomi</span> <span id="onyomi" class="jp text-ink">-</span></p><p><span class="text-slate-400">Kunyomi</span> <span id="kunyomi" class="jp text-ink">-</span></p></div><div class="mt-5"><p class="mb-2 text-sm font-extrabold text-slate-400">Words</p><div id="words" class="jp flex max-w-3xl flex-wrap gap-2"></div></div></div></div></div><div class="flex flex-wrap gap-3"><button id="prevBtn" class="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-ink shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0">Prev</button><button id="nextBtn" class="rounded-2xl bg-action px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0">Next</button></div></div>
+          <div class="mb-7 flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between"><div><div class="mb-3 flex flex-wrap items-center gap-2 text-sm font-extrabold text-slate-500"><span id="lessonLabel" class="rounded-full bg-mint px-4 py-2 text-emerald-700">Lesson 1</span><span id="positionLabel" class="rounded-full bg-slate-100 px-4 py-2">1 / 10</span></div><div class="flex flex-wrap items-end gap-x-5 gap-y-2"><div id="currentChar" class="jp text-[7.5rem] font-black leading-none text-ink sm:text-[9rem]">&#26085;</div><div class="pb-3"><p id="meaning" class="max-w-2xl text-3xl font-extrabold leading-tight text-ink sm:text-4xl">loading</p><div class="mt-4 grid gap-2 text-base font-bold text-slate-600 sm:grid-cols-2"><p><span class="text-slate-400">Onyomi</span> <span id="onyomi" class="jp text-ink">-</span></p><p><span class="text-slate-400">Kunyomi</span> <span id="kunyomi" class="jp text-ink">-</span></p></div><div class="mt-5"><p class="mb-2 text-sm font-extrabold text-slate-400">Words</p><div id="words" class="jp flex max-h-44 max-w-4xl flex-wrap gap-2 overflow-y-auto pr-2"></div></div></div></div></div><div class="flex flex-wrap gap-3"><button id="prevBtn" class="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-ink shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0">Prev</button><button id="nextBtn" class="rounded-2xl bg-action px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0">Next</button></div></div>
           <div class="grid gap-5 xl:grid-cols-[minmax(280px,440px)_1fr]"><article class="rounded-3xl bg-mint p-4 shadow-sm sm:p-5"><div class="mb-4 flex items-center justify-between gap-3"><h2 class="text-lg font-extrabold text-ink">Stroke Order</h2><button id="animateBtn" class="rounded-2xl bg-action px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-red-500">Animate</button></div><div class="relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl bg-white shadow-sm"><div id="hanziTarget" class="h-[min(78vw,360px)] w-[min(78vw,360px)] max-w-full"></div></div><p id="writerStatus" class="mt-4 min-h-5 text-sm font-bold text-slate-500"></p></article><article class="rounded-3xl bg-[#FFF7ED] p-4 shadow-sm sm:p-5"><div class="mb-4 flex items-center justify-between gap-3"><h2 class="text-lg font-extrabold text-ink">Practice</h2><button id="clearBtn" class="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-extrabold text-ink shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300">Clear</button></div><canvas id="practiceCanvas" class="block aspect-square w-full rounded-3xl bg-white shadow-sm"></canvas></article></div>
         </section>
       </main>
@@ -59,6 +59,86 @@
         "word": "日本",
         "reading": "にほん",
         "translation": "Япония"
+      },
+      {
+        "word": "月曜日",
+        "reading": "げつようび",
+        "translation": "понедельник"
+      },
+      {
+        "word": "木曜日",
+        "reading": "もくようび",
+        "translation": "четверг"
+      },
+      {
+        "word": "日本人",
+        "reading": "にほんじん",
+        "translation": "японец, японка"
+      },
+      {
+        "word": "火曜日",
+        "reading": "かようび",
+        "translation": "вторник"
+      },
+      {
+        "word": "水曜日",
+        "reading": "すいようび",
+        "translation": "среда"
+      },
+      {
+        "word": "金曜日",
+        "reading": "きんようび",
+        "translation": "пятница"
+      },
+      {
+        "word": "土曜日",
+        "reading": "どようび",
+        "translation": "суббота"
+      },
+      {
+        "word": "本日",
+        "reading": "ほんじつ",
+        "translation": "сего числа, сегодня"
+      },
+      {
+        "word": "休日",
+        "reading": "きゅうじつ",
+        "translation": "день отдыха, выходной день"
+      },
+      {
+        "word": "毎日",
+        "reading": "まいにち",
+        "translation": "каждый день, ежедневно; день за днём, изо дня в день"
+      },
+      {
+        "word": "日本語",
+        "reading": "にほんご",
+        "translation": "японский язык"
+      },
+      {
+        "word": "今日",
+        "reading": "きょう",
+        "translation": "сегодня; этот день"
+      },
+      {
+        "word": "日本史",
+        "reading": "にほんし",
+        "translation": "история Японии"
+      },
+      {
+        "word": "日記",
+        "reading": "にっき",
+        "translation": "дневник, журнал"
+      },
+      {
+        "word": "日焼け",
+        "reading": "ひやけ",
+        "translation": "загар"
+      },
+      {
+        "word": "平日",
+        "reading": "へいじつ",
+        "translation": "обычный день; обычное время"
       }
     ]
   },
@@ -87,6 +167,51 @@
       {
         "word": "１月",
         "reading": "いちがつ",
+        "translation": "январь"
+      },
+      {
+        "word": "先月",
+        "reading": "せんげつ",
+        "translation": "прошлый месяц"
+      },
+      {
+        "word": "一月",
+        "reading": "いちがつ",
+        "translation": "январь"
+      },
+      {
+        "word": "二月",
+        "reading": "にがつ",
+        "translation": "февраль"
+      },
+      {
+        "word": "三月",
+        "reading": "さんがつ",
+        "translation": "март"
+      },
+      {
+        "word": "四月",
+        "reading": "しがつ",
+        "translation": "апрель"
+      },
+      {
+        "word": "七月",
+        "reading": "しちがつ",
+        "translation": "июль"
+      },
+      {
+        "word": "九月",
+        "reading": "くがつ",
+        "translation": "сентябрь"
+      },
+      {
+        "word": "今月",
+        "reading": "こんげつ",
+        "translation": "этот месяц"
+      },
+      {
+        "word": "正月",
+        "reading": "しょうがつ",
         "translation": "январь"
       }
     ]
@@ -135,6 +260,16 @@
         "word": "火山",
         "reading": "かざん",
         "translation": "вулкан"
+      },
+      {
+        "word": "山田",
+        "reading": "やまだ",
+        "translation": "Ямада"
+      },
+      {
+        "word": "野山",
+        "reading": "のやま",
+        "translation": "поля и горы"
       }
     ]
   },
@@ -173,6 +308,11 @@
         "word": "田中",
         "reading": "たなか",
         "translation": "Танака"
+      },
+      {
+        "word": "田中様",
+        "reading": "たなかさま",
+        "translation": "господин/госпожа Танака"
       }
     ]
   },
@@ -202,6 +342,96 @@
         "word": "日本人",
         "reading": "にほんじん",
         "translation": "японец, японка"
+      },
+      {
+        "word": "人口",
+        "reading": "じんこう",
+        "translation": "население, численность населения"
+      },
+      {
+        "word": "女の人",
+        "reading": "おんなのひと",
+        "translation": "женщина"
+      },
+      {
+        "word": "一人",
+        "reading": "ひとり",
+        "translation": "один человек; один из …"
+      },
+      {
+        "word": "二人",
+        "reading": "ふたり",
+        "translation": "два человека"
+      },
+      {
+        "word": "五人",
+        "reading": "ごにん",
+        "translation": "пять человек"
+      },
+      {
+        "word": "六人",
+        "reading": "ろくにん",
+        "translation": "шесть человек"
+      },
+      {
+        "word": "八人",
+        "reading": "はちにん",
+        "translation": "восемь человек"
+      },
+      {
+        "word": "何人",
+        "reading": "なんにん",
+        "translation": "сколько человек"
+      },
+      {
+        "word": "外国人",
+        "reading": "がいこくじん",
+        "translation": "иностранец, иностранка"
+      },
+      {
+        "word": "友人",
+        "reading": "ゆうじん",
+        "translation": "друг, приятель"
+      },
+      {
+        "word": "ご主人",
+        "reading": "ごしゅじん",
+        "translation": "ваш муж; хозяин"
+      },
+      {
+        "word": "人形",
+        "reading": "にんぎょう",
+        "translation": "кукла"
+      },
+      {
+        "word": "個人",
+        "reading": "こじん",
+        "translation": "индивидуум; частное лицо"
+      },
+      {
+        "word": "人々",
+        "reading": "ひとびと",
+        "translation": "люди"
+      },
+      {
+        "word": "老人",
+        "reading": "ろうじん",
+        "translation": "старик, старый человек"
+      },
+      {
+        "word": "美人",
+        "reading": "びじん",
+        "translation": "красавица"
+      },
+      {
+        "word": "個人的な",
+        "reading": "こじんてきな",
+        "translation": "индивидуальный, личный, персональный; частный"
+      },
+      {
+        "word": "人事課",
+        "reading": "じんじか",
+        "translation": "отдел кадров , личный стол"
       }
     ]
   },
@@ -235,6 +465,21 @@
         "word": "人口",
         "reading": "じんこう",
         "translation": "население, численность населения"
+      },
+      {
+        "word": "悪口",
+        "reading": "わるぐち",
+        "translation": "злословие; ругань, брань"
+      },
+      {
+        "word": "窓口",
+        "reading": "まどぐち",
+        "translation": "окно, окошко"
+      },
+      {
+        "word": "非常口",
+        "reading": "ひじょうぐち",
+        "translation": "запасный выход"
       }
     ]
   },
@@ -263,6 +508,21 @@
         "word": "電車",
         "reading": "でんしゃ",
         "translation": "трамвай"
+      },
+      {
+        "word": "中古車",
+        "reading": "ちゅうこしゃ",
+        "translation": "бывшая в употреблении машина"
+      },
+      {
+        "word": "自転車",
+        "reading": "じてんしゃ",
+        "translation": "велосипед, самокат"
+      },
+      {
+        "word": "歯車",
+        "reading": "はぐるま",
+        "translation": "зубчатое колесо; шестерня"
       }
     ]
   },
@@ -307,6 +567,16 @@
         "word": "火曜日",
         "reading": "かようび",
         "translation": "вторник"
+      },
+      {
+        "word": "火山",
+        "reading": "かざん",
+        "translation": "вулкан"
+      },
+      {
+        "word": "花火",
+        "reading": "はなび",
+        "translation": "фейерверк"
       }
     ]
   },
@@ -330,6 +600,21 @@
         "word": "水曜日",
         "reading": "すいようび",
         "translation": "среда"
+      },
+      {
+        "word": "水泳",
+        "reading": "すいえい",
+        "translation": "плавание"
+      },
+      {
+        "word": "水道",
+        "reading": "すいどう",
+        "translation": "водопровод"
+      },
+      {
+        "word": "水準",
+        "reading": "すいじゅん",
+        "translation": "уровень воды"
       }
     ]
   },
@@ -358,6 +643,26 @@
         "word": "金曜日",
         "reading": "きんようび",
         "translation": "пятница"
+      },
+      {
+        "word": "金魚",
+        "reading": "きんぎょ",
+        "translation": "сердцевидка, Nemocardium bechei"
+      },
+      {
+        "word": "料金",
+        "reading": "りょうきん",
+        "translation": "плата"
+      },
+      {
+        "word": "借金",
+        "reading": "しゃっきん",
+        "translation": "долг, заём"
+      },
+      {
+        "word": "現金",
+        "reading": "げんきん",
+        "translation": "наличные деньги"
       }
     ]
   },
@@ -409,6 +714,31 @@
         "word": "女子大学",
         "reading": "じょしだいがく",
         "translation": "женский университет"
+      },
+      {
+        "word": "男子学生",
+        "reading": "だんしがくせい",
+        "translation": "студент; ученик"
+      },
+      {
+        "word": "弟子",
+        "reading": "でし",
+        "translation": "ученик; последователь"
+      },
+      {
+        "word": "様子",
+        "reading": "ようす",
+        "translation": "положение вещей"
+      },
+      {
+        "word": "原子",
+        "reading": "げんし",
+        "translation": "атом"
+      },
+      {
+        "word": "調子",
+        "reading": "ちょうし",
+        "translation": "тон; интонация; тональность; высота"
       }
     ]
   },
@@ -432,6 +762,21 @@
         "word": "彼女",
         "reading": "かのじょ",
         "translation": "она"
+      },
+      {
+        "word": "女の子",
+        "reading": "おんなのこ",
+        "translation": "девочка"
+      },
+      {
+        "word": "女子大学",
+        "reading": "じょしだいがく",
+        "translation": "женский университет"
+      },
+      {
+        "word": "少女",
+        "reading": "しょうじょ",
+        "translation": "девушка, девица"
       }
     ]
   },
@@ -465,6 +810,101 @@
         "word": "学校",
         "reading": "がっこう",
         "translation": "школа, училище; учебное заведение"
+      },
+      {
+        "word": "女子大学",
+        "reading": "じょしだいがく",
+        "translation": "женский университет"
+      },
+      {
+        "word": "私立大学",
+        "reading": "しりつだいがく",
+        "translation": "частный университет"
+      },
+      {
+        "word": "小学校",
+        "reading": "しょうがっこう",
+        "translation": "начальная школа"
+      },
+      {
+        "word": "男子学生",
+        "reading": "だんしがくせい",
+        "translation": "студент; ученик"
+      },
+      {
+        "word": "文学",
+        "reading": "ぶんがく",
+        "translation": "литература"
+      },
+      {
+        "word": "国立大学",
+        "reading": "こくりつだいがく",
+        "translation": "государственный университет"
+      },
+      {
+        "word": "入学する",
+        "reading": "にゅうがくする",
+        "translation": "поступление в школу )"
+      },
+      {
+        "word": "大学院",
+        "reading": "だいがくいん",
+        "translation": "научный институт при университете"
+      },
+      {
+        "word": "留学",
+        "reading": "りゅうがく",
+        "translation": "обучение за границей"
+      },
+      {
+        "word": "経済学",
+        "reading": "けいざいがく",
+        "translation": "политическая экономия"
+      },
+      {
+        "word": "化学",
+        "reading": "かがく",
+        "translation": "химия"
+      },
+      {
+        "word": "科学",
+        "reading": "かがく",
+        "translation": "наука"
+      },
+      {
+        "word": "数学",
+        "reading": "すうがく",
+        "translation": "математика"
+      },
+      {
+        "word": "医学",
+        "reading": "いがく",
+        "translation": "медицина"
+      },
+      {
+        "word": "科学者",
+        "reading": "かがくしゃ",
+        "translation": "учёный, научный работник"
+      },
+      {
+        "word": "学期",
+        "reading": "がっき",
+        "translation": "семестр"
+      },
+      {
+        "word": "心理学",
+        "reading": "しんりがく",
+        "translation": "психология"
+      },
+      {
+        "word": "考古学",
+        "reading": "こうこがく",
+        "translation": "археология"
+      },
+      {
+        "word": "大学卒",
+        "reading": "だいがくそつ",
+        "translation": "выпускник университета"
       }
     ]
   },
@@ -494,6 +934,31 @@
         "word": "先生",
         "reading": "せんせい",
         "translation": "учитель, преподаватель"
+      },
+      {
+        "word": "学生",
+        "reading": "がくせい",
+        "translation": "учащийся, студент; слушатель"
+      },
+      {
+        "word": "男子学生",
+        "reading": "だんしがくせい",
+        "translation": "студент; ученик"
+      },
+      {
+        "word": "生物",
+        "reading": "せいぶつ",
+        "translation": "живое существо"
+      },
+      {
+        "word": "生活",
+        "reading": "せいかつ",
+        "translation": "жизнь, существование; быт"
+      },
+      {
+        "word": "生産",
+        "reading": "せいさん",
+        "translation": "производство"
       }
     ]
   },
@@ -517,6 +982,11 @@
         "word": "先月",
         "reading": "せんげつ",
         "translation": "прошлый месяц"
+      },
+      {
+        "word": "先生",
+        "reading": "せんせい",
+        "translation": "учитель, преподаватель"
       }
     ]
   },
@@ -540,6 +1010,11 @@
         "word": "私立大学",
         "reading": "しりつだいがく",
         "translation": "частный университет"
+      },
+      {
+        "word": "私立",
+        "reading": "しりつ",
+        "translation": "частный"
       }
     ]
   },
@@ -568,6 +1043,51 @@
         "word": "一月",
         "reading": "いちがつ",
         "translation": "январь"
+      },
+      {
+        "word": "一万円",
+        "reading": "いちまんえん",
+        "translation": "10 000 иен"
+      },
+      {
+        "word": "一度",
+        "reading": "いちど",
+        "translation": "один раз"
+      },
+      {
+        "word": "一回",
+        "reading": "いっかい",
+        "translation": "один раз"
+      },
+      {
+        "word": "一割引き",
+        "reading": "いちわりびき",
+        "translation": "10% скидка"
+      },
+      {
+        "word": "一台",
+        "reading": "いちだい",
+        "translation": "одна машина; одна единица техники"
+      },
+      {
+        "word": "一個",
+        "reading": "いっこ",
+        "translation": "одна штука"
+      },
+      {
+        "word": "一位",
+        "reading": "いちい",
+        "translation": "высший ранг ; первое место"
+      },
+      {
+        "word": "第一位",
+        "reading": "だいいちい",
+        "translation": "первое место"
+      },
+      {
+        "word": "第一課",
+        "reading": "だいいっか",
+        "translation": "первый урок"
       }
     ]
   },
@@ -596,6 +1116,11 @@
         "word": "二月",
         "reading": "にがつ",
         "translation": "февраль"
+      },
+      {
+        "word": "二足",
+        "reading": "にそく",
+        "translation": "две ноги"
       }
     ]
   },
@@ -619,6 +1144,11 @@
         "word": "三月",
         "reading": "さんがつ",
         "translation": "март"
+      },
+      {
+        "word": "第三者",
+        "reading": "だいさんしゃ",
+        "translation": "третья сторона"
       }
     ]
   },
@@ -666,6 +1196,11 @@
         "word": "五人",
         "reading": "ごにん",
         "translation": "пять человек"
+      },
+      {
+        "word": "五分",
+        "reading": "ごぶ",
+        "translation": "половина; пятьдесят процентов"
       }
     ]
   },
@@ -797,6 +1332,11 @@
         "word": "百",
         "reading": "ひゃく",
         "translation": "сто"
+      },
+      {
+        "word": "百円",
+        "reading": "ひゃくえん",
+        "translation": "100 иен"
       }
     ]
   },
@@ -852,6 +1392,11 @@
         "word": "百円",
         "reading": "ひゃくえん",
         "translation": "100 иен"
+      },
+      {
+        "word": "一万円",
+        "reading": "いちまんえん",
+        "translation": "10 000 иен"
       }
     ]
   },
@@ -885,6 +1430,31 @@
         "word": "今年",
         "reading": "ことし",
         "translation": "этот год"
+      },
+      {
+        "word": "十年",
+        "reading": "じゅうねん",
+        "translation": "десять лет, десятилетие"
+      },
+      {
+        "word": "新年",
+        "reading": "しんねん",
+        "translation": "новый год"
+      },
+      {
+        "word": "少年",
+        "reading": "しょうねん",
+        "translation": "мальчик, подросток; малолетний"
+      },
+      {
+        "word": "青年",
+        "reading": "せいねん",
+        "translation": "юноша, молодой человек, юнец; молодёжь"
+      },
+      {
+        "word": "忘年会",
+        "reading": "ぼうねんかい",
+        "translation": "встреча Нового года"
       }
     ]
   },
@@ -914,6 +1484,26 @@
         "word": "上手",
         "reading": "じょうず",
         "translation": "умелый, искусный"
+      },
+      {
+        "word": "年上",
+        "reading": "としうえ",
+        "translation": "старший"
+      },
+      {
+        "word": "屋上",
+        "reading": "おくじょう",
+        "translation": "на крыше"
+      },
+      {
+        "word": "上品な",
+        "reading": "じょうひんな",
+        "translation": "превосходная вещь, вещь высшего качества"
+      },
+      {
+        "word": "以上",
+        "reading": "いじょう",
+        "translation": "более; свыше; выше"
       }
     ]
   },
@@ -943,6 +1533,26 @@
         "word": "地下",
         "reading": "ちか",
         "translation": "под землёй"
+      },
+      {
+        "word": "下手",
+        "reading": "へた",
+        "translation": "неумелый, неискусный, неловкий"
+      },
+      {
+        "word": "低下する",
+        "reading": "ていかする",
+        "translation": "падение, снижение"
+      },
+      {
+        "word": "地下鉄",
+        "reading": "ちかてつ",
+        "translation": "метро, метрополитен"
+      },
+      {
+        "word": "以下",
+        "reading": "いか",
+        "translation": "нижеследующее, дальнейшее"
       }
     ]
   },
@@ -966,6 +1576,31 @@
         "word": "中心",
         "reading": "ちゅうしん",
         "translation": "центр; середина; средоточие"
+      },
+      {
+        "word": "田中",
+        "reading": "たなか",
+        "translation": "Танака"
+      },
+      {
+        "word": "中古車",
+        "reading": "ちゅうこしゃ",
+        "translation": "бывшая в употреблении машина"
+      },
+      {
+        "word": "中止",
+        "reading": "ちゅうし",
+        "translation": "приостановка; прекращение; отмена"
+      },
+      {
+        "word": "田中様",
+        "reading": "たなかさま",
+        "translation": "господин/госпожа Танака"
+      },
+      {
+        "word": "集中",
+        "reading": "しゅうちゅう",
+        "translation": "сосредоточение, концентрация; централизация"
       }
     ]
   },
@@ -995,6 +1630,51 @@
         "word": "大切",
         "reading": "たいせつ",
         "translation": "важный; серьёзный; ценный"
+      },
+      {
+        "word": "女子大学",
+        "reading": "じょしだいがく",
+        "translation": "женский университет"
+      },
+      {
+        "word": "私立大学",
+        "reading": "しりつだいがく",
+        "translation": "частный университет"
+      },
+      {
+        "word": "国立大学",
+        "reading": "こくりつだいがく",
+        "translation": "государственный университет"
+      },
+      {
+        "word": "大切な",
+        "reading": "たいせつな",
+        "translation": "важный; серьёзный; ценный"
+      },
+      {
+        "word": "大学院",
+        "reading": "だいがくいん",
+        "translation": "научный институт при университете"
+      },
+      {
+        "word": "大阪府",
+        "reading": "おおさかふ",
+        "translation": "префектура Осака"
+      },
+      {
+        "word": "重大な",
+        "reading": "じゅうだいな",
+        "translation": "серьёзный"
+      },
+      {
+        "word": "大学卒",
+        "reading": "だいがくそつ",
+        "translation": "выпускник университета"
+      },
+      {
+        "word": "大変",
+        "reading": "たいへん",
+        "translation": "ужасный"
       }
     ]
   },
@@ -1018,6 +1698,11 @@
         "word": "小学校",
         "reading": "しょうがっこう",
         "translation": "начальная школа"
+      },
+      {
+        "word": "小説",
+        "reading": "しょうせつ",
+        "translation": "роман; повесть; рассказ"
       }
     ]
   },
@@ -1046,6 +1731,36 @@
         "word": "本日",
         "reading": "ほんじつ",
         "translation": "сего числа, сегодня"
+      },
+      {
+        "word": "日本人",
+        "reading": "にほんじん",
+        "translation": "японец, японка"
+      },
+      {
+        "word": "日本語",
+        "reading": "にほんご",
+        "translation": "японский язык"
+      },
+      {
+        "word": "本屋",
+        "reading": "ほんや",
+        "translation": "книжный магазин, книжная лавка"
+      },
+      {
+        "word": "日本史",
+        "reading": "にほんし",
+        "translation": "история Японии"
+      },
+      {
+        "word": "本当",
+        "reading": "ほんとう",
+        "translation": "правда"
+      },
+      {
+        "word": "資本",
+        "reading": "しほん",
+        "translation": "капитал"
       }
     ]
   },
@@ -1069,6 +1784,21 @@
         "word": "半分",
         "reading": "はんぶん",
         "translation": "половина"
+      },
+      {
+        "word": "前半",
+        "reading": "ぜんはん",
+        "translation": "первая половина"
+      },
+      {
+        "word": "後半",
+        "reading": "こうはん",
+        "translation": "вторая половина"
+      },
+      {
+        "word": "半島",
+        "reading": "はんとう",
+        "translation": "полуостров"
       }
     ]
   },
@@ -1099,6 +1829,36 @@
         "word": "五分",
         "reading": "ごぶ",
         "translation": "половина; пятьдесят процентов"
+      },
+      {
+        "word": "半分",
+        "reading": "はんぶん",
+        "translation": "половина"
+      },
+      {
+        "word": "気分",
+        "reading": "きぶん",
+        "translation": "самочувствие; расположение духа, настроение"
+      },
+      {
+        "word": "部分",
+        "reading": "ぶぶん",
+        "translation": "часть, доля"
+      },
+      {
+        "word": "自分",
+        "reading": "じぶん",
+        "translation": "сам"
+      },
+      {
+        "word": "分野",
+        "reading": "ぶんや",
+        "translation": "сфера влияния; арена действий"
+      },
+      {
+        "word": "分類",
+        "reading": "ぶんるい",
+        "translation": "классификация; сортировка"
       }
     ]
   },
@@ -1122,6 +1882,26 @@
         "word": "実力",
         "reading": "じつりょく",
         "translation": "реальная сила; реальные способности"
+      },
+      {
+        "word": "馬力",
+        "reading": "ばりき",
+        "translation": "лошадиная сила"
+      },
+      {
+        "word": "有力な",
+        "reading": "ゆうりょくな",
+        "translation": "влиятельный, веский; сильный"
+      },
+      {
+        "word": "引力",
+        "reading": "いんりょく",
+        "translation": "притяжение; сила тяготения, гравитация"
+      },
+      {
+        "word": "重力",
+        "reading": "じゅうりょく",
+        "translation": "тяжесть; сила тяжести; сила тяготения"
       }
     ]
   },
@@ -1164,6 +1944,16 @@
         "word": "明るい",
         "reading": "あかるい",
         "translation": "светлый"
+      },
+      {
+        "word": "明治",
+        "reading": "めいじ",
+        "translation": "эпоха Мэйдзи"
+      },
+      {
+        "word": "説明",
+        "reading": "せつめい",
+        "translation": "объяснение; толкование"
       }
     ]
   },
@@ -1187,6 +1977,11 @@
         "word": "休日",
         "reading": "きゅうじつ",
         "translation": "день отдыха, выходной день"
+      },
+      {
+        "word": "連休",
+        "reading": "れんきゅう",
+        "translation": "ряд праздников подряд"
       }
     ]
   },
@@ -1210,6 +2005,11 @@
         "word": "体育",
         "reading": "たいいく",
         "translation": "физическое воспитание, физкультура"
+      },
+      {
+        "word": "体重",
+        "reading": "たいじゅう",
+        "translation": "вес"
       }
     ]
   },
@@ -1251,6 +2051,11 @@
         "word": "男子学生",
         "reading": "だんしがくせい",
         "translation": "студент; ученик"
+      },
+      {
+        "word": "男性",
+        "reading": "だんせい",
+        "translation": "мужской пол, мужественность"
       }
     ]
   },
@@ -1268,6 +2073,11 @@
       {
         "word": "林",
         "reading": "はやし",
+        "translation": "лес"
+      },
+      {
+        "word": "森林",
+        "reading": "しんりん",
         "translation": "лес"
       }
     ]
@@ -1321,6 +2131,26 @@
         "word": "時間",
         "reading": "じかん",
         "translation": "час"
+      },
+      {
+        "word": "短時間",
+        "reading": "たんじかん",
+        "translation": "короткое время, краткий срок"
+      },
+      {
+        "word": "間違い",
+        "reading": "まちがい",
+        "translation": "ошибка"
+      },
+      {
+        "word": "間接",
+        "reading": "かんせつ",
+        "translation": "косвенный, непрямой"
+      },
+      {
+        "word": "期間",
+        "reading": "きかん",
+        "translation": "период, срок, отрезок времени; продолжительность"
       }
     ]
   },
@@ -1378,6 +2208,21 @@
         "word": "目次",
         "reading": "もくじ",
         "translation": "оглавление"
+      },
+      {
+        "word": "目薬",
+        "reading": "めぐすり",
+        "translation": "глазные капли"
+      },
+      {
+        "word": "目覚まし時計",
+        "reading": "めざましどけい",
+        "translation": "будильник"
+      },
+      {
+        "word": "目的",
+        "reading": "もくてき",
+        "translation": "цель"
       }
     ]
   },
@@ -1434,6 +2279,46 @@
         "word": "下手",
         "reading": "へた",
         "translation": "неумелый, неискусный, неловкий"
+      },
+      {
+        "word": "空手道",
+        "reading": "からてどう",
+        "translation": "путь каратэ"
+      },
+      {
+        "word": "歌手",
+        "reading": "かしゅ",
+        "translation": "певец, певица, вокалистка"
+      },
+      {
+        "word": "切手",
+        "reading": "きって",
+        "translation": "почтовая марка"
+      },
+      {
+        "word": "選手",
+        "reading": "せんしゅ",
+        "translation": "лучший игрок"
+      },
+      {
+        "word": "手当",
+        "reading": "てあて",
+        "translation": "пособие"
+      },
+      {
+        "word": "相手",
+        "reading": "あいて",
+        "translation": "партнёр, собеседник, компаньон, противник, объект"
+      },
+      {
+        "word": "手伝う",
+        "reading": "てつだう",
+        "translation": "помогать"
+      },
+      {
+        "word": "手術",
+        "reading": "しゅじゅつ",
+        "translation": "операция, хирургическое вмешательство"
       }
     ]
   },
@@ -1463,6 +2348,11 @@
         "word": "二足",
         "reading": "にそく",
         "translation": "две ноги"
+      },
+      {
+        "word": "遠足",
+        "reading": "えんそく",
+        "translation": "экскурсия ; дальняя прогулка; пикник"
       }
     ]
   },
@@ -1650,6 +2540,11 @@
         "word": "鳥肉",
         "reading": "とりにく",
         "translation": "куриное мясо"
+      },
+      {
+        "word": "焼肉",
+        "reading": "やきにく",
+        "translation": "якинику"
       }
     ]
   },
@@ -1677,6 +2572,26 @@
         "word": "注文",
         "reading": "ちゅうもん",
         "translation": "заказ"
+      },
+      {
+        "word": "作文",
+        "reading": "さくぶん",
+        "translation": "сочинение; одни слова"
+      },
+      {
+        "word": "文化",
+        "reading": "ぶんか",
+        "translation": "культура"
+      },
+      {
+        "word": "文房具",
+        "reading": "ぶんぼうぐ",
+        "translation": "письменные принадлежности"
+      },
+      {
+        "word": "論文",
+        "reading": "ろんぶん",
+        "translation": "сочинение; статья; трактат; труд; диссертация"
       }
     ]
   },
@@ -1732,6 +2647,61 @@
         "word": "荷物",
         "reading": "にもつ",
         "translation": "груз; багаж, вещи; товар"
+      },
+      {
+        "word": "食べ物",
+        "reading": "たべもの",
+        "translation": "еда, пища, кушанье, съестное"
+      },
+      {
+        "word": "飲み物",
+        "reading": "のみもの",
+        "translation": "напиток; питьё; пойло"
+      },
+      {
+        "word": "物語",
+        "reading": "ものがたり",
+        "translation": "рассказ, повесть"
+      },
+      {
+        "word": "着物",
+        "reading": "きもの",
+        "translation": "одежда; кимоно"
+      },
+      {
+        "word": "動物",
+        "reading": "どうぶつ",
+        "translation": "животное, зверь"
+      },
+      {
+        "word": "動物園",
+        "reading": "どうぶつえん",
+        "translation": "зоопарк, зоологический сад"
+      },
+      {
+        "word": "物理",
+        "reading": "ぶつり",
+        "translation": "закон природы"
+      },
+      {
+        "word": "果物",
+        "reading": "くだもの",
+        "translation": "фрукт"
+      },
+      {
+        "word": "品物",
+        "reading": "しなもの",
+        "translation": "товар; вещь"
+      },
+      {
+        "word": "物価",
+        "reading": "ぶっか",
+        "translation": "цены на потребительские товары"
+      },
+      {
+        "word": "忘れ物",
+        "reading": "わすれもの",
+        "translation": "забытая вещь"
       }
     ]
   },
@@ -1755,6 +2725,11 @@
         "word": "牛乳",
         "reading": "ぎゅうにゅう",
         "translation": "коровье молоко"
+      },
+      {
+        "word": "牛肉",
+        "reading": "ぎゅうにく",
+        "translation": "говядина, мясо"
       }
     ]
   },
@@ -1801,6 +2776,11 @@
         "word": "白鳥",
         "reading": "はくちょう",
         "translation": "малый лебедь, Cygnus bewickii jankowskii"
+      },
+      {
+        "word": "鳥肉",
+        "reading": "とりにく",
+        "translation": "куриное мясо"
       }
     ]
   },
@@ -1875,6 +2855,11 @@
         "word": "中古車",
         "reading": "ちゅうこしゃ",
         "translation": "бывшая в употреблении машина"
+      },
+      {
+        "word": "考古学",
+        "reading": "こうこがく",
+        "translation": "археология"
       }
     ]
   },
@@ -1898,6 +2883,21 @@
         "word": "社長",
         "reading": "しゃちょう",
         "translation": "директор"
+      },
+      {
+        "word": "校長",
+        "reading": "こうちょう",
+        "translation": "директор"
+      },
+      {
+        "word": "町長",
+        "reading": "ちょうちょう",
+        "translation": "мэр города"
+      },
+      {
+        "word": "村長",
+        "reading": "そんちょう",
+        "translation": "деревенский староста"
       }
     ]
   },
@@ -1944,6 +2944,16 @@
         "word": "高校",
         "reading": "こうこう",
         "translation": "старшая школа"
+      },
+      {
+        "word": "高価な",
+        "reading": "こうかな",
+        "translation": "высокая цена"
+      },
+      {
+        "word": "高原",
+        "reading": "こうげん",
+        "translation": "плоскогорье, плато, плоская возвышенность"
       }
     ]
   },
@@ -1995,6 +3005,11 @@
         "word": "低下する",
         "reading": "ていかする",
         "translation": "падение, снижение"
+      },
+      {
+        "word": "最低",
+        "reading": "さいてい",
+        "translation": "минимально, как минимум; самое меньшее"
       }
     ]
   },
@@ -2075,6 +3090,16 @@
         "word": "少女",
         "reading": "しょうじょ",
         "translation": "девушка, девица"
+      },
+      {
+        "word": "少々",
+        "reading": "しょうしょう",
+        "translation": "чуть-чуть; немножко"
+      },
+      {
+        "word": "減少する",
+        "reading": "げんしょうする",
+        "translation": "уменьшение, сокращение, снижение"
       }
     ]
   },
@@ -2104,6 +3129,36 @@
         "word": "旅行",
         "reading": "りょこう",
         "translation": "путешествие, поездка"
+      },
+      {
+        "word": "歩行者",
+        "reading": "ほこうしゃ",
+        "translation": "пешеход"
+      },
+      {
+        "word": "行動する",
+        "reading": "こうどうする",
+        "translation": "действия, поступок; поведение"
+      },
+      {
+        "word": "流行",
+        "reading": "りゅうこう",
+        "translation": "мода"
+      },
+      {
+        "word": "銀行",
+        "reading": "ぎんこう",
+        "translation": "банк"
+      },
+      {
+        "word": "飛行機",
+        "reading": "ひこうき",
+        "translation": "самолёт"
+      },
+      {
+        "word": "非行",
+        "reading": "ひこう",
+        "translation": "дурной поступок; дурное поведение"
       }
     ]
   },
@@ -2183,6 +3238,56 @@
         "word": "食べ物",
         "reading": "たべもの",
         "translation": "еда, пища, кушанье, съестное"
+      },
+      {
+        "word": "朝食",
+        "reading": "ちょうしょく",
+        "translation": "завтрак"
+      },
+      {
+        "word": "昼食",
+        "reading": "ちゅうじき",
+        "translation": "второй завтрак"
+      },
+      {
+        "word": "夜食",
+        "reading": "やしょく",
+        "translation": "ужин"
+      },
+      {
+        "word": "夕食",
+        "reading": "ゆうしょく",
+        "translation": "ужин"
+      },
+      {
+        "word": "食べ方",
+        "reading": "たべかた",
+        "translation": "способ приготовления ; как надо готовить"
+      },
+      {
+        "word": "定食",
+        "reading": "ていしょく",
+        "translation": "регулярное питание; постоянная диета"
+      },
+      {
+        "word": "洋食",
+        "reading": "ようしょく",
+        "translation": "европейский стол, европейская кухня"
+      },
+      {
+        "word": "和食",
+        "reading": "わしょく",
+        "translation": "японская еда"
+      },
+      {
+        "word": "食器",
+        "reading": "しょっき",
+        "translation": "посуда; столовый прибор"
+      },
+      {
+        "word": "軽食",
+        "reading": "けいしょく",
+        "translation": "лёгкая закуска"
       }
     ]
   },
@@ -2246,6 +3351,11 @@
         "word": "意見",
         "reading": "いけん",
         "translation": "мнение, взгляд, точка зрения"
+      },
+      {
+        "word": "見送る",
+        "reading": "みおくる",
+        "translation": "провожать"
       }
     ]
   },
@@ -2321,6 +3431,31 @@
         "word": "書道",
         "reading": "しょどう",
         "translation": "каллиграфия"
+      },
+      {
+        "word": "教科書",
+        "reading": "きょうかしょ",
+        "translation": "учебник, учебное пособие"
+      },
+      {
+        "word": "投書する",
+        "reading": "とうしょする",
+        "translation": "посылка корреспонденции"
+      },
+      {
+        "word": "願書",
+        "reading": "がんしょ",
+        "translation": "прошение, заявление"
+      },
+      {
+        "word": "辞書",
+        "reading": "じしょ",
+        "translation": "фонетический словарь"
+      },
+      {
+        "word": "書類",
+        "reading": "しょるい",
+        "translation": "документы, бумаги"
       }
     ]
   },
@@ -2355,6 +3490,16 @@
         "word": "電話",
         "reading": "でんわ",
         "translation": "телефон; разговор по телефону"
+      },
+      {
+        "word": "話題",
+        "reading": "わだい",
+        "translation": "тема разговора"
+      },
+      {
+        "word": "話し合う",
+        "reading": "はなしあう",
+        "translation": "разговаривать, беседовать"
       }
     ]
   },
@@ -2406,6 +3551,11 @@
         "word": "教室",
         "reading": "きょうしつ",
         "translation": "класс, аудитория"
+      },
+      {
+        "word": "教科書",
+        "reading": "きょうかしょ",
+        "translation": "учебник, учебное пособие"
       }
     ]
   },
@@ -2428,6 +3578,11 @@
       {
         "word": "朝食",
         "reading": "ちょうしょく",
+        "translation": "завтрак"
+      },
+      {
+        "word": "朝ご飯",
+        "reading": "あさごはん",
         "translation": "завтрак"
       }
     ]
@@ -2480,6 +3635,11 @@
         "word": "今夜",
         "reading": "こんや",
         "translation": "сегодняшний вечер; сегодняшняя ночь"
+      },
+      {
+        "word": "深夜",
+        "reading": "しんや",
+        "translation": "поздняя ночь"
       }
     ]
   },
@@ -2527,6 +3687,11 @@
         "word": "夕食",
         "reading": "ゆうしょく",
         "translation": "ужин"
+      },
+      {
+        "word": "夕方",
+        "reading": "ゆうがた",
+        "translation": "вечер, сумерки"
       }
     ]
   },
@@ -2555,6 +3720,16 @@
         "word": "方法",
         "reading": "ほうほう",
         "translation": "способ, метод; средство, мера"
+      },
+      {
+        "word": "方向",
+        "reading": "ほうこう",
+        "translation": "направление, сторона; курс, цель"
+      },
+      {
+        "word": "両方",
+        "reading": "りょうほう",
+        "translation": "оба; обе стороны"
       }
     ]
   },
@@ -2599,6 +3774,16 @@
         "word": "前半",
         "reading": "ぜんはん",
         "translation": "первая половина"
+      },
+      {
+        "word": "午前",
+        "reading": "ごぜん",
+        "translation": "до полудня"
+      },
+      {
+        "word": "名前",
+        "reading": "なまえ",
+        "translation": "имя"
       }
     ]
   },
@@ -2629,6 +3814,11 @@
         "word": "後半",
         "reading": "こうはん",
         "translation": "вторая половина"
+      },
+      {
+        "word": "午後",
+        "reading": "ごご",
+        "translation": "после полудня"
       }
     ]
   },
@@ -2677,6 +3867,31 @@
         "word": "月曜日",
         "reading": "げつようび",
         "translation": "понедельник"
+      },
+      {
+        "word": "木曜日",
+        "reading": "もくようび",
+        "translation": "четверг"
+      },
+      {
+        "word": "火曜日",
+        "reading": "かようび",
+        "translation": "вторник"
+      },
+      {
+        "word": "水曜日",
+        "reading": "すいようび",
+        "translation": "среда"
+      },
+      {
+        "word": "金曜日",
+        "reading": "きんようび",
+        "translation": "пятница"
+      },
+      {
+        "word": "土曜日",
+        "reading": "どようび",
+        "translation": "суббота"
       }
     ]
   },
@@ -2705,6 +3920,11 @@
         "word": "作品",
         "reading": "さくひん",
         "translation": "художественное произведение; работа, творчество"
+      },
+      {
+        "word": "作曲家",
+        "reading": "さっきょくか",
+        "translation": "композитор"
       }
     ]
   },
@@ -2774,6 +3994,11 @@
         "word": "海外",
         "reading": "かいがい",
         "translation": "заморский, заокеанский; заграничный"
+      },
+      {
+        "word": "北海道",
+        "reading": "ほっかいどう",
+        "translation": "Хоккайдо"
       }
     ]
   },
@@ -2820,6 +4045,11 @@
         "word": "招待",
         "reading": "しょうたい",
         "translation": "приглашение"
+      },
+      {
+        "word": "期待",
+        "reading": "きたい",
+        "translation": "ожидания, надежды"
       }
     ]
   },
@@ -2841,6 +4071,16 @@
         "word": "校長",
         "reading": "こうちょう",
         "translation": "директор"
+      },
+      {
+        "word": "小学校",
+        "reading": "しょうがっこう",
+        "translation": "начальная школа"
+      },
+      {
+        "word": "高校",
+        "reading": "こうこう",
+        "translation": "старшая школа"
       }
     ]
   },
@@ -2864,6 +4104,31 @@
         "word": "時間",
         "reading": "じかん",
         "translation": "час"
+      },
+      {
+        "word": "短時間",
+        "reading": "たんじかん",
+        "translation": "короткое время, краткий срок"
+      },
+      {
+        "word": "時計",
+        "reading": "とけい",
+        "translation": "часы"
+      },
+      {
+        "word": "同時",
+        "reading": "どうじ",
+        "translation": "то же время, тот же час; одновременность, синхронность"
+      },
+      {
+        "word": "目覚まし時計",
+        "reading": "めざましどけい",
+        "translation": "будильник"
+      },
+      {
+        "word": "時代",
+        "reading": "じだい",
+        "translation": "эпоха, период, век; времена, годы"
       }
     ]
   },
@@ -2926,6 +4191,16 @@
         "word": "計画",
         "reading": "けいかく",
         "translation": "план, проект; программа; намерение; расчёт"
+      },
+      {
+        "word": "合計",
+        "reading": "ごうけい",
+        "translation": "итог"
+      },
+      {
+        "word": "目覚まし時計",
+        "reading": "めざましどけい",
+        "translation": "будильник"
       }
     ]
   },
@@ -2954,6 +4229,21 @@
         "word": "物語",
         "reading": "ものがたり",
         "translation": "рассказ, повесть"
+      },
+      {
+        "word": "言語",
+        "reading": "げんご",
+        "translation": "язык, речь; слова"
+      },
+      {
+        "word": "英語",
+        "reading": "えいご",
+        "translation": "английский язык"
+      },
+      {
+        "word": "単語",
+        "reading": "たんご",
+        "translation": "простое слово"
       }
     ]
   },
@@ -2977,6 +4267,11 @@
         "word": "朝ご飯",
         "reading": "あさごはん",
         "translation": "завтрак"
+      },
+      {
+        "word": "晩御飯",
+        "reading": "ばんごはん",
+        "translation": "ужин"
       }
     ]
   },
@@ -3009,6 +4304,11 @@
         "word": "客",
         "reading": "きゃく",
         "translation": "гость; клиент"
+      },
+      {
+        "word": "乗客",
+        "reading": "じょうきゃく",
+        "translation": "пассажир"
       }
     ]
   },
@@ -3030,6 +4330,16 @@
         "word": "室内",
         "reading": "しつない",
         "translation": "внутри комнаты; в закрытом помещении"
+      },
+      {
+        "word": "寝室",
+        "reading": "しんしつ",
+        "translation": "спальня; спальная каюта"
+      },
+      {
+        "word": "個室",
+        "reading": "こしつ",
+        "translation": "отдельная комната"
       }
     ]
   },
@@ -3053,6 +4363,26 @@
         "word": "家族",
         "reading": "かぞく",
         "translation": "семья, семейство"
+      },
+      {
+        "word": "政治家",
+        "reading": "せいじか",
+        "translation": "политик, политический деятель"
+      },
+      {
+        "word": "画家",
+        "reading": "がか",
+        "translation": "художник, живописец"
+      },
+      {
+        "word": "家具",
+        "reading": "かぐ",
+        "translation": "мебель, обстановка"
+      },
+      {
+        "word": "作曲家",
+        "reading": "さっきょくか",
+        "translation": "композитор"
       }
     ]
   },
@@ -3125,6 +4455,46 @@
         "word": "会話",
         "reading": "かいわ",
         "translation": "разговор"
+      },
+      {
+        "word": "社会",
+        "reading": "しゃかい",
+        "translation": "общество; свет, мир; публика"
+      },
+      {
+        "word": "送別会",
+        "reading": "そうべつかい",
+        "translation": "прощальный вечер"
+      },
+      {
+        "word": "会議",
+        "reading": "かいぎ",
+        "translation": "совещание, конференция; заседание; сессия; совет"
+      },
+      {
+        "word": "会談",
+        "reading": "かいだん",
+        "translation": "разговор, беседа; переговоры"
+      },
+      {
+        "word": "機会",
+        "reading": "きかい",
+        "translation": "благоприятный случай, шанс, возможность; удобный момент"
+      },
+      {
+        "word": "同窓会",
+        "reading": "どうそうかい",
+        "translation": "общество бывших соучеников"
+      },
+      {
+        "word": "忘年会",
+        "reading": "ぼうねんかい",
+        "translation": "встреча Нового года"
+      },
+      {
+        "word": "会員制",
+        "reading": "かいいんせい",
+        "translation": "система членства"
       }
     ]
   },
@@ -3158,6 +4528,21 @@
         "word": "今日",
         "reading": "きょう",
         "translation": "сегодня; этот день"
+      },
+      {
+        "word": "今夜",
+        "reading": "こんや",
+        "translation": "сегодняшний вечер; сегодняшняя ночь"
+      },
+      {
+        "word": "今晩",
+        "reading": "こんばん",
+        "translation": "этот вечер"
+      },
+      {
+        "word": "今度",
+        "reading": "こんど",
+        "translation": "на этот раз"
       }
     ]
   },
@@ -3215,6 +4600,16 @@
         "word": "電話",
         "reading": "でんわ",
         "translation": "телефон; разговор по телефону"
+      },
+      {
+        "word": "電車",
+        "reading": "でんしゃ",
+        "translation": "трамвай"
+      },
+      {
+        "word": "電報",
+        "reading": "でんぽう",
+        "translation": "телеграмма"
       }
     ]
   },
@@ -3238,6 +4633,16 @@
         "word": "売り場",
         "reading": "うりば",
         "translation": "прилавок; лавка, магазин; аукционный зал"
+      },
+      {
+        "word": "商売",
+        "reading": "しょうばい",
+        "translation": "торговля, дело"
+      },
+      {
+        "word": "発売",
+        "reading": "はつばい",
+        "translation": "продажа; выпуск в продажу"
       }
     ]
   },
@@ -3284,6 +4689,16 @@
         "word": "店員",
         "reading": "てんいん",
         "translation": "продавец, приказчик; клерк; приёмщик заказов"
+      },
+      {
+        "word": "開店する",
+        "reading": "かいてんする",
+        "translation": "открытие нового магазина"
+      },
+      {
+        "word": "閉店する",
+        "reading": "へいてんする",
+        "translation": "закрывать магазин"
       }
     ]
   },
@@ -3315,6 +4730,11 @@
         "word": "速度",
         "reading": "そくど",
         "translation": "скорость; темп"
+      },
+      {
+        "word": "制度",
+        "reading": "せいど",
+        "translation": "система; режим, строй; статут; организация, институт"
       }
     ]
   },
@@ -3382,6 +4802,11 @@
         "word": "頭痛",
         "reading": "ずつう",
         "translation": "головная боль; забота, беспокойство"
+      },
+      {
+        "word": "苦痛",
+        "reading": "くつう",
+        "translation": "боль; мука, страдание"
       }
     ]
   },
@@ -3405,6 +4830,16 @@
         "word": "屋上",
         "reading": "おくじょう",
         "translation": "на крыше"
+      },
+      {
+        "word": "部屋",
+        "reading": "へや",
+        "translation": "комната; номер"
+      },
+      {
+        "word": "部屋代",
+        "reading": "へやだい",
+        "translation": "плата за комнату"
       }
     ]
   },
@@ -3433,6 +4868,46 @@
         "word": "国立大学",
         "reading": "こくりつだいがく",
         "translation": "государственный университет"
+      },
+      {
+        "word": "帰国する",
+        "reading": "きこくする",
+        "translation": "возвращение на родину; репатриация"
+      },
+      {
+        "word": "母国",
+        "reading": "ぼこく",
+        "translation": "родина"
+      },
+      {
+        "word": "外国",
+        "reading": "がいこく",
+        "translation": "иностранное государство; зарубежные страны, заграница"
+      },
+      {
+        "word": "国内",
+        "reading": "こくない",
+        "translation": "внутригосударственный, внутренний"
+      },
+      {
+        "word": "国立",
+        "reading": "こくりつ",
+        "translation": "национальный, государственный"
+      },
+      {
+        "word": "天国",
+        "reading": "てんごく",
+        "translation": "рай, царство небесное; рай"
+      },
+      {
+        "word": "国々",
+        "reading": "くにぐに",
+        "translation": "страны"
+      },
+      {
+        "word": "国民",
+        "reading": "こくみん",
+        "translation": "народ, нация"
       }
     ]
   },
@@ -3462,6 +4937,11 @@
         "word": "一回",
         "reading": "いっかい",
         "translation": "один раз"
+      },
+      {
+        "word": "次回",
+        "reading": "じかい",
+        "translation": "следующий раз"
       }
     ]
   },
@@ -3484,6 +4964,11 @@
       {
         "word": "困難",
         "reading": "こんなん",
+        "translation": "трудности; затруднения, сложности"
+      },
+      {
+        "word": "困難な",
+        "reading": "こんなんな",
         "translation": "трудности; затруднения, сложности"
       }
     ]
@@ -3515,6 +5000,11 @@
         "word": "開店する",
         "reading": "かいてんする",
         "translation": "открытие нового магазина"
+      },
+      {
+        "word": "開始",
+        "reading": "かいし",
+        "translation": "начало, открытие"
       }
     ]
   },
@@ -3573,6 +5063,11 @@
         "word": "近所",
         "reading": "きんじょ",
         "translation": "близлежащая местность; окрестности; округа"
+      },
+      {
+        "word": "最近",
+        "reading": "さいきん",
+        "translation": "ближайший"
       }
     ]
   },
@@ -3676,6 +5171,46 @@
         "word": "空手道",
         "reading": "からてどう",
         "translation": "путь каратэ"
+      },
+      {
+        "word": "書道",
+        "reading": "しょどう",
+        "translation": "каллиграфия"
+      },
+      {
+        "word": "北海道",
+        "reading": "ほっかいどう",
+        "translation": "Хоккайдо"
+      },
+      {
+        "word": "鉄道",
+        "reading": "てつどう",
+        "translation": "железная дорога; железнодорожная линия"
+      },
+      {
+        "word": "都道府県",
+        "reading": "とどうふけん",
+        "translation": "столица, области и префектуры"
+      },
+      {
+        "word": "道路",
+        "reading": "どうろ",
+        "translation": "дорога, шоссе; магистраль; улица"
+      },
+      {
+        "word": "道具",
+        "reading": "どうぐ",
+        "translation": "рабочий инструмент, орудие; снасти; средство, орудие"
+      },
+      {
+        "word": "報道",
+        "reading": "ほうどう",
+        "translation": "сообщение, информация"
+      },
+      {
+        "word": "歩道橋",
+        "reading": "ほどうきょう",
+        "translation": "пешеходный мост"
       }
     ]
   },
@@ -3699,6 +5234,11 @@
         "word": "青年",
         "reading": "せいねん",
         "translation": "юноша, молодой человек, юнец; молодёжь"
+      },
+      {
+        "word": "青春",
+        "reading": "せいしゅん",
+        "translation": "весна жизни, юность"
       }
     ]
   },
@@ -3740,6 +5280,11 @@
         "word": "静かな",
         "reading": "しずかな",
         "translation": "тихий"
+      },
+      {
+        "word": "冷静な",
+        "reading": "れいせいな",
+        "translation": "хладнокровие, спокойствие, присутствие духа"
       }
     ]
   },
@@ -3781,6 +5326,11 @@
         "word": "気持ち",
         "reading": "きもち",
         "translation": "чувство"
+      },
+      {
+        "word": "持ち主",
+        "reading": "もちぬし",
+        "translation": "владелец, хозяин; обладатель"
       }
     ]
   },
@@ -3980,6 +5530,11 @@
         "word": "弟子",
         "reading": "でし",
         "translation": "ученик; последователь"
+      },
+      {
+        "word": "兄弟",
+        "reading": "きょうだい",
+        "translation": "сестра; сёстры"
       }
     ]
   },
@@ -3998,6 +5553,11 @@
         "word": "妹",
         "reading": "いもうと",
         "translation": "младшая; сестра"
+      },
+      {
+        "word": "姉妹",
+        "reading": "しまい",
+        "translation": "сёстры"
       }
     ]
   },
@@ -4160,6 +5720,26 @@
         "word": "病気",
         "reading": "びょうき",
         "translation": "болезнь, заболевание"
+      },
+      {
+        "word": "電気",
+        "reading": "でんき",
+        "translation": "электричество"
+      },
+      {
+        "word": "元気な",
+        "reading": "げんきな",
+        "translation": "бодрость, живость, энергия, темперамент, хорошее настроение"
+      },
+      {
+        "word": "天気予報",
+        "reading": "てんきよほう",
+        "translation": "прогноз погоды"
+      },
+      {
+        "word": "空気",
+        "reading": "くうき",
+        "translation": "воздух; атмосфера"
       }
     ]
   },
@@ -4183,6 +5763,11 @@
         "word": "有力な",
         "reading": "ゆうりょくな",
         "translation": "влиятельный, веский; сильный"
+      },
+      {
+        "word": "有効",
+        "reading": "ゆうこう",
+        "translation": "действительный, имеющий силу, действующий; эффективный"
       }
     ]
   },
@@ -4201,6 +5786,11 @@
         "word": "名前",
         "reading": "なまえ",
         "translation": "имя"
+      },
+      {
+        "word": "有名な",
+        "reading": "ゆうめいな",
+        "translation": "знаменитый, известный"
       }
     ]
   },
@@ -4230,6 +5820,11 @@
         "word": "親切な",
         "reading": "しんせつな",
         "translation": "сердечность; доброта; любезность"
+      },
+      {
+        "word": "両親",
+        "reading": "りょうしん",
+        "translation": "родители"
       }
     ]
   },
@@ -4263,6 +5858,16 @@
         "word": "大切な",
         "reading": "たいせつな",
         "translation": "важный; серьёзный; ценный"
+      },
+      {
+        "word": "大切",
+        "reading": "たいせつ",
+        "translation": "важный; серьёзный; ценный"
+      },
+      {
+        "word": "親切な",
+        "reading": "しんせつな",
+        "translation": "сердечность; доброта; любезность"
       }
     ]
   },
@@ -4285,6 +5890,11 @@
         "word": "便利な",
         "reading": "べんりな",
         "translation": "удобство"
+      },
+      {
+        "word": "不便な",
+        "reading": "ふべんな",
+        "translation": "неудобство"
       }
     ]
   },
@@ -4301,6 +5911,11 @@
         "word": "利用する",
         "reading": "りようする",
         "translation": "использование"
+      },
+      {
+        "word": "便利な",
+        "reading": "べんりな",
+        "translation": "удобство"
       }
     ]
   },
@@ -4404,6 +6019,26 @@
         "word": "外出",
         "reading": "がいしゅつ",
         "translation": "уход из дому ); отлучка"
+      },
+      {
+        "word": "思い出す",
+        "reading": "おもいだす",
+        "translation": "вспоминать"
+      },
+      {
+        "word": "出席",
+        "reading": "しゅっせき",
+        "translation": "присутствие ; посещение"
+      },
+      {
+        "word": "出発",
+        "reading": "しゅっぱつ",
+        "translation": "отправление, выход, отход ; отлёт, вылет ; отъезд, выезд"
+      },
+      {
+        "word": "引き出し",
+        "reading": "ひきだし",
+        "translation": "выдвижной ящик"
       }
     ]
   },
@@ -4433,6 +6068,16 @@
         "word": "入学する",
         "reading": "にゅうがくする",
         "translation": "поступление в школу )"
+      },
+      {
+        "word": "入口",
+        "reading": "いりぐち",
+        "translation": "вход"
+      },
+      {
+        "word": "押し入れ",
+        "reading": "おしいれ",
+        "translation": "стенной шкаф"
       }
     ]
   },
@@ -4574,6 +6219,21 @@
         "word": "交通",
         "reading": "こうつう",
         "translation": "сообщение, связь; коммуникации"
+      },
+      {
+        "word": "通信",
+        "reading": "つうしん",
+        "translation": "сообщение, информация"
+      },
+      {
+        "word": "通過する",
+        "reading": "つうかする",
+        "translation": "прохождение; проезд; следование"
+      },
+      {
+        "word": "共通の",
+        "reading": "きょうつうの",
+        "translation": "общность"
       }
     ]
   },
@@ -4592,6 +6252,11 @@
         "word": "走る",
         "reading": "はしる",
         "translation": "бежать бегом"
+      },
+      {
+        "word": "脱走",
+        "reading": "だっそう",
+        "translation": "побег, бегство; дезертирство"
       }
     ]
   },
@@ -4620,6 +6285,16 @@
         "word": "歩行者",
         "reading": "ほこうしゃ",
         "translation": "пешеход"
+      },
+      {
+        "word": "歩道橋",
+        "reading": "ほどうきょう",
+        "translation": "пешеходный мост"
+      },
+      {
+        "word": "進歩する",
+        "reading": "しんぽする",
+        "translation": "прогресс"
       }
     ]
   },
@@ -4649,6 +6324,11 @@
         "word": "中止",
         "reading": "ちゅうし",
         "translation": "приостановка; прекращение; отмена"
+      },
+      {
+        "word": "痛み止め",
+        "reading": "いたみどめ",
+        "translation": "обезболивающее"
       }
     ]
   },
@@ -4683,6 +6363,31 @@
         "word": "動物",
         "reading": "どうぶつ",
         "translation": "животное, зверь"
+      },
+      {
+        "word": "自動車",
+        "reading": "じどうしゃ",
+        "translation": "автомобиль, автомашина"
+      },
+      {
+        "word": "動物園",
+        "reading": "どうぶつえん",
+        "translation": "зоопарк, зоологический сад"
+      },
+      {
+        "word": "活動",
+        "reading": "かつどう",
+        "translation": "деятельность, активность; действие, работа"
+      },
+      {
+        "word": "運動",
+        "reading": "うんどう",
+        "translation": "движение"
+      },
+      {
+        "word": "移動する",
+        "reading": "いどうする",
+        "translation": "движение, передвижение; перемещение; передвижной"
       }
     ]
   },
@@ -4747,6 +6452,11 @@
         "word": "左",
         "reading": "ひだり",
         "translation": "лево"
+      },
+      {
+        "word": "左右",
+        "reading": "さゆう",
+        "translation": "левый и правый"
       }
     ]
   },
@@ -4770,6 +6480,11 @@
         "word": "東京",
         "reading": "とうきょう",
         "translation": "Токио"
+      },
+      {
+        "word": "東京都",
+        "reading": "とうきょうと",
+        "translation": "мегаполис Токио"
       }
     ]
   },
@@ -4874,6 +6589,21 @@
         "word": "外国",
         "reading": "がいこく",
         "translation": "иностранное государство; зарубежные страны, заграница"
+      },
+      {
+        "word": "海外",
+        "reading": "かいがい",
+        "translation": "заморский, заокеанский; заграничный"
+      },
+      {
+        "word": "外国人",
+        "reading": "がいこくじん",
+        "translation": "иностранец, иностранка"
+      },
+      {
+        "word": "外出",
+        "reading": "がいしゅつ",
+        "translation": "уход из дому ); отлучка"
       }
     ]
   },
@@ -4897,6 +6627,16 @@
         "word": "国内",
         "reading": "こくない",
         "translation": "внутригосударственный, внутренний"
+      },
+      {
+        "word": "室内",
+        "reading": "しつない",
+        "translation": "внутри комнаты; в закрытом помещении"
+      },
+      {
+        "word": "案内",
+        "reading": "あんない",
+        "translation": "провожать ; показывать"
       }
     ]
   },
@@ -4923,6 +6663,26 @@
         "word": "部分",
         "reading": "ぶぶん",
         "translation": "часть, доля"
+      },
+      {
+        "word": "頭部",
+        "reading": "とうぶ",
+        "translation": "голова"
+      },
+      {
+        "word": "部屋代",
+        "reading": "へやだい",
+        "translation": "плата за комнату"
+      },
+      {
+        "word": "細部",
+        "reading": "さいぶ",
+        "translation": "детали, подробности"
+      },
+      {
+        "word": "全部",
+        "reading": "ぜんぶ",
+        "translation": "все, всё, всё целиком; полностью"
       }
     ]
   },
@@ -4960,6 +6720,16 @@
         "word": "神社",
         "reading": "じんじゃ",
         "translation": "синтоистский храм"
+      },
+      {
+        "word": "社長",
+        "reading": "しゃちょう",
+        "translation": "директор"
+      },
+      {
+        "word": "会社",
+        "reading": "かいしゃ",
+        "translation": "компания, общество, фирма"
       }
     ]
   },
@@ -4981,6 +6751,11 @@
         "word": "大学院",
         "reading": "だいがくいん",
         "translation": "научный институт при университете"
+      },
+      {
+        "word": "美容院",
+        "reading": "びよういん",
+        "translation": "институт красоты"
       }
     ]
   },
@@ -5002,6 +6777,26 @@
         "word": "観光地",
         "reading": "かんこうち",
         "translation": "местность, посещаемая туристами"
+      },
+      {
+        "word": "地下鉄",
+        "reading": "ちかてつ",
+        "translation": "метро, метрополитен"
+      },
+      {
+        "word": "地図",
+        "reading": "ちず",
+        "translation": "карта; план ; атлас"
+      },
+      {
+        "word": "遊園地",
+        "reading": "ゆうえんち",
+        "translation": "парк; площадка для игр"
+      },
+      {
+        "word": "地位",
+        "reading": "ちい",
+        "translation": "местонахождение"
       }
     ]
   },
@@ -5049,6 +6844,11 @@
         "word": "工事",
         "reading": "こうじ",
         "translation": "работы"
+      },
+      {
+        "word": "工業",
+        "reading": "こうぎょう",
+        "translation": "промышленность, индустрия"
       }
     ]
   },
@@ -5077,6 +6877,26 @@
         "word": "野球場",
         "reading": "やきゅうじょう",
         "translation": "бейсбольная площадка"
+      },
+      {
+        "word": "売り場",
+        "reading": "うりば",
+        "translation": "прилавок; лавка, магазин; аукционный зал"
+      },
+      {
+        "word": "工場",
+        "reading": "こうじょう",
+        "translation": "фабрика, завод; мастерская"
+      },
+      {
+        "word": "市場",
+        "reading": "いちば",
+        "translation": "рынок, базар"
+      },
+      {
+        "word": "立場",
+        "reading": "たちば",
+        "translation": "почва под ногами"
       }
     ]
   },
@@ -5143,6 +6963,16 @@
         "word": "動物園",
         "reading": "どうぶつえん",
         "translation": "зоопарк, зоологический сад"
+      },
+      {
+        "word": "公園",
+        "reading": "こうえん",
+        "translation": "городской парк"
+      },
+      {
+        "word": "遊園地",
+        "reading": "ゆうえんち",
+        "translation": "парк; площадка для игр"
       }
     ]
   },
@@ -5194,6 +7024,26 @@
         "word": "研究所",
         "reading": "けんきゅうじょ",
         "translation": "научно-исследовательский институт; лаборатория"
+      },
+      {
+        "word": "近所",
+        "reading": "きんじょ",
+        "translation": "близлежащая местность; окрестности; округа"
+      },
+      {
+        "word": "場所",
+        "reading": "ばしょ",
+        "translation": "место"
+      },
+      {
+        "word": "住所",
+        "reading": "じゅうしょ",
+        "translation": "местожительство; адрес"
+      },
+      {
+        "word": "洗面所",
+        "reading": "せんめんじょ",
+        "translation": "умывальная; уборная, туалет"
       }
     ]
   },
@@ -5231,6 +7081,11 @@
         "word": "信号",
         "reading": "しんごう",
         "translation": "сигнал, знак; сигнализация"
+      },
+      {
+        "word": "番号",
+        "reading": "ばんごう",
+        "translation": "номер"
       }
     ]
   },
@@ -5254,6 +7109,11 @@
         "word": "市場",
         "reading": "いちば",
         "translation": "рынок, базар"
+      },
+      {
+        "word": "市民",
+        "reading": "しみん",
+        "translation": "горожане, население города; горожанин, горожанка"
       }
     ]
   },
@@ -5332,6 +7192,21 @@
         "word": "東京都",
         "reading": "とうきょうと",
         "translation": "мегаполис Токио"
+      },
+      {
+        "word": "京都府",
+        "reading": "きょうとふ",
+        "translation": "префектура Киото"
+      },
+      {
+        "word": "都道府県",
+        "reading": "とどうふけん",
+        "translation": "столица, области и префектуры"
+      },
+      {
+        "word": "京都",
+        "reading": "きょうと",
+        "translation": "Киото"
       }
     ]
   },
@@ -5353,6 +7228,16 @@
         "word": "大阪府",
         "reading": "おおさかふ",
         "translation": "префектура Осака"
+      },
+      {
+        "word": "都道府県",
+        "reading": "とどうふけん",
+        "translation": "столица, области и префектуры"
+      },
+      {
+        "word": "政府",
+        "reading": "せいふ",
+        "translation": "правительство"
       }
     ]
   },
@@ -5418,6 +7303,16 @@
         "word": "京都",
         "reading": "きょうと",
         "translation": "Киото"
+      },
+      {
+        "word": "東京都",
+        "reading": "とうきょうと",
+        "translation": "мегаполис Токио"
+      },
+      {
+        "word": "京都府",
+        "reading": "きょうとふ",
+        "translation": "префектура Киото"
       }
     ]
   },
@@ -5540,6 +7435,11 @@
         "word": "研究",
         "reading": "けんきゅう",
         "translation": "изучение, исследование"
+      },
+      {
+        "word": "研究所",
+        "reading": "けんきゅうじょ",
+        "translation": "научно-исследовательский институт; лаборатория"
       }
     ]
   },
@@ -5563,6 +7463,11 @@
         "word": "研究",
         "reading": "けんきゅう",
         "translation": "изучение, исследование"
+      },
+      {
+        "word": "研究所",
+        "reading": "けんきゅうじょ",
+        "translation": "научно-исследовательский институт; лаборатория"
       }
     ]
   },
@@ -5603,6 +7508,11 @@
         "word": "質問",
         "reading": "しつもん",
         "translation": "вопрос; запрос; интерпелляция"
+      },
+      {
+        "word": "性質",
+        "reading": "せいしつ",
+        "translation": "характер, натура; свойство, качество"
       }
     ]
   },
@@ -5627,6 +7537,16 @@
         "word": "質問",
         "reading": "しつもん",
         "translation": "вопрос; запрос; интерпелляция"
+      },
+      {
+        "word": "問題",
+        "reading": "もんだい",
+        "translation": "вопрос, проблема"
+      },
+      {
+        "word": "訪問",
+        "reading": "ほうもん",
+        "translation": "посещение, визит"
       }
     ]
   },
@@ -5694,6 +7614,16 @@
         "word": "宿題",
         "reading": "しゅくだい",
         "translation": "домашнее задание, урок на дом"
+      },
+      {
+        "word": "合宿",
+        "reading": "がっしゅく",
+        "translation": "жить вместе"
+      },
+      {
+        "word": "宿泊",
+        "reading": "しゅくはく",
+        "translation": "ночёвка, остановка на ночь; расквартирование"
       }
     ]
   },
@@ -5715,6 +7645,11 @@
         "word": "政府",
         "reading": "せいふ",
         "translation": "правительство"
+      },
+      {
+        "word": "政治家",
+        "reading": "せいじか",
+        "translation": "политик, политический деятель"
       }
     ]
   },
@@ -5761,6 +7696,11 @@
         "word": "明治",
         "reading": "めいじ",
         "translation": "эпоха Мэйдзи"
+      },
+      {
+        "word": "政治",
+        "reading": "せいじ",
+        "translation": "политика; государственное управление"
       }
     ]
   },
@@ -5784,6 +7724,21 @@
         "word": "経済",
         "reading": "けいざい",
         "translation": "экономика; народное хозяйство"
+      },
+      {
+        "word": "経済学",
+        "reading": "けいざいがく",
+        "translation": "политическая экономия"
+      },
+      {
+        "word": "経験",
+        "reading": "けいけん",
+        "translation": "опыт , практика; эмпирия"
+      },
+      {
+        "word": "経営",
+        "reading": "けいえい",
+        "translation": "управление, заведование, руководство; ведение"
       }
     ]
   },
@@ -5814,6 +7769,11 @@
         "word": "経済学",
         "reading": "けいざいがく",
         "translation": "политическая экономия"
+      },
+      {
+        "word": "経済",
+        "reading": "けいざい",
+        "translation": "экономика; народное хозяйство"
       }
     ]
   },
@@ -5846,6 +7806,11 @@
         "word": "日本史",
         "reading": "にほんし",
         "translation": "история Японии"
+      },
+      {
+        "word": "歴史",
+        "reading": "れきし",
+        "translation": "история"
       }
     ]
   },
@@ -5908,6 +7873,16 @@
         "word": "文化",
         "reading": "ぶんか",
         "translation": "культура"
+      },
+      {
+        "word": "悪化する",
+        "reading": "あっかする",
+        "translation": "ухудшение, перемена к худшему, порча"
+      },
+      {
+        "word": "変化する",
+        "reading": "へんかする",
+        "translation": "перемена; видоизменение; метаморфоза; трансформация"
       }
     ]
   },
@@ -5934,6 +7909,21 @@
         "word": "理由",
         "reading": "りゆう",
         "translation": "причина, основание; повод; предлог"
+      },
+      {
+        "word": "真理",
+        "reading": "しんり",
+        "translation": "истина, правда"
+      },
+      {
+        "word": "心理学",
+        "reading": "しんりがく",
+        "translation": "психология"
+      },
+      {
+        "word": "理論",
+        "reading": "りろん",
+        "translation": "теория"
       }
     ]
   },
@@ -5955,6 +7945,21 @@
         "word": "教科書",
         "reading": "きょうかしょ",
         "translation": "учебник, учебное пособие"
+      },
+      {
+        "word": "耳鼻科",
+        "reading": "じびか",
+        "translation": "оторинология"
+      },
+      {
+        "word": "科学者",
+        "reading": "かがくしゃ",
+        "translation": "учёный, научный работник"
+      },
+      {
+        "word": "歯科医",
+        "reading": "しかい",
+        "translation": "зубной врач, дантист"
       }
     ]
   },
@@ -5984,6 +7989,16 @@
         "word": "数学",
         "reading": "すうがく",
         "translation": "математика"
+      },
+      {
+        "word": "多数",
+        "reading": "たすう",
+        "translation": "множество"
+      },
+      {
+        "word": "点数",
+        "reading": "てんすう",
+        "translation": "отметка, оценка"
       }
     ]
   },
@@ -6005,6 +8020,11 @@
         "word": "医学",
         "reading": "いがく",
         "translation": "медицина"
+      },
+      {
+        "word": "歯科医",
+        "reading": "しかい",
+        "translation": "зубной врач, дантист"
       }
     ]
   },
@@ -6034,6 +8054,11 @@
         "word": "映画",
         "reading": "えいが",
         "translation": "кинофильм"
+      },
+      {
+        "word": "映画館",
+        "reading": "えいがかん",
+        "translation": "кинотеатр"
       }
     ]
   },
@@ -6055,6 +8080,21 @@
         "word": "画面",
         "reading": "がめん",
         "translation": "лицевая сторона картины; картина"
+      },
+      {
+        "word": "計画",
+        "reading": "けいかく",
+        "translation": "план, проект; программа; намерение; расчёт"
+      },
+      {
+        "word": "映画館",
+        "reading": "えいがかん",
+        "translation": "кинотеатр"
+      },
+      {
+        "word": "映画",
+        "reading": "えいが",
+        "translation": "кинофильм"
       }
     ]
   },
@@ -6107,6 +8147,11 @@
         "word": "真理",
         "reading": "しんり",
         "translation": "истина, правда"
+      },
+      {
+        "word": "写真",
+        "reading": "しゃしん",
+        "translation": "фотокарточка, фотоснимок"
       }
     ]
   },
@@ -6130,6 +8175,16 @@
         "word": "発音",
         "reading": "はつおん",
         "translation": "произношение, выговор; артикуляция, дикция"
+      },
+      {
+        "word": "音楽",
+        "reading": "おんがく",
+        "translation": "музыка"
+      },
+      {
+        "word": "雑音",
+        "reading": "ざつおん",
+        "translation": "шум; помехи"
       }
     ]
   },
@@ -6165,6 +8220,16 @@
         "word": "楽な",
         "reading": "らくな",
         "translation": "удобство, приятность"
+      },
+      {
+        "word": "打楽器",
+        "reading": "だがっき",
+        "translation": "ударный инструмент"
+      },
+      {
+        "word": "楽器",
+        "reading": "がっき",
+        "translation": "музыкальный инструмент"
       }
     ]
   },
@@ -6276,6 +8341,11 @@
         "word": "特色",
         "reading": "とくしょく",
         "translation": "особенность, отличие, отличительное свойство, характерная черта"
+      },
+      {
+        "word": "色々な",
+        "reading": "いろいろな",
+        "translation": "различный"
       }
     ]
   },
@@ -6305,6 +8375,16 @@
         "word": "白鳥",
         "reading": "はくちょう",
         "translation": "малый лебедь, Cygnus bewickii jankowskii"
+      },
+      {
+        "word": "真白",
+        "reading": "まっしろ",
+        "translation": "белым бело"
+      },
+      {
+        "word": "面白い",
+        "reading": "おもしろい",
+        "translation": "интересный, занятный"
       }
     ]
   },
@@ -6334,6 +8414,11 @@
         "word": "黒板",
         "reading": "こくばん",
         "translation": "классная доска"
+      },
+      {
+        "word": "暗黒",
+        "reading": "あんこく",
+        "translation": "тьма"
       }
     ]
   },
@@ -6411,6 +8496,11 @@
         "word": "寝室",
         "reading": "しんしつ",
         "translation": "спальня; спальная каюта"
+      },
+      {
+        "word": "寝具",
+        "reading": "しんぐ",
+        "translation": "постельные принадлежности"
       }
     ]
   },
@@ -6473,6 +8563,21 @@
         "word": "私立",
         "reading": "しりつ",
         "translation": "частный"
+      },
+      {
+        "word": "私立大学",
+        "reading": "しりつだいがく",
+        "translation": "частный университет"
+      },
+      {
+        "word": "国立大学",
+        "reading": "こくりつだいがく",
+        "translation": "государственный университет"
+      },
+      {
+        "word": "設立する",
+        "reading": "せつりつする",
+        "translation": "основывание, учреждение, организация"
       }
     ]
   },
@@ -6519,6 +8624,11 @@
         "word": "使用",
         "reading": "しよう",
         "translation": "употребление, применение, использование"
+      },
+      {
+        "word": "使用法",
+        "reading": "しようほう",
+        "translation": "способ употребления; как надо пользоваться"
       }
     ]
   },
@@ -6664,6 +8774,11 @@
         "word": "送別会",
         "reading": "そうべつかい",
         "translation": "прощальный вечер"
+      },
+      {
+        "word": "放送",
+        "reading": "ほうそう",
+        "translation": "радиопередача; телепередача; радиовещание"
       }
     ]
   },
@@ -6697,6 +8812,11 @@
         "word": "結果",
         "reading": "けっか",
         "translation": "результат, последствие; эффект"
+      },
+      {
+        "word": "結婚式",
+        "reading": "けっこんしき",
+        "translation": "свадебный обряд, свадьба, бракосочетание"
       }
     ]
   },
@@ -6713,6 +8833,21 @@
         "word": "結婚",
         "reading": "けっこん",
         "translation": "брак, женитьба, замужество"
+      },
+      {
+        "word": "離婚",
+        "reading": "りこん",
+        "translation": "развод, расторжение брака"
+      },
+      {
+        "word": "結婚式",
+        "reading": "けっこんしき",
+        "translation": "свадебный обряд, свадьба, бракосочетание"
+      },
+      {
+        "word": "婚約",
+        "reading": "こんやく",
+        "translation": "помолвка, обручение"
       }
     ]
   },
@@ -6763,6 +8898,26 @@
         "word": "出席",
         "reading": "しゅっせき",
         "translation": "присутствие ; посещение"
+      },
+      {
+        "word": "座席",
+        "reading": "ざせき",
+        "translation": "место"
+      },
+      {
+        "word": "欠席",
+        "reading": "けっせき",
+        "translation": "неявка, отсутствие"
+      },
+      {
+        "word": "指定席",
+        "reading": "していせき",
+        "translation": "указанное место; нумерованные места"
+      },
+      {
+        "word": "空席",
+        "reading": "くうせき",
+        "translation": "свободное место"
       }
     ]
   },
@@ -6786,6 +8941,11 @@
         "word": "欠席",
         "reading": "けっせき",
         "translation": "неявка, отсутствие"
+      },
+      {
+        "word": "欠点",
+        "reading": "けってん",
+        "translation": "недостаток; изъян; слабое место"
       }
     ]
   },
@@ -6847,6 +9007,21 @@
         "word": "定食",
         "reading": "ていしょく",
         "translation": "регулярное питание; постоянная диета"
+      },
+      {
+        "word": "予定",
+        "reading": "よてい",
+        "translation": "предположение, намётка, предварительный расчёт, план"
+      },
+      {
+        "word": "指定席",
+        "reading": "していせき",
+        "translation": "указанное место; нумерованные места"
+      },
+      {
+        "word": "決定する",
+        "reading": "けっていする",
+        "translation": "решение, постановление; определение"
       }
     ]
   },
@@ -6868,6 +9043,11 @@
         "word": "洋食",
         "reading": "ようしょく",
         "translation": "европейский стол, европейская кухня"
+      },
+      {
+        "word": "西洋",
+        "reading": "せいよう",
+        "translation": "Запад ; Европа и Америка"
       }
     ]
   },
@@ -6889,6 +9069,11 @@
         "word": "結婚式",
         "reading": "けっこんしき",
         "translation": "свадебный обряд, свадьба, бракосочетание"
+      },
+      {
+        "word": "形式",
+        "reading": "けいしき",
+        "translation": "форма"
       }
     ]
   },
@@ -6915,6 +9100,11 @@
         "word": "平和",
         "reading": "へいわ",
         "translation": "мир"
+      },
+      {
+        "word": "和風",
+        "reading": "わふう",
+        "translation": "японский стиль"
       }
     ]
   },
@@ -7013,6 +9203,11 @@
         "word": "冬",
         "reading": "ふゆ",
         "translation": "зима"
+      },
+      {
+        "word": "冬眠",
+        "reading": "とうみん",
+        "translation": "зимняя спячка"
       }
     ]
   },
@@ -7201,6 +9396,16 @@
         "word": "天国",
         "reading": "てんごく",
         "translation": "рай, царство небесное; рай"
+      },
+      {
+        "word": "晴天",
+        "reading": "せいてん",
+        "translation": "чистое небо; ясная погода"
+      },
+      {
+        "word": "天気予報",
+        "reading": "てんきよほう",
+        "translation": "прогноз погоды"
       }
     ]
   },
@@ -7250,6 +9455,41 @@
         "word": "用事",
         "reading": "ようじ",
         "translation": "дело"
+      },
+      {
+        "word": "工事",
+        "reading": "こうじ",
+        "translation": "работы"
+      },
+      {
+        "word": "返事",
+        "reading": "へんじ",
+        "translation": "ответ"
+      },
+      {
+        "word": "仕事",
+        "reading": "しごと",
+        "translation": "работа; занятие, дело"
+      },
+      {
+        "word": "記事",
+        "reading": "きじ",
+        "translation": "описание, рассказ; отзыв; запись"
+      },
+      {
+        "word": "事実",
+        "reading": "じじつ",
+        "translation": "факт, реальность, действительность"
+      },
+      {
+        "word": "無事",
+        "reading": "ぶじ",
+        "translation": "благополучный; мирный"
+      },
+      {
+        "word": "人事課",
+        "reading": "じんじか",
+        "translation": "отдел кадров , личный стол"
       }
     ]
   },
@@ -7278,6 +9518,31 @@
         "word": "科学者",
         "reading": "かがくしゃ",
         "translation": "учёный, научный работник"
+      },
+      {
+        "word": "読者",
+        "reading": "どくしゃ",
+        "translation": "читатель; подписчик"
+      },
+      {
+        "word": "歩行者",
+        "reading": "ほこうしゃ",
+        "translation": "пешеход"
+      },
+      {
+        "word": "労働者",
+        "reading": "ろうどうしゃ",
+        "translation": "рабочий"
+      },
+      {
+        "word": "記者",
+        "reading": "きしゃ",
+        "translation": "журналист, корреспондент, репортёр"
+      },
+      {
+        "word": "第三者",
+        "reading": "だいさんしゃ",
+        "translation": "третья сторона"
       }
     ]
   },
@@ -7306,6 +9571,11 @@
         "word": "運動",
         "reading": "うんどう",
         "translation": "движение"
+      },
+      {
+        "word": "運転",
+        "reading": "うんてん",
+        "translation": "движение, ход, работа"
       }
     ]
   },
@@ -7388,6 +9658,11 @@
         "word": "記者",
         "reading": "きしゃ",
         "translation": "журналист, корреспондент, репортёр"
+      },
+      {
+        "word": "記念",
+        "reading": "きねん",
+        "translation": "воспоминание, память"
       }
     ]
   },
@@ -7425,6 +9700,16 @@
         "word": "店員",
         "reading": "てんいん",
         "translation": "продавец, приказчик; клерк; приёмщик заказов"
+      },
+      {
+        "word": "全員",
+        "reading": "ぜんいん",
+        "translation": "все члены; весь штат; весь личный состав; вся команда; все"
+      },
+      {
+        "word": "会員制",
+        "reading": "かいいんせい",
+        "translation": "система членства"
       }
     ]
   },
@@ -7446,6 +9731,11 @@
         "word": "商品",
         "reading": "しょうひん",
         "translation": "товары"
+      },
+      {
+        "word": "商業",
+        "reading": "しょうぎょう",
+        "translation": "торговля; коммерция"
       }
     ]
   },
@@ -7472,6 +9762,26 @@
         "word": "産業",
         "reading": "さんぎょう",
         "translation": "промышленность, индустрия; производство"
+      },
+      {
+        "word": "農業",
+        "reading": "のうぎょう",
+        "translation": "сельское хозяйство, земледелие"
+      },
+      {
+        "word": "残業",
+        "reading": "ざんぎょう",
+        "translation": "сверхурочная работа, переработка"
+      },
+      {
+        "word": "営業",
+        "reading": "えいぎょう",
+        "translation": "предприятие; торговое дело"
+      },
+      {
+        "word": "卒業",
+        "reading": "そつぎょう",
+        "translation": "окончание учебного заведения"
       }
     ]
   },
@@ -7539,6 +9849,11 @@
         "word": "悪口",
         "reading": "わるぐち",
         "translation": "злословие; ругань, брань"
+      },
+      {
+        "word": "最悪",
+        "reading": "さいあく",
+        "translation": "наихудший; вреднейший, злейший"
       }
     ]
   },
@@ -7565,6 +9880,11 @@
         "word": "点数",
         "reading": "てんすう",
         "translation": "отметка, оценка"
+      },
+      {
+        "word": "弱点",
+        "reading": "じゃくてん",
+        "translation": "слабое место"
       }
     ]
   },
@@ -7655,6 +9975,11 @@
         "word": "同情する",
         "reading": "どうじょうする",
         "translation": "сочувствие, соболезнование, сострадание"
+      },
+      {
+        "word": "同窓会",
+        "reading": "どうそうかい",
+        "translation": "общество бывших соучеников"
       }
     ]
   },
@@ -7710,6 +10035,11 @@
         "word": "本当",
         "reading": "ほんとう",
         "translation": "правда"
+      },
+      {
+        "word": "適当な",
+        "reading": "てきとうな",
+        "translation": "подходящий, соответствующий"
       }
     ]
   },
@@ -7732,6 +10062,11 @@
       {
         "word": "困難な",
         "reading": "こんなんな",
+        "translation": "трудности; затруднения, сложности"
+      },
+      {
+        "word": "困難",
+        "reading": "こんなん",
         "translation": "трудности; затруднения, сложности"
       }
     ]
@@ -7858,6 +10193,11 @@
         "word": "試合",
         "reading": "しあい",
         "translation": "матч"
+      },
+      {
+        "word": "試験",
+        "reading": "しけん",
+        "translation": "экзамен, испытания"
       }
     ]
   },
@@ -7884,6 +10224,11 @@
         "word": "経験",
         "reading": "けいけん",
         "translation": "опыт , практика; эмпирия"
+      },
+      {
+        "word": "受験する",
+        "reading": "じゅけんする",
+        "translation": "сдача экзамена"
       }
     ]
   },
@@ -7912,6 +10257,21 @@
         "word": "面接",
         "reading": "めんせつ",
         "translation": "встреча; приём"
+      },
+      {
+        "word": "画面",
+        "reading": "がめん",
+        "translation": "лицевая сторона картины; картина"
+      },
+      {
+        "word": "洗面所",
+        "reading": "せんめんじょ",
+        "translation": "умывальная; уборная, туалет"
+      },
+      {
+        "word": "表面",
+        "reading": "ひょうめん",
+        "translation": "лицевая сторона; поверхность"
       }
     ]
   },
@@ -7940,6 +10300,11 @@
         "word": "間接",
         "reading": "かんせつ",
         "translation": "косвенный, непрямой"
+      },
+      {
+        "word": "面接",
+        "reading": "めんせつ",
+        "translation": "встреча; приём"
       }
     ]
   },
@@ -7961,6 +10326,11 @@
         "word": "小説",
         "reading": "しょうせつ",
         "translation": "роман; повесть; рассказ"
+      },
+      {
+        "word": "伝説",
+        "reading": "でんせつ",
+        "translation": "легенда, предание"
       }
     ]
   },
@@ -8028,6 +10398,41 @@
         "word": "合計",
         "reading": "ごうけい",
         "translation": "итог"
+      },
+      {
+        "word": "間に合う",
+        "reading": "まにあう",
+        "translation": "успевать, поспевать"
+      },
+      {
+        "word": "場合",
+        "reading": "ばあい",
+        "translation": "обстоятельства, случай, ситуация"
+      },
+      {
+        "word": "試合",
+        "reading": "しあい",
+        "translation": "матч"
+      },
+      {
+        "word": "合格",
+        "reading": "ごうかく",
+        "translation": "соответствие требованиям"
+      },
+      {
+        "word": "打合せ",
+        "reading": "うちあわせ",
+        "translation": "предварительное обсуждение; договорённость"
+      },
+      {
+        "word": "割合",
+        "reading": "わりあい",
+        "translation": "соотношение"
+      },
+      {
+        "word": "集合",
+        "reading": "しゅうごう",
+        "translation": "сбор"
       }
     ]
   },
@@ -8049,6 +10454,11 @@
         "word": "性格",
         "reading": "せいかく",
         "translation": "характер"
+      },
+      {
+        "word": "資格",
+        "reading": "しかく",
+        "translation": "квалификация; права; компетенция; данные ; ценз"
       }
     ]
   },
@@ -8141,6 +10551,11 @@
         "word": "残業",
         "reading": "ざんぎょう",
         "translation": "сверхурочная работа, переработка"
+      },
+      {
+        "word": "残念な",
+        "reading": "ざんねんな",
+        "translation": "сожаление; досада"
       }
     ]
   },
@@ -8263,6 +10678,11 @@
         "word": "投書する",
         "reading": "とうしょする",
         "translation": "посылка корреспонденции"
+      },
+      {
+        "word": "投資",
+        "reading": "とうし",
+        "translation": "вложение капитала, инвестирование"
       }
     ]
   },
@@ -8337,6 +10757,11 @@
         "word": "洗面所",
         "reading": "せんめんじょ",
         "translation": "умывальная; уборная, туалет"
+      },
+      {
+        "word": "洗顔する",
+        "reading": "せんがんする",
+        "translation": "умываться"
       }
     ]
   },
@@ -8548,6 +10973,11 @@
         "word": "設備",
         "reading": "せつび",
         "translation": "оборудование; устройство, приспособление"
+      },
+      {
+        "word": "準備",
+        "reading": "じゅんび",
+        "translation": "подготовка, приготовления ; готовность"
       }
     ]
   },
@@ -8592,6 +11022,11 @@
         "word": "会談",
         "reading": "かいだん",
         "translation": "разговор, беседа; переговоры"
+      },
+      {
+        "word": "相談",
+        "reading": "そうだん",
+        "translation": "беседа, совещание; совет, консультация"
       }
     ]
   },
@@ -8615,6 +11050,16 @@
         "word": "連休",
         "reading": "れんきゅう",
         "translation": "ряд праздников подряд"
+      },
+      {
+        "word": "連絡",
+        "reading": "れんらく",
+        "translation": "связь, связность"
+      },
+      {
+        "word": "連続する",
+        "reading": "れんぞくする",
+        "translation": "продолжение"
       }
     ]
   },
@@ -8675,6 +11120,11 @@
         "word": "特別な",
         "reading": "とくべつな",
         "translation": "особый, специальный; чрезвычайный; экстренный"
+      },
+      {
+        "word": "特色",
+        "reading": "とくしょく",
+        "translation": "особенность, отличие, отличительное свойство, характерная черта"
       }
     ]
   },
@@ -8755,6 +11205,11 @@
         "word": "発表",
         "reading": "はっぴょう",
         "translation": "сообщение; публикация; оглашение"
+      },
+      {
+        "word": "発音",
+        "reading": "はつおん",
+        "translation": "произношение, выговор; артикуляция, дикция"
       }
     ]
   },
@@ -8833,6 +11288,16 @@
         "word": "機能",
         "reading": "きのう",
         "translation": "способность к функционированию"
+      },
+      {
+        "word": "機関",
+        "reading": "きかん",
+        "translation": "машина; мотор, двигатель"
+      },
+      {
+        "word": "飛行機",
+        "reading": "ひこうき",
+        "translation": "самолёт"
       }
     ]
   },
@@ -8854,6 +11319,11 @@
         "word": "機関",
         "reading": "きかん",
         "translation": "машина; мотор, двигатель"
+      },
+      {
+        "word": "関心",
+        "reading": "かんしん",
+        "translation": "интерес, заинтересованность"
       }
     ]
   },
@@ -8870,6 +11340,16 @@
         "word": "テレビ局",
         "reading": "てれびきょく",
         "translation": "телекомпания"
+      },
+      {
+        "word": "薬局",
+        "reading": "やっきょく",
+        "translation": "аптека, аптекарский магазин"
+      },
+      {
+        "word": "郵便局",
+        "reading": "ゆうびんきょく",
+        "translation": "почта, отделение связи"
       }
     ]
   },
@@ -8901,6 +11381,11 @@
         "word": "通信",
         "reading": "つうしん",
         "translation": "сообщение, информация"
+      },
+      {
+        "word": "自信",
+        "reading": "じしん",
+        "translation": "уверенность в себе"
       }
     ]
   },
@@ -8992,6 +11477,21 @@
         "word": "意味",
         "reading": "いみ",
         "translation": "смысл, значение"
+      },
+      {
+        "word": "注意",
+        "reading": "ちゅうい",
+        "translation": "внимание"
+      },
+      {
+        "word": "用意",
+        "reading": "ようい",
+        "translation": "подготовка, приготовления; готовность"
+      },
+      {
+        "word": "得意な",
+        "reading": "とくいな",
+        "translation": "расцвет, лучшая пора"
       }
     ]
   },
@@ -9041,6 +11541,16 @@
         "word": "引力",
         "reading": "いんりょく",
         "translation": "притяжение; сила тяготения, гравитация"
+      },
+      {
+        "word": "一割引き",
+        "reading": "いちわりびき",
+        "translation": "10% скидка"
+      },
+      {
+        "word": "取引",
+        "reading": "とりひき",
+        "translation": "торговые отношения; сделка"
       }
     ]
   },
@@ -9136,6 +11646,16 @@
         "word": "自由",
         "reading": "じゆう",
         "translation": "свобода"
+      },
+      {
+        "word": "自動車",
+        "reading": "じどうしゃ",
+        "translation": "автомобиль, автомашина"
+      },
+      {
+        "word": "自転車",
+        "reading": "じてんしゃ",
+        "translation": "велосипед, самокат"
       }
     ]
   },
@@ -9152,6 +11672,11 @@
         "word": "理由",
         "reading": "りゆう",
         "translation": "причина, основание; повод; предлог"
+      },
+      {
+        "word": "自由",
+        "reading": "じゆう",
+        "translation": "свобода"
       }
     ]
   },
@@ -9345,6 +11870,16 @@
         "word": "文房具",
         "reading": "ぶんぼうぐ",
         "translation": "письменные принадлежности"
+      },
+      {
+        "word": "器具",
+        "reading": "きぐ",
+        "translation": "посуда, утварь"
+      },
+      {
+        "word": "用具",
+        "reading": "ようぐ",
+        "translation": "инструмент, орудие; принадлежности; приборы"
       }
     ]
   },
@@ -9378,6 +11913,11 @@
         "word": "器具",
         "reading": "きぐ",
         "translation": "посуда, утварь"
+      },
+      {
+        "word": "打楽器",
+        "reading": "だがっき",
+        "translation": "ударный инструмент"
       }
     ]
   },
@@ -9409,6 +11949,41 @@
         "word": "用品",
         "reading": "ようひん",
         "translation": "принадлежности; нужные вещи"
+      },
+      {
+        "word": "利用する",
+        "reading": "りようする",
+        "translation": "использование"
+      },
+      {
+        "word": "使用",
+        "reading": "しよう",
+        "translation": "употребление, применение, использование"
+      },
+      {
+        "word": "急用",
+        "reading": "きゅうよう",
+        "translation": "срочное дело"
+      },
+      {
+        "word": "信用",
+        "reading": "しんよう",
+        "translation": "доверие"
+      },
+      {
+        "word": "雑用",
+        "reading": "ざつよう",
+        "translation": "всякие расходы"
+      },
+      {
+        "word": "費用",
+        "reading": "ひよう",
+        "translation": "расход; затрата"
+      },
+      {
+        "word": "使用法",
+        "reading": "しようほう",
+        "translation": "способ употребления; как надо пользоваться"
       }
     ]
   },
@@ -9425,6 +12000,21 @@
         "word": "服",
         "reading": "ふく",
         "translation": "одежда"
+      },
+      {
+        "word": "洋服",
+        "reading": "ようふく",
+        "translation": "одежда европейского покроя"
+      },
+      {
+        "word": "和服",
+        "reading": "わふく",
+        "translation": "японская одежда"
+      },
+      {
+        "word": "制服",
+        "reading": "せいふく",
+        "translation": "форменная одежда, форма"
       }
     ]
   },
@@ -9453,6 +12043,11 @@
         "word": "表紙",
         "reading": "ひょうし",
         "translation": "обложка; переплёт"
+      },
+      {
+        "word": "折り紙",
+        "reading": "おりがみ",
+        "translation": "сложенный вдвое лист бумаги"
       }
     ]
   },
@@ -9502,6 +12097,11 @@
         "word": "複雑な",
         "reading": "ふくざつな",
         "translation": "сложный, запутанный"
+      },
+      {
+        "word": "雑誌",
+        "reading": "ざっし",
+        "translation": "журнал"
       }
     ]
   },
@@ -9593,6 +12193,16 @@
         "word": "上品な",
         "reading": "じょうひんな",
         "translation": "превосходная вещь, вещь высшего качества"
+      },
+      {
+        "word": "作品",
+        "reading": "さくひん",
+        "translation": "художественное произведение; работа, творчество"
+      },
+      {
+        "word": "用品",
+        "reading": "ようひん",
+        "translation": "принадлежности; нужные вещи"
       }
     ]
   },
@@ -9619,6 +12229,11 @@
         "word": "一個",
         "reading": "いっこ",
         "translation": "одна штука"
+      },
+      {
+        "word": "個人的な",
+        "reading": "こじんてきな",
+        "translation": "индивидуальный, личный, персональный; частный"
       }
     ]
   },
@@ -9767,6 +12382,16 @@
         "word": "報いる",
         "reading": "むくいる",
         "translation": "воздавать; вознаграждать"
+      },
+      {
+        "word": "天気予報",
+        "reading": "てんきよほう",
+        "translation": "прогноз погоды"
+      },
+      {
+        "word": "報告",
+        "reading": "ほうこく",
+        "translation": "доклад; отчёт; сообщение; рапорт, донесение"
       }
     ]
   },
@@ -9828,6 +12453,41 @@
         "word": "関心",
         "reading": "かんしん",
         "translation": "интерес, заинтересованность"
+      },
+      {
+        "word": "中心",
+        "reading": "ちゅうしん",
+        "translation": "центр; середина; средоточие"
+      },
+      {
+        "word": "安心する",
+        "reading": "あんしんする",
+        "translation": "успокаиваться"
+      },
+      {
+        "word": "熱心な",
+        "reading": "ねっしんな",
+        "translation": "пыл, рвение, энтузиазм"
+      },
+      {
+        "word": "良心",
+        "reading": "りょうしん",
+        "translation": "совесть"
+      },
+      {
+        "word": "決心",
+        "reading": "けっしん",
+        "translation": "решимость; решение"
+      },
+      {
+        "word": "感心",
+        "reading": "かんしん",
+        "translation": "восхищение, восторг"
+      },
+      {
+        "word": "心配する",
+        "reading": "しんぱいする",
+        "translation": "беспокойство, волнение, опасение, озабоченность"
       }
     ]
   },
@@ -9859,6 +12519,11 @@
         "word": "感謝",
         "reading": "かんしゃ",
         "translation": "благодарность, признательность"
+      },
+      {
+        "word": "感情",
+        "reading": "かんじょう",
+        "translation": "чувство, эмоция; страсть"
       }
     ]
   },
@@ -9887,6 +12552,11 @@
         "word": "情報",
         "reading": "じょうほう",
         "translation": "сообщение, известие; информация; сведения"
+      },
+      {
+        "word": "同情する",
+        "reading": "どうじょうする",
+        "translation": "сочувствие, соболезнование, сострадание"
       }
     ]
   },
@@ -10116,6 +12786,11 @@
         "word": "伝説",
         "reading": "でんせつ",
         "translation": "легенда, предание"
+      },
+      {
+        "word": "伝言",
+        "reading": "でんごん",
+        "translation": "устное сообщение, устная передача"
       }
     ]
   },
@@ -10156,6 +12831,11 @@
         "word": "部屋代",
         "reading": "へやだい",
         "translation": "плата за комнату"
+      },
+      {
+        "word": "現代",
+        "reading": "げんだい",
+        "translation": "современность; наши дни, наша эпоха"
       }
     ]
   },
@@ -10304,6 +12984,16 @@
         "word": "特別な",
         "reading": "とくべつな",
         "translation": "особый, специальный; чрезвычайный; экстренный"
+      },
+      {
+        "word": "送別会",
+        "reading": "そうべつかい",
+        "translation": "прощальный вечер"
+      },
+      {
+        "word": "性別",
+        "reading": "せいべつ",
+        "translation": "половые различия"
       }
     ]
   },
@@ -10505,6 +13195,11 @@
         "word": "重力",
         "reading": "じゅうりょく",
         "translation": "тяжесть; сила тяжести; сила тяготения"
+      },
+      {
+        "word": "重要な",
+        "reading": "じゅうような",
+        "translation": "важный, серьёзный"
       }
     ]
   },
@@ -10681,6 +13376,11 @@
         "word": "単位",
         "reading": "たんい",
         "translation": "единица"
+      },
+      {
+        "word": "簡単な",
+        "reading": "かんたんな",
+        "translation": "простой; краткий"
       }
     ]
   },
@@ -10727,6 +13427,16 @@
         "word": "空席",
         "reading": "くうせき",
         "translation": "свободное место"
+      },
+      {
+        "word": "空手道",
+        "reading": "からてどう",
+        "translation": "путь каратэ"
+      },
+      {
+        "word": "空港",
+        "reading": "くうこう",
+        "translation": "аэропорт"
       }
     ]
   },
@@ -10857,6 +13567,16 @@
         "word": "設立する",
         "reading": "せつりつする",
         "translation": "основывание, учреждение, организация"
+      },
+      {
+        "word": "設備",
+        "reading": "せつび",
+        "translation": "оборудование; устройство, приспособление"
+      },
+      {
+        "word": "建設",
+        "reading": "けんせつ",
+        "translation": "строительство, постройка, сооружение; созидание"
       }
     ]
   },
@@ -10901,6 +13621,16 @@
         "word": "成功",
         "reading": "せいこう",
         "translation": "успех"
+      },
+      {
+        "word": "完成する",
+        "reading": "かんせいする",
+        "translation": "завершение, окончание; совершенство"
+      },
+      {
+        "word": "賛成",
+        "reading": "さんせい",
+        "translation": "согласие, одобрение"
       }
     ]
   },
@@ -10924,6 +13654,11 @@
         "word": "費用",
         "reading": "ひよう",
         "translation": "расход; затрата"
+      },
+      {
+        "word": "消費する",
+        "reading": "しょうひする",
+        "translation": "расходование; потребление"
       }
     ]
   },
@@ -10975,6 +13710,21 @@
         "word": "地位",
         "reading": "ちい",
         "translation": "местонахождение"
+      },
+      {
+        "word": "単位",
+        "reading": "たんい",
+        "translation": "единица"
+      },
+      {
+        "word": "位置",
+        "reading": "いち",
+        "translation": "расположение, место; позиция"
+      },
+      {
+        "word": "第一位",
+        "reading": "だいいちい",
+        "translation": "первое место"
       }
     ]
   },
@@ -11095,6 +13845,11 @@
         "word": "高原",
         "reading": "こうげん",
         "translation": "плоскогорье, плато, плоская возвышенность"
+      },
+      {
+        "word": "原料",
+        "reading": "げんりょう",
+        "translation": "сырьё, сырьевые ресурсы; материалы"
       }
     ]
   },
@@ -11162,6 +13917,16 @@
         "word": "野菜",
         "reading": "やさい",
         "translation": "овощи, зелень"
+      },
+      {
+        "word": "野球場",
+        "reading": "やきゅうじょう",
+        "translation": "бейсбольная площадка"
+      },
+      {
+        "word": "野原",
+        "reading": "のはら",
+        "translation": "поле, равнина"
       }
     ]
   },
@@ -11306,6 +14071,11 @@
         "word": "心配する",
         "reading": "しんぱいする",
         "translation": "беспокойство, волнение, опасение, озабоченность"
+      },
+      {
+        "word": "心配",
+        "reading": "しんぱい",
+        "translation": "беспокойство, волнение, опасение, озабоченность"
       }
     ]
   },
@@ -11383,6 +14153,11 @@
         "word": "効果",
         "reading": "こうか",
         "translation": "результат, действие, эффект"
+      },
+      {
+        "word": "無効",
+        "reading": "むこう",
+        "translation": "недействительность"
       }
     ]
   },
@@ -11404,6 +14179,11 @@
         "word": "市民",
         "reading": "しみん",
         "translation": "горожане, население города; горожанин, горожанка"
+      },
+      {
+        "word": "民族",
+        "reading": "みんぞく",
+        "translation": "нация; народ; национальность"
       }
     ]
   },
@@ -11456,6 +14236,11 @@
         "word": "洗顔する",
         "reading": "せんがんする",
         "translation": "умываться"
+      },
+      {
+        "word": "笑顔",
+        "reading": "えがお",
+        "translation": "улыбающееся лицо"
       }
     ]
   },
@@ -11531,6 +14316,11 @@
         "word": "議論",
         "reading": "ぎろん",
         "translation": "спор; препирательство; прения, дебаты; полемика, дискуссия"
+      },
+      {
+        "word": "結論",
+        "reading": "けつろん",
+        "translation": "вывод, заключение"
       }
     ]
   },
@@ -11565,6 +14355,11 @@
         "word": "実験",
         "reading": "じっけん",
         "translation": "эксперимент, экспериментирование, опыт, испытание, проверка на практике"
+      },
+      {
+        "word": "実力",
+        "reading": "じつりょく",
+        "translation": "реальная сила; реальные способности"
       }
     ]
   },
@@ -11644,6 +14439,11 @@
         "word": "要求",
         "reading": "ようきゅう",
         "translation": "требование"
+      },
+      {
+        "word": "必要な",
+        "reading": "ひつような",
+        "translation": "необходимость"
       }
     ]
   },
@@ -11737,6 +14537,11 @@
         "word": "無礼な",
         "reading": "ぶれいな",
         "translation": "невежливость; грубость; нахальство"
+      },
+      {
+        "word": "失礼な",
+        "reading": "しつれいな",
+        "translation": "невежливость, грубость"
       }
     ]
   },
@@ -11801,6 +14606,11 @@
         "word": "参加する",
         "reading": "さんかする",
         "translation": "участие"
+      },
+      {
+        "word": "増加する",
+        "reading": "ぞうかする",
+        "translation": "увеличение, рост; прибавление, прирост"
       }
     ]
   },
@@ -11985,6 +14795,11 @@
         "word": "進歩する",
         "reading": "しんぽする",
         "translation": "прогресс"
+      },
+      {
+        "word": "進歩",
+        "reading": "しんぽ",
+        "translation": "прогресс"
       }
     ]
   },
@@ -12062,6 +14877,11 @@
         "word": "対比する",
         "reading": "たいひする",
         "translation": "сопоставление; противопоставление"
+      },
+      {
+        "word": "比較",
+        "reading": "ひかく",
+        "translation": "сравнение"
       }
     ]
   },
@@ -12099,6 +14919,11 @@
         "word": "違反",
         "reading": "いはん",
         "translation": "нарушение"
+      },
+      {
+        "word": "反対",
+        "reading": "はんたい",
+        "translation": "противоположность, противное, обратное; контраст"
       }
     ]
   },
@@ -12130,6 +14955,11 @@
         "word": "２対３",
         "reading": "にたいさん",
         "translation": "против 3; 2 к 3"
+      },
+      {
+        "word": "対比する",
+        "reading": "たいひする",
+        "translation": "сопоставление; противопоставление"
       }
     ]
   },
@@ -12204,6 +15034,16 @@
         "word": "直接",
         "reading": "ちょくせつ",
         "translation": "прямо, непосредственно, лично"
+      },
+      {
+        "word": "正直な",
+        "reading": "しょうじきな",
+        "translation": "честность, добросовестность, порядочность"
+      },
+      {
+        "word": "直線",
+        "reading": "ちょくせん",
+        "translation": "прямая линия"
       }
     ]
   },
@@ -12243,6 +15083,16 @@
         "word": "表面",
         "reading": "ひょうめん",
         "translation": "лицевая сторона; поверхность"
+      },
+      {
+        "word": "表紙",
+        "reading": "ひょうし",
+        "translation": "обложка; переплёт"
+      },
+      {
+        "word": "代表",
+        "reading": "だいひょう",
+        "translation": "представительство"
       }
     ]
   },
@@ -12271,6 +15121,11 @@
         "word": "現代",
         "reading": "げんだい",
         "translation": "современность; наши дни, наша эпоха"
+      },
+      {
+        "word": "表現",
+        "reading": "ひょうげん",
+        "translation": "выражение, проявление; экспрессия"
       }
     ]
   },
@@ -12333,6 +15188,16 @@
         "word": "全部",
         "reading": "ぜんぶ",
         "translation": "все, всё, всё целиком; полностью"
+      },
+      {
+        "word": "安全な",
+        "reading": "あんぜんな",
+        "translation": "безопасный"
+      },
+      {
+        "word": "完全な",
+        "reading": "かんぜんな",
+        "translation": "совершенство"
       }
     ]
   },
@@ -12366,6 +15231,11 @@
         "word": "最低",
         "reading": "さいてい",
         "translation": "минимально, как минимум; самое меньшее"
+      },
+      {
+        "word": "最初の",
+        "reading": "さいしょの",
+        "translation": "начало"
       }
     ]
   },
@@ -12400,6 +15270,11 @@
         "word": "無効",
         "reading": "むこう",
         "translation": "недействительность"
+      },
+      {
+        "word": "無礼な",
+        "reading": "ぶれいな",
+        "translation": "невежливость; грубость; нахальство"
       }
     ]
   },
@@ -12442,6 +15317,16 @@
         "word": "第三者",
         "reading": "だいさんしゃ",
         "translation": "третья сторона"
+      },
+      {
+        "word": "落第する",
+        "reading": "らくだいする",
+        "translation": "провал"
+      },
+      {
+        "word": "第一課",
+        "reading": "だいいっか",
+        "translation": "первый урок"
       }
     ]
   },
@@ -12494,6 +15379,11 @@
         "word": "可能性",
         "reading": "かのうせい",
         "translation": "возможность"
+      },
+      {
+        "word": "性格",
+        "reading": "せいかく",
+        "translation": "характер"
       }
     ]
   },
@@ -12546,6 +15436,11 @@
         "word": "会員制",
         "reading": "かいいんせい",
         "translation": "система членства"
+      },
+      {
+        "word": "無制限",
+        "reading": "むせいげん",
+        "translation": "неограниченный, нелимитированный; безграничный"
       }
     ]
   },
