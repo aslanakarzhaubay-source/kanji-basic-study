@@ -1,0 +1,4 @@
+data/*.json
+data/*.tmp
+uploads/avatars/*
+!uploads/avatars/.gitkeep
